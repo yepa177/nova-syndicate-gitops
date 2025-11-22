@@ -1,0 +1,30 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "validate-manifests",
+      "type": "shell",
+      "command": "echo 'Validating Kubernetes manifests...' && find manifests/ -name '*.yaml' -exec kubectl validate --dry-run=client -f {} \\;",
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always"
+      }
+    },
+    {
+      "label": "git-push-sync",
+      "type": "shell", 
+      "command": "git add . && git commit -m 'GitOps update' && git push && echo '✅ Changes pushed - ArgoCD will sync in 30-60 seconds'",
+      "group": "build",
+      "dependsOn": "validate-manifests"
+    },
+    {
+      "label": "full-sync-pipeline",
+      "type": "shell",
+      "command": "echo 'Running full GitOps pipeline'",
+      "group": "build",
+      "dependsOrder": "sequence",
+      "dependsOn": ["validate-manifests", "git-push-sync"]
+    }
+  ]
+}
