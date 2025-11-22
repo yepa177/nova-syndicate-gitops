@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nova-syndicate-root
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:yepa177/nova-syndicate-gitops.git
+    targetRevision: main
+    path: manifests/argocd/applications  # ⚠️ CORRECTION : pointe vers les applications enfants
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
