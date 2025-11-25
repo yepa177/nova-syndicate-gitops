@@ -5,3 +5,4 @@ resources:
   - ../../base/namespace
   - ../../base/deployments
   - ../../base/services
+  - ../../base/ingress
