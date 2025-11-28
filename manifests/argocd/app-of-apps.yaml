@@ -8,7 +8,9 @@ spec:
   source:
     repoURL: git@github.com:yepa177/nova-syndicate-gitops.git
     targetRevision: main
-    path: manifests/argocd/applications  # ⚠️ CORRECTION : pointe vers les applications enfants
+    path: manifests/overlays/lab        # ← TOUT LE LAB
+    directory:
+      recurse: true                     # ← C’EST LA LIGNE MAGIQUE
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
@@ -17,4 +19,4 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-    - CreateNamespace=true
+      - CreateNamespace=true
