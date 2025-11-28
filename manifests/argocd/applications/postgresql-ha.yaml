@@ -11,7 +11,7 @@ spec:
   source:
     repoURL: https://charts.bitnami.com/bitnami
     chart: postgresql-ha
-    targetRevision: "13.*"    # ArgoCD prend la plus récente 13.x
+    targetRevision: 13.2.2
     helm:
       releaseName: postgresql-ha
       valuesObject:
