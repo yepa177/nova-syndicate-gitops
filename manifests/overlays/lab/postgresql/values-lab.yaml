@@ -1,0 +1,47 @@
+# manifests/overlays/lab/postgresql/values-lab.yaml
+postgresql:
+  replicaCount: 3
+  resources:
+    requests:
+      cpu: 250m
+      memory: 1Gi
+    limits:
+      cpu: 500m
+      memory: 1Gi
+  persistence:
+    enabled: true
+    storageClass: longhorn
+    size: 8Gi
+
+patroni:
+  scope: nova-lab
+  postgresql:
+    parameters:
+      max_connections: 50
+      shared_buffers: 128MB
+      wal_buffers: 8MB
+      synchronous_commit: remote_write
+      synchronous_standby_names: '1'   # 1 replica sync (Lyon local)
+
+  # Forcer leader sur Lyon
+  nodeSelector:
+    kubernetes.io/hostname: k3s-lyon-01
+
+  # Anti-affinity pour répartir les replicas
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: postgresql-ha
+          topologyKey: kubernetes.io/hostname
+
+  # Backup simple vers ton PC (montage NFS ou SMB)
+  backup:
+    enabled: true
+    pgbackrest:
+      repo1:
+        type: posix
+        path: /mnt/backup/postgres   # change avec ton chemin
