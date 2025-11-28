@@ -32,7 +32,7 @@ spec:
           scope: nova-lab
           postgresql:
             parameters:
-              max_connections: 200
+              max_connections: 100
               shared_buffers: 128MB
               wal_buffers: 8MB
               synchronous_commit: remote_write
