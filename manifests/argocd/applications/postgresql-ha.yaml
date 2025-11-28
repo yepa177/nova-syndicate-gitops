@@ -4,8 +4,6 @@ kind: Application
 metadata:
   name: postgresql-ha
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
@@ -15,26 +13,28 @@ spec:
     helm:
       releaseName: postgresql-ha
       valuesObject:
+        pgpool:
+          enabled: false                     # ← DÉSACTIVE PGPOOL
         postgresql:
           replicaCount: 3
           resources:
             requests:
-              cpu: 250m
+              cpu: 500m
               memory: 1Gi
             limits:
-              cpu: 500m
+              cpu: 800m
               memory: 2Gi
           persistence:
             enabled: true
             storageClass: longhorn
-            size: 8Gi
+            size: 10Gi
         patroni:
           scope: nova-lab
           postgresql:
             parameters:
               max_connections: 100
-              shared_buffers: 128MB
-              wal_buffers: 8MB
+              shared_buffers: 256MB
+              wal_buffers: 16MB
               synchronous_commit: remote_write
               synchronous_standby_names: '1'
           nodeSelector:
