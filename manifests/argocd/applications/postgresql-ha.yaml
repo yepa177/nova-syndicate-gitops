@@ -14,7 +14,8 @@ spec:
       releaseName: postgresql-ha
       valuesObject:
         pgpool:
-          enabled: true                     # ← DÉSACTIVE PGPOOL
+          enabled: true
+          adminPassword: "admin-password-123"
         postgresql:
           replicaCount: 3
           resources:
