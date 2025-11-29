@@ -14,7 +14,7 @@ spec:
       releaseName: postgresql-ha
       valuesObject:
         pgpool:
-          enabled: false                     # ← DÉSACTIVE PGPOOL
+          enabled: true                     # ← DÉSACTIVE PGPOOL
         postgresql:
           replicaCount: 3
           resources:
