@@ -4,8 +4,6 @@ kind: Application
 metadata:
   name: postgresql-ha
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
@@ -14,12 +12,9 @@ spec:
     targetRevision: 14.1.1
     helm:
       releaseName: postgresql-ha
-      values: |
-        # Configuration PGPool - DÉSACTIVER temporairement pour debug
+      valuesObject:
         pgpool:
-          enabled: false
-        
-        # Configuration PostgreSQL avec Longhorn
+          enabled: false                     # ← DÉSACTIVE PGPOOL
         postgresql:
           enabled: true
           replicaCount: 3
@@ -32,14 +27,11 @@ spec:
               memory: 1Gi
           persistence:
             enabled: true
-            storageClass: "longhorn"
+            storageClass: longhorn
             size: 8Gi
             accessModes:
               - ReadWriteOnce
-        
-        # Configuration Patroni simplifiée
         patroni:
-          enabled: true
           scope: nova-lab
           postgresql:
             parameters:
@@ -48,22 +40,17 @@ spec:
               wal_buffers: 8MB
               synchronous_commit: remote_write
               synchronous_standby_names: '1'
-        
-        # Désactiver le nodeSelector restrictif - laisser Kubernetes décider
-        # nodeSelector:
-        #   kubernetes.io/hostname: k3s-lyon-01
-        
-        # Affinité pour répartir sur les nœuds
-        affinity:
-          podAntiAffinity:
-            preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    app.kubernetes.io/name: postgresql-ha
-                topologyKey: kubernetes.io/hostname
-        
+         # nodeSelector:
+            # kubernetes.io/hostname: k3s-lyon-01
+          affinity:
+            podAntiAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+              - weight: 100
+                podAffinityTerm:
+                  labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/name: postgresql-ha
+                  topologyKey: kubernetes.io/hostname
         # Authentification ESSENTIELLE (manquante !)
         global:
           postgresql:
@@ -87,7 +74,7 @@ spec:
         initdbScripts:
           {}
         postgresql:
-          sharedPreloadLibraries: "repmgr"
+          sharedPreloadLibraries: "repmgr"                  
   destination:
     server: https://kubernetes.default.svc
     namespace: nova-syndicate
