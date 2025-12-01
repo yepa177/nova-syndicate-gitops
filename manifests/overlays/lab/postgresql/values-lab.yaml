@@ -4,7 +4,7 @@ postgresql:
   resources:
     requests:
       cpu: 250m
-      memory: 1Gi
+      memory: 512Mi
     limits:
       cpu: 500m
       memory: 1Gi
@@ -17,15 +17,15 @@ patroni:
   scope: nova-lab
   postgresql:
     parameters:
-      max_connections: 50
+      max_connections: 100
       shared_buffers: 128MB
       wal_buffers: 8MB
       synchronous_commit: remote_write
       synchronous_standby_names: '1'   # 1 replica sync (Lyon local)
 
   # Forcer leader sur Lyon
-  nodeSelector:
-    kubernetes.io/hostname: k3s-lyon-01
+ # nodeSelector:
+   # kubernetes.io/hostname: k3s-lyon-01
 
   # Anti-affinity pour répartir les replicas
   affinity:
