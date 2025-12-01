@@ -11,7 +11,7 @@ postgresql:
   persistence:
     enabled: true
     storageClass: longhorn
-    size: 8Gi
+    size: 2Gi
 
 patroni:
   scope: nova-lab
