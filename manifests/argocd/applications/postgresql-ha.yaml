@@ -1,11 +1,9 @@
-# manifests/overlays/lab/postgresql/application.yaml
+# manifests/argocd/applications/postgresql-ha.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: postgresql-ha
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
@@ -14,46 +12,33 @@ spec:
     targetRevision: 14.1.1
     helm:
       releaseName: postgresql-ha
-      values: |
+      values:
+        # Configuration PGPool - votre solution : replicaCount: 0
         pgpool:
-          enabled: false                     # ← DÉSACTIVE PGPOOL
+          replicaCount: 0  # ← VOTRE CORRECTION : pas de pods PGPool
+          image:
+            registry: public.ecr.aws
+            repository: bitnami/pgpool
+            tag: 4.6.3-debian-12-r0
+        
+        # Configuration PostgreSQL avec images ECR
         postgresql:
           enabled: true
-          replicaCount: 3
-          resources:
-            requests:
-              cpu: 250m
-              memory: 512Mi
-            limits:
-              cpu: 500m
-              memory: 1Gi
-          persistence:
-            enabled: true
-            storageClass: longhorn
-            size: 8Gi
-            accessModes:
-              - ReadWriteOnce
+          replicaCount: 3  # Conserver 3 pour HA
+          image:
+            registry: public.ecr.aws
+            repository: bitnami/postgresql-repmgr
+            tag: 17.6.0-debian-12-r2  # Version plus récente disponible
+        
+        # Désactiver Patroni (chart utilise Repmgr)
         patroni:
-          scope: nova-lab
-          postgresql:
-            parameters:
-              max_connections: 100
-              shared_buffers: 128MB
-              wal_buffers: 8MB
-              synchronous_commit: remote_write
-              synchronous_standby_names: '1'
-         # nodeSelector:
-            # kubernetes.io/hostname: k3s-lyon-01
-          affinity:
-            podAntiAffinity:
-              preferredDuringSchedulingIgnoredDuringExecution:
-              - weight: 100
-                podAffinityTerm:
-                  labelSelector:
-                    matchLabels:
-                      app.kubernetes.io/name: postgresql-ha
-                  topologyKey: kubernetes.io/hostname
-        # Authentification ESSENTIELLE (manquante !)
+          enabled: false
+        
+        # Activer Repmgr (déjà activé par défaut dans ce chart)
+        repmgr:
+          enabled: true
+        
+        # Authentification
         global:
           postgresql:
             auth:
@@ -61,22 +46,13 @@ spec:
               replicationPassword: "replication-password-123"
               repmgrPassword: "repmgr-password-123"
         
-        # Images - spécifier explicitement pour éviter les conflits
-        image:
-          registry: docker.io
-          repository: bitnami/postgresql-repmgr
-          tag: 16.3.0-debian-12-r8
-          pullPolicy: IfNotPresent
+        # Stockage Longhorn
+        persistence:
+          storageClass: "longhorn"
         
         # Désactiver les permissions de volume
         volumePermissions:
           enabled: false
-        
-        # Options supplémentaires
-        initdbScripts:
-          {}
-        postgresql:
-          sharedPreloadLibraries: "repmgr"                  
   destination:
     server: https://kubernetes.default.svc
     namespace: nova-syndicate
