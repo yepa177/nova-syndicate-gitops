@@ -14,12 +14,15 @@ spec:
     targetRevision: 14.1.1
     helm:
       releaseName: postgresql-ha
-      valuesObject:
+      values: |
+        # Configuration PGPool - DÉSACTIVER complètement
         pgpool:
-          enabled: false                     # ← DÉSACTIVE PGPOOL
+          enabled: false
+        
+        # Configuration PostgreSQL avec Longhorn
         postgresql:
           enabled: true
-          replicaCount: 2
+          replicaCount: 2  # Commencer avec 2
           resources:
             requests:
               cpu: 250m
@@ -29,31 +32,20 @@ spec:
               memory: 1Gi
           persistence:
             enabled: true
-            storageClass: longhorn
+            storageClass: "longhorn"
             size: 8Gi
             accessModes:
               - ReadWriteOnce
+        
+        # Désactiver Patroni (utiliser repmgr à la place)
         patroni:
-          scope: nova-lab
-          postgresql:
-            parameters:
-              max_connections: 100
-              shared_buffers: 128MB
-              wal_buffers: 8MB
-              synchronous_commit: remote_write
-              synchronous_standby_names: '1'
-         # nodeSelector:
-            # kubernetes.io/hostname: k3s-lyon-01
-          affinity:
-            podAntiAffinity:
-              preferredDuringSchedulingIgnoredDuringExecution:
-              - weight: 100
-                podAffinityTerm:
-                  labelSelector:
-                    matchLabels:
-                      app.kubernetes.io/name: postgresql-ha
-                  topologyKey: kubernetes.io/hostname
-        # Authentification ESSENTIELLE (manquante !)
+          enabled: false
+        
+        # Activer repmgr (plus simple)
+        repmgr:
+          enabled: true
+        
+        # Authentification
         global:
           postgresql:
             auth:
@@ -61,22 +53,31 @@ spec:
               replicationPassword: "replication-password-123"
               repmgrPassword: "repmgr-password-123"
         
-        # Images - spécifier explicitement pour éviter les conflits
+        # FORCER les images avec des tags spécifiques
         image:
           registry: docker.io
           repository: bitnami/postgresql-repmgr
-          tag: 16.3.0-debian-12-r8
+          tag: 15.7.0-debian-12-r2  # Version PostgreSQL 15 plus stable
           pullPolicy: IfNotPresent
         
         # Désactiver les permissions de volume
         volumePermissions:
           enabled: false
         
-        # Options supplémentaires
+        # Configuration supplémentaire
         initdbScripts:
           {}
-        postgresql:
-          sharedPreloadLibraries: "repmgr"                  
+        
+        # Affinité pour répartir sur les nœuds
+        affinity:
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: postgresql-ha
+                topologyKey: kubernetes.io/hostname
   destination:
     server: https://kubernetes.default.svc
     namespace: nova-syndicate
