@@ -1,6 +1,6 @@
 # manifests/overlays/lab/postgresql/values-lab.yaml
 postgresql:
-  replicaCount: 3
+  replicaCount: 2
   resources:
     requests:
       cpu: 250m
