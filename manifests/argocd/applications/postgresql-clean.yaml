@@ -1,0 +1,54 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgresql-clean
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://charts.bitnami.com/bitnami
+    chart: postgresql
+    targetRevision: 13.2.26
+    helm:
+      releaseName: postgresql-clean
+      values: |
+        # Image vérifiée qui existe
+        image:
+          registry: docker.io
+          repository: bitnami/postgresql
+          tag: "latest"
+          pullPolicy: IfNotPresent
+        
+        # Authentification
+        auth:
+          postgresPassword: "postgres-password-123"
+        
+        # Stockage avec Longhorn
+        primary:
+          persistence:
+            enabled: true
+            storageClass: "longhorn"
+            size: 5Gi
+            accessModes:
+              - ReadWriteOnce
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+        
+        # Pas de réplicas pour commencer
+        readReplicas:
+          enabled: false
+        
+        # Optimisations
+        volumePermissions:
+          enabled: false
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: nova-syndicate
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
