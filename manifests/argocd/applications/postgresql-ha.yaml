@@ -9,37 +9,39 @@ spec:
   source:
     repoURL: https://charts.bitnami.com/bitnami
     chart: postgresql-ha
-    targetRevision: 13.2.2
+    targetRevision: 14.1.1
     helm:
       releaseName: postgresql-ha
       valuesObject:
         pgpool:
-          enabled: true
-          adminPassword: "admin-password-123"
+          enabled: false                     # ← DÉSACTIVE PGPOOL
         postgresql:
+          enabled: true
           replicaCount: 3
           resources:
             requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
               cpu: 500m
               memory: 1Gi
-            limits:
-              cpu: 800m
-              memory: 2Gi
           persistence:
             enabled: true
             storageClass: longhorn
-            size: 10Gi
+            size: 8Gi
+            accessModes:
+              - ReadWriteOnce
         patroni:
           scope: nova-lab
           postgresql:
             parameters:
               max_connections: 100
-              shared_buffers: 256MB
-              wal_buffers: 16MB
+              shared_buffers: 128MB
+              wal_buffers: 8MB
               synchronous_commit: remote_write
               synchronous_standby_names: '1'
-          nodeSelector:
-            kubernetes.io/hostname: k3s-lyon-01
+         # nodeSelector:
+            # kubernetes.io/hostname: k3s-lyon-01
           affinity:
             podAntiAffinity:
               preferredDuringSchedulingIgnoredDuringExecution:
@@ -49,6 +51,30 @@ spec:
                     matchLabels:
                       app.kubernetes.io/name: postgresql-ha
                   topologyKey: kubernetes.io/hostname
+        # Authentification ESSENTIELLE (manquante !)
+        global:
+          postgresql:
+            auth:
+              postgresPassword: "postgres-password-123"
+              replicationPassword: "replication-password-123"
+              repmgrPassword: "repmgr-password-123"
+        
+        # Images - spécifier explicitement pour éviter les conflits
+        image:
+          registry: docker.io
+          repository: bitnami/postgresql-repmgr
+          tag: 16.3.0-debian-12-r8
+          pullPolicy: IfNotPresent
+        
+        # Désactiver les permissions de volume
+        volumePermissions:
+          enabled: false
+        
+        # Options supplémentaires
+        initdbScripts:
+          {}
+        postgresql:
+          sharedPreloadLibraries: "repmgr"                  
   destination:
     server: https://kubernetes.default.svc
     namespace: nova-syndicate
