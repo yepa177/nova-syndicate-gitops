@@ -1,0 +1,11 @@
+reference,nom,categorie,fabricant,prix_unitaire,stock,description
+MED-001,Paracétamol 500mg,Médicament,Sanofi,5.99,1500,Antidouleur et antipyrétique
+MED-002,Ibuprofène 400mg,Médicament,Bayer,8.50,1200,Anti-inflammatoire non stéroïdien
+EQU-001,Stéthoscope Littmann,Équipement,3M,89.99,45,Stéthoscope cardiologique
+CON-001,Gants nitrile taille M,Consommable,Halyard,12.99,5000,Gants d'examen non stériles
+MED-003,Amoxicilline 1g,Médicament,Biogaran,15.75,800,Antibiotique à large spectre
+DIS-001,Tensiomètre électronique,Dispositif médical,Omron,49.95,120,Automatique brassard
+EQU-002,Lampe à fente,Équipement,Topcon,1250.00,8,Pour examen ophtalmologique
+CON-002,Seringue 10ml,Consommable,BD,0.85,10000,Seringue stérile
+MED-004,Insuline rapide,Médicament,Novo Nordisk,45.30,600,Insuline humaine
+DIS-002,Oxymètre de pouls,Dispositif médical,Beurer,29.99,200,Mesure SpO2 et fréquence cardiaque

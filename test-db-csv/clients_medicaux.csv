@@ -1,0 +1,11 @@
+code_client,nom_etablissement,type_etablissement,ville,telephone,email,responsable,categorie_tarifaire
+HOP-001,Hôpital Central,Hôpital,Lyon,04-7200-0001,contact@hopital-central.fr,Dr Martin,Premium
+CLI-001,Clinique du Parc,Clinique,Paris,01-4600-1234,info@clinique-paris.fr,Mme Dubois,Standard
+PHA-001,Pharmacie de la Gare,Pharmacie,Marseille,04-9100-5678,pharma.gare@orange.fr,M. Bernard,Standard
+LAB-001,Laboratoire d'Analyses,Laboratoire,Lille,03-2000-9876,labs@labo-nord.fr,Dr Petit,Gold
+HOP-002,Hôpital Nord,Hôpital,Bordeaux,05-5600-3333,secretariat@hopital-nord.fr,M. Durand,Premium
+CLI-002,Clinique Sainte-Marie,Clinique,Nice,04-9300-4444,clinique.sm@nice.fr,Dr Laurent,Standard
+PHA-002,Pharmacie Centrale,Pharmacie,Toulouse,05-6100-2222,pharmacentrale@free.fr,Mme Garcia,Standard
+CAB-001,Cabinet Médical Multi,Cabinet,Strasbourg,03-8800-7777,cabinet.stras@md.fr,Dr Schmidt,Gold
+HOP-003,Hôpital Sud,Hôpital,Nantes,02-4000-8888,admin@hopital-sud.fr,M. Robert,Premium
+LAB-002,Laboratoire BioTest,Laboratoire,Rennes,02-9900-1111,biomol@biomol.fr,Dr Leclerc,Standard

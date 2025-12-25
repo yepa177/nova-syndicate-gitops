@@ -1,0 +1,16 @@
+id_collaborateur,nom,prenom,email,poste,site,date_embauche
+1,Brunet,Louise,alexandre54@example.net,IT,Marseille,2022-08-31
+2,Dijoux,Éric,adelaide18@example.net,Executive,Remote,2018-11-04
+3,Thomas,Henriette,susanneregnier@example.org,IT,Marseille,2016-08-19
+4,Devaux,Alex,gregoire02@example.org,Sales,Lyon,2025-02-23
+5,Renard,Arthur,colasbernard@example.org,Sales,Lyon,2017-02-21
+6,Mahe,Olivier,eugene14@example.com,Executive,Lyon,2016-01-16
+7,Faure,Sophie,maryse53@example.org,Executive,Remote,2025-10-18
+8,Pierre,Célina,jcouturier@example.net,IT,Marseille,2018-10-06
+9,Bourdon,Émile,micheledith@example.net,Logistics,Marseille,2016-11-30
+10,Chrétien,Édouard,augustelemaitre@example.com,IT,Lyon,2023-06-12
+11,Gérard,Gabrielle,wpinto@example.com,Executive,Lyon,2025-02-26
+12,Aubry,Émile,charlottebernard@example.com,Sales,Marseille,2016-01-20
+13,Moreno,Gabrielle,legrandolivier@example.org,Sales,Remote,2024-06-14
+14,Alexandre,Nicolas,marquesaimee@example.com,Sales,Remote,2021-09-05
+15,Bonneau,Raymond,dorotheelebon@example.org,Executive,Lyon,2022-10-23

@@ -1,0 +1,16 @@
+id_client,nom_entreprise,secteur,contact_nom,contact_prenom,email_contact,telephone
+1,Descamps Weber SARL,Medical Technology,Lefebvre,Geneviève,raymond46@example.net,+33 (0)3 22 25 71 78
+2,Cordier Delorme SARL,Aerospace Manufacturing,Bertin,Alexandre,edithdubois@example.org,+33 2 38 30 93 88
+3,Parent,Medical Technology,Paris,Isaac,yrenard@example.net,+33 1 45 68 81 99
+4,Gillet SARL,Aerospace Manufacturing,Bouchet,Agnès,laetitia95@example.net,0480284237
+5,Hebert Dupont et Fils,Medical Technology,Dumont,Marine,laure63@example.org,0329656622
+6,Roux,Aerospace Manufacturing,Dupont,Christelle,delormefranck@example.com,01 43 33 26 29
+7,Robert Muller S.A.,Medical Technology,Gay,Simone,abarre@example.com,+33 (0)1 78 13 96 68
+8,Lesage Coste S.A.S.,Medical Technology,Lambert,Christophe,rogeralexandre@example.org,+33 (0)4 95 75 22 69
+9,Sauvage,Medical Technology,Traore,Andrée,buissonjosephine@example.org,+33 (0)2 96 70 59 82
+10,Hoarau,Defense Engineering,Poulain,Sophie,david16@example.com,+33 (0)4 63 72 19 96
+11,Ruiz Couturier SA,Medical Technology,Didier,Élodie,elisabethda-costa@example.net,03 56 01 68 43
+12,Perez Maillard S.A.,Defense Engineering,Marchand,Thierry,qleleu@example.org,02 41 15 18 19
+13,Dos Santos,Medical Technology,Pereira,Luc,pmarques@example.org,04 92 63 30 66
+14,Gallet,Aerospace Manufacturing,Berger,Dorothée,clairelefevre@example.org,06 13 02 64 92
+15,Blot,Defense Engineering,Collet,Jeanne,adelaide03@example.com,+33 (0)5 49 19 78 34
