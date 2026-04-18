@@ -15,9 +15,6 @@ patchesJson6902:
           name: website
           configMap:
             name: nginx-website
-            items:
-              - key: index.html
-                path: index.html
       - op: add
         path: /spec/template/spec/containers/0/volumeMounts/-
         value:
