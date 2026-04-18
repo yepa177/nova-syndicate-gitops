@@ -1,9 +1,28 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: nova-syndicate
+
 resources:
   - ../../base/namespace
   - ../../base/deployments
   - ../../base/services
   - ../../base/ingress
-  - nginx-website
+  - nginx-website/configmap.yaml  # Référence directe au ConfigMap
+
+patches:
+  - patch: |-
+      - op: add
+        path: /spec/template/spec/volumes
+        value:
+          - name: website
+            configMap:
+              name: nginx-website
+      - op: add
+        path: /spec/template/spec/containers/0/volumeMounts
+        value:
+          - name: website
+            mountPath: /usr/share/nginx/html
+            readOnly: true
+    target:
+      kind: Deployment
+      name: nginx-test
