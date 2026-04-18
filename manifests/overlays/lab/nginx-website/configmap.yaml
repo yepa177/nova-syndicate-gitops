@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-website
+  namespace: nova-syndicate
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html lang="fr">
+    <head>
+      <meta charset="UTF-8">
+      <title>Nova Syndicate - Accueil</title>
+      <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background: #0a2540; color: #00ff9d; }
+        h1 { font-size: 3em; }
+      </style>
+    </head>
+    <body>
+      <h1>🚀 Nova Syndicate</h1>
+      <p>Infrastructure Kubernetes multi-sites • HA • GitOps • DevOps</p>
+      <p>Projet de certification - Administrateur Systèmes, Réseaux & Cybersécurité</p>
+      <hr>
+      <p><strong>Statut :</strong> OK • Leader Lyon • Réplique Marseille • PostgreSQL HA</p>
+    </body>
+    </html>
