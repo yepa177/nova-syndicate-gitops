@@ -19,6 +19,5 @@ patchesJson6902:
         path: /spec/template/spec/containers/0/volumeMounts/-
         value:
           name: website
-          mountPath: /usr/share/nginx/html/index.html
-          subPath: index.html
+          mountPath: /usr/share/nginx/html
           readOnly: true
