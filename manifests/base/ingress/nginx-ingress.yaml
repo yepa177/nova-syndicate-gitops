@@ -6,14 +6,15 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  ingressClassName: nginx
   rules:
-  - host: nginx.nova-syndicate.local
+  - host: nginx-test.local
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: nginx-service
+            name: nginx-test
             port:
               number: 80
