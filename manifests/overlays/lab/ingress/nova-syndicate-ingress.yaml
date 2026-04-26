@@ -8,7 +8,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: nova-syndicate.local
+    - host: nginx-test.local
       http:
         paths:
           - path: /
