@@ -7,7 +7,6 @@ resources:
   - ../../base/services
   - ../../base/ingress
   - nginx-website/configmap.yaml
-  - ingress.yaml
   - ingress/nova-syndicate-ingress.yaml
   - ingress/argocd-ingress.yaml
   - ingress/longhorn-ingress.yaml
