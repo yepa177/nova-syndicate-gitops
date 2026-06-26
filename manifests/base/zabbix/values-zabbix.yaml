@@ -1,4 +1,4 @@
-zabbixServer:
+zabbix-server:
   enabled: true
   nodeSelector:
     kubernetes.io/hostname: zabbix-monitoring
@@ -7,7 +7,7 @@ zabbixServer:
       cpu: 300m
       memory: 512Mi
 
-zabbixWeb:
+zabbix-web:
   enabled: true
   ingress:
     enabled: true
@@ -15,13 +15,16 @@ zabbixWeb:
     hosts:
       - zabbix.nova-syndicate.local
 
-zabbixProxy:
-  enabled: true   # Recommandé pour résilience multi-sites
+zabbix-proxy:
+  enabled: true
 
 persistence:
   enabled: true
   storageClass: "longhorn"
-  size: 8Gi
+  size: 5Gi
 
-mysql:
-  enabled: true   # Base de données interne (ou externalisez vers votre PostgreSQL existant)
+postgresql:
+  enabled: true
+  persistence:
+    storageClass: "longhorn"
+    size: 5Gi

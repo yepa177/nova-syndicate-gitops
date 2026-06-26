@@ -6,12 +6,37 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://zabbix-community.github.io/helm-charts   # Repo communautaire stable
+    repoURL: https://zabbix-community.github.io/helm-zabbix  # URL correcte
+    targetRevision: "latest"
     chart: zabbix
-    targetRevision: "2.6.0"
     helm:
-      valueFiles:
-        - values-zabbix.yaml
+      values: |
+        zabbix-server:
+          enabled: true
+          nodeSelector:
+            kubernetes.io/hostname: zabbix-monitoring
+          resources:
+            requests:
+              cpu: 300m
+              memory: 512Mi
+        zabbix-web:
+          enabled: true
+          ingress:
+            enabled: true
+            ingressClassName: nginx
+            hosts:
+              - zabbix.nova-syndicate.local
+        zabbix-proxy:
+          enabled: true
+        persistence:
+          enabled: true
+          storageClass: "longhorn"
+          size: 5Gi
+        postgresql:
+          enabled: true
+          persistence:
+            storageClass: "longhorn"
+            size: 5Gi
   destination:
     server: https://kubernetes.default.svc
     namespace: zabbix
