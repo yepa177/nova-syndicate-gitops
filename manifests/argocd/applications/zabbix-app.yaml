@@ -6,13 +6,12 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://zabbix.github.io/helm-charts
+    repoURL: https://charts.zabbix.com
     chart: zabbix
-    targetRevision: "2.6.0"   # Version stable récente
+    targetRevision: "2.6.0"   # ou la dernière stable disponible
     helm:
       valueFiles:
         - values-zabbix.yaml
-      releaseName: zabbix
   destination:
     server: https://kubernetes.default.svc
     namespace: zabbix
@@ -22,8 +21,3 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - RespectIgnoreDifferences=true
-  ignoreDifferences:
-    - group: ""
-      kind: ConfigMap
-      name: ".*"

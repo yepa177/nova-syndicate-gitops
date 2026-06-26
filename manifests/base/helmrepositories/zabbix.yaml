@@ -1,8 +1,8 @@
-piVersion: source.toolkit.fluxcd.io/v1beta2
+apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
   name: zabbix
-  namespace: zabbix
+  namespace: argocd   # ou monitoring
 spec:
-  interval: 10m0s
-  url: https://zabbix.github.io/helm-charts
+  interval: 10m
+  url: https://charts.zabbix.com
