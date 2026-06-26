@@ -6,14 +6,13 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: git@github.com:yepa177/nova-syndicate-gitops.git
-    targetRevision: main
-    path: manifests/base/zabbix
+    repoURL: https://zabbix.github.io/helm-charts
+    chart: zabbix
+    targetRevision: "2.6.0"          # Vérifiez la dernière version stable
     helm:
       valueFiles:
         - values-zabbix.yaml
-      chart: zabbix
-      repoURL: https://zabbix.github.io/helm-charts
+      parameters: []                 # Vous pouvez ajouter des overrides ici si besoin
   destination:
     server: https://kubernetes.default.svc
     namespace: zabbix
@@ -23,3 +22,10 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - RespectIgnoreDifferences=true
+  ignoreDifferences:
+    - group: ""
+      kind: "ConfigMap"
+      name: ".*"
+      jqPathExpressions:
+        - ".data"
