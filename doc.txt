@@ -1,0 +1,295 @@
+CODE   SOURCE   BUILD   TEST   DEPLOY
+
+    # REPERTOIRE (CONTROLE DE VERSION)   ---> toute cet ensemble est appelé pipeline 
+
+    # OUTILS: AWS CODECOMMIT
+      LES ALTERNATIF: GITHUB, GILAB, BITBUKET
+
+    
+   Version --> BOOK1 --> service ok            BOOK2 --> ok au deployement mais certains service client "nok" --> roolback to BOOK1 (control Z)
+
+
+    1-------CONTROLE DE VERSION ROLE  (git (git bash, git cmd, git UI) et github)
+
+          # SOFTWARE DEVELOP
+                 -- VERSION 
+                 -- BRANCHING ( represente les differentes parties du project : feature, bug, documentor, refactor)
+                 -- MERGING   (permet de synchroniser à la branch mère )
+                 -- COLABORATION (10 dev peuvent travailler sur le meme feature par exemple et au final avoir modifié la meme ligne de code! possible conflit mais tjrs une solution)
+
+          # CI/CD CONCEPT  --> très important pour le devops ou devsecops. peut-etre qu'il y a du modèle Agil dedans.
+              -- CI  continious integration ( quand il y a une nouvelle fonctionnalité le dev va arriver il va developper un branche , puis developper cette fonctionnalité pousser son code, son code sera testé par un test qu'on aura ecrit et si son code a reussi se sera ajouté au code mère au ala branche mère sinon il aura un message lui disant que sont codea aechoué a tel niveau pour tel raison.)   )
+              -- CD   continu deploy  (quand sont code SOURCE au dev va arrivé le BUILD va rassembler le code et TESTER cela, si tout est bon alors ça va passer au DEPLOY qui est le deployement c'est que le continious deployment va faire et se sera automatisé)
+
+
+          # COMPLIANCE
+
+            -- Sont les règles de sécurité et autres ..
+            -- ..
+
+          # TEAM COLABORATION
+
+GIT (DISTRIBUTION)  (FORK)
+SVN ET CVS   (CENTRALIZED)   DEV1 --- DEV2
+
+ Voici un résumé complet des commandes Git que tu as utilisées (ou que tu devrais maîtriser) classées par usage :
+
+---
+
+## **1. CONFIGURATION INITIALE**
+
+```bash
+# Identité (obligatoire pour committer)
+git config --global user.name "ton nom"
+git config --global user.email "ton@email.com"
+
+# Branche par défaut pour les nouveaux dépôts
+git config --global init.defaultBranch development_test_git
+
+# Voir toute sa config
+git config --list
+```
+
+---
+
+## **2. CRÉER ET PRÉPARER UN DÉPÔT**
+
+```bash
+# Créer un dépôt Git dans le dossier courant
+git init
+
+# Voir l'état des fichiers (trackés, modifiés, stagés)
+git status
+
+# Voir l'historique des commits
+git log
+git log --oneline          # Version compacte
+```
+
+---
+
+## **3. TRAVAILLER AVEC LES FICHIERS (WORKING DIRECTORY → STAGING)**
+
+```bash
+# Ajouter un fichier spécifique à la staging area
+git add nom_fichier.txt
+
+# Ajouter tous les fichiers modifiés/nouveaux du dossier
+git add .
+git add --all              # ou git add -A
+
+# Ajouter uniquement les fichiers déjà suivis (modifiés)
+git commit -a              # combinable avec -m
+
+# Retirer un fichier de la staging area (sans perdre les modifs)
+git reset                  # retire TOUT
+git reset nom_fichier.txt  # retire UN fichier
+git restore --staged nom_fichier.txt  # alternative moderne
+```
+
+---
+
+## **4. COMMITTER (STAGING → HISTORIQUE)**
+
+```bash
+# Commit avec message
+git commit -m "message"
+
+# Commit en ajoutant automatiquement les fichiers déjà suivis
+git commit -a -m "message"
+
+# Modifier le dernier commit (message OU contenu)
+git commit --amend -m "nouveau message"
+
+# Commit spécifique (seulement un fichier - attention !)
+git commit -m "msg" fichier.txt  # ignore les autres fichiers stagés
+```
+
+---
+
+## **5. COMPARER LES DIFFÉRENCES**
+
+```bash
+# Diff between working directory et staging
+git diff
+
+# Diff between staging et dernier commit (HEAD)
+git diff --staged
+git diff --cached           # équivalent
+
+# Diff between deux commits
+git diff commit1 commit2
+
+# Diff avec format lisible mot à mot
+git diff --color-words
+
+# Diff résumé (statistiques)
+git diff --stat
+```
+
+---
+
+## **6. ANNULER / REVENIR EN ARRIÈRE**
+
+### **a) Annuler des modifications non commitées**
+
+```bash
+# Annuler les modifications d'un fichier (retour au dernier commit)
+git restore nom_fichier.txt
+git checkout -- nom_fichier.txt   # ancienne syntaxe
+
+# Tout annuler (dangereux !)
+git restore .                      # ou git checkout -- .
+```
+
+### **b) Revenir à des commits précédents (reset)**
+
+```bash
+# --soft : recule HEAD, garde les modifs dans STAGING
+git reset --soft HEAD~1            # revient d'1 commit
+git reset --soft commit_hash
+
+# --mixed (par défaut) : recule HEAD, garde les modifs dans WORKING
+git reset HEAD~1
+git reset commit_hash
+
+# --hard : recule HEAD, PERD TOUTES LES MODIFS (danger !)
+git reset --hard HEAD~1
+git reset --hard commit_hash
+```
+
+### **c) Annuler un commit sans perdre l'historique**
+
+```bash
+# Crée un nouveau commit qui annule le dernier
+git revert HEAD
+git revert commit_hash
+```
+
+---
+
+## **7. TRAVAILLER AVEC LES BRANCHES**
+
+```bash
+# Voir les branches locales
+git branch
+
+# Créer une branche
+git branch nom_branche
+
+# Changer de branche
+git checkout nom_branche
+git switch nom_branche          # alternative moderne
+
+# Créer + changer directement
+git checkout -b nom_branche
+git switch -c nom_branche
+
+# Renommer la branche actuelle
+git branch -m nouveau_nom
+
+# Supprimer une branche
+git branch -d nom_branche       # sûre
+git branch -D nom_branche       # forcée
+
+# Fusionner une branche dans la branche actuelle
+git merge nom_branche
+```
+
+---
+
+## **8. RÉCUPÉRER UN ÉTAT PERDU (SAUVETAGE)**
+
+```bash
+# Voir l'historique des déplacements de HEAD
+git reflog
+
+# Revenir à un état précédent (même après un reset --hard)
+git reset --hard HEAD@{2}        # ou le hash vu dans reflog
+git checkout commit_hash
+```
+
+---
+
+## **9. IGNORER DES FICHIERS**
+
+```bash
+# Créer un fichier .gitignore
+echo "*.log" >> .gitignore
+echo "dossier_temporaire/" >> .gitignore
+echo "fichier_secret.txt" >> .gitignore
+
+# Voir ce qui est ignoré
+git status --ignored
+```
+
+---
+
+## **10. COMMANDES UTILES SUPPLÉMENTAIRES**
+
+```bash
+# Voir ce qui a été fait (sur une ligne)
+git log --oneline --graph --all
+
+# Voir le contenu d'un commit
+git show commit_hash
+
+# Nettoyer les fichiers non suivis
+git clean -n                # simulation
+git clean -f                # suppression forcée
+
+# Stasher des modifications temporairement
+git stash                  # sauvegarde temporaire
+git stash pop              # restaure et supprime le stash
+git stash list             # voir les stashes
+```
+
+---
+
+## **TABLEAU RÉCAPITULATIF DES ZONES GIT**
+
+```
+┌─────────────────┐     git add      ┌─────────────────┐     git commit     ┌─────────────────┐
+│  WORKING TREE   │ ───────────────► │    STAGING      │ ─────────────────► │   HISTORIQUE    │
+│  (fichiers sur   │                  │    (index)      │                    │    (.git)       │
+│   ton disque)    │ ◄─────────────── │                 │ ◄──────────────── │                 │
+└─────────────────┘    git restore    └─────────────────┘    git reset       └─────────────────┘
+        ▲                    (--staged)          ▲                    (--soft)          ▲
+        │                                                         (--mixed)            │
+        └──────────────────────────────────────────────────────────────────────────────┘
+                                         git reset --hard
+```
+
+---
+
+## **TES COMMANDES LES PLUS UTILISÉES (à maîtriser en priorité)**
+
+| Ordre d'usage | Commande | Utilité |
+|---------------|----------|---------|
+| 1 | `git status` | Toujours savoir où on est |
+| 2 | `git add .` | Préparer les fichiers |
+| 3 | `git commit -m "msg"` | Sauvegarder |
+| 4 | `git log --oneline` | Voir l'historique |
+| 5 | `git diff` | Voir ce qui a changé |
+| 6 | `git reset --soft HEAD~1` | Annuler un commit en gardant le travail |
+| 7 | `git reset --hard HEAD~1` | Annuler complètement (danger) |
+| 8 | `git reflog` | Récupérer un état perdu |
+
+---
+
+## **LES 3 PIÈGES À ÉVITER**
+
+```bash
+# 1. Oublier de commit avant un reset --hard
+git reset --hard HEAD~1   # ⚠️ Perte des modifs non commitées !
+
+# 2. Utiliser > au lieu de >> avec echo
+echo "texte" > fichier    # ⚠️ Écrase le fichier !
+
+# 3. Commiter un seul fichier alors que d'autres sont stagés
+git commit -m "msg" fichier.txt  # ⚠️ Les autres fichiers restent stagés
+```
+
+---
+
+**Astuce finale :** Pour chaque commande inconnue, fais `git help commande` (ex: `git help reset`) 📚

@@ -1,0 +1,36 @@
+# strategie des branches
+
+Kubernetes
+
+Master :APP-Calculator: ## designer l'UI: Master ##----> release-v0
+|
+|
+features-add-number----> Tester----> Merge with Master ----> new release-v0.1
+
+Repertoire: Master ou Main
+
+Main ou MAster sont les branches les plus ajour
+
+la branche feature ajouter une nouvelle fonctionnalité
+
+la branche release délivre une version du projet aux users 
+
+fixing branch 
+
+11 -----
+12 -----
+13 -----
+git cherry-pick id
+git Merge
+git rebase
+
+PR ( pull request) est une fonctionnalité que tu as fait sur une branche et que tu crés pour pouvoir dire à quelqu'un de vérifier en general le reviewer le senior developer du projet. Il regardera ton code avant de Merge !
+
+
+ Fork et le Clone --> defference entre les 2 : 
+
+ fork --> c'est pour réccuperer une image distribué du projet ( qui est sur vos platform de colaboration tel que GitHub ou GitLab, ...) par exemple Kubernetes comme un nouveau repertoire sur votre machine. 
+ Clone --> pour réccuperer le projet (download via lien qui se trouve sur code ex: " git clone https://github.com/yepa177/kubernetes.git") qui tjrs connecté a un repository en ligne a installer sur votre machine via cli "git clone https://github.com/kubernetes/kubernetes" et cd kubernetes puis make .
+
+
+ Aller su GitHub par exemple sur un rpojet dispo,kubectl get pods -n longhorn-system -l app=longhorn-manager 
