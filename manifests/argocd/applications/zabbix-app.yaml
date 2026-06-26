@@ -8,11 +8,11 @@ spec:
   source:
     repoURL: https://zabbix.github.io/helm-charts
     chart: zabbix
-    targetRevision: "2.6.0"          # Vérifiez la dernière version stable
+    targetRevision: "2.6.0"   # Version stable récente
     helm:
       valueFiles:
         - values-zabbix.yaml
-      parameters: []                 # Vous pouvez ajouter des overrides ici si besoin
+      releaseName: zabbix
   destination:
     server: https://kubernetes.default.svc
     namespace: zabbix
@@ -25,7 +25,5 @@ spec:
       - RespectIgnoreDifferences=true
   ignoreDifferences:
     - group: ""
-      kind: "ConfigMap"
+      kind: ConfigMap
       name: ".*"
-      jqPathExpressions:
-        - ".data"
