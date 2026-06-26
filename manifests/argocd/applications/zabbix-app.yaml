@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://zabbix-community.github.io/helm-zabbix  # URL correcte
-    targetRevision: 2.6.0
+    targetRevision: 1.0.0
     chart: zabbix
     helm:
       values: |
