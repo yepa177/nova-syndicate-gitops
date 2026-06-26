@@ -6,11 +6,12 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://zabbix-community.github.io/helm-zabbix  # URL correcte
-    targetRevision: 1.0.0
-    chart: zabbix
+    repoURL: https://zabbix-community.github.io/helm-zabbix
+    targetRevision: 7.0.12  # Version stable et récente
+    chart: zabbix  # Nom correct du chart
     helm:
       values: |
+        # Configuration pour Zabbix Server
         zabbix-server:
           enabled: true
           nodeSelector:
@@ -19,6 +20,8 @@ spec:
             requests:
               cpu: 300m
               memory: 512Mi
+
+        # Configuration pour Zabbix Web (interface)
         zabbix-web:
           enabled: true
           ingress:
@@ -26,17 +29,23 @@ spec:
             ingressClassName: nginx
             hosts:
               - zabbix.nova-syndicate.local
+
+        # Configuration pour Zabbix Proxy (optionnel)
         zabbix-proxy:
-          enabled: true
-        persistence:
-          enabled: true
-          storageClass: "longhorn"
-          size: 5Gi
+          enabled: false  # Désactivé pour simplifier le déploiement
+
+        # Configuration pour PostgreSQL (base de données)
         postgresql:
           enabled: true
           persistence:
             storageClass: "longhorn"
             size: 5Gi
+
+        # Configuration pour le stockage persistant
+        persistence:
+          enabled: true
+          storageClass: "longhorn"
+          size: 5Gi
   destination:
     server: https://kubernetes.default.svc
     namespace: zabbix
