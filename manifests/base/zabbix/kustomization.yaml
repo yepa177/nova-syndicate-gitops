@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Référence au namespace
+namespace: zabbix
+
+# Ressources à inclure
+resources:
+  - ../namespace/zabbix.yaml  # Optionnel, si vous voulez gérer le namespace ici
+
+# Vous pouvez aussi utiliser un Helm chart via Kustomize
+# (mais vous le faites déjà via ArgoCD)
