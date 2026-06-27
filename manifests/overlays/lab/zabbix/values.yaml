@@ -1,35 +1,4 @@
-# Configuration pour Zabbix Server
+# Configuration spécifique pour l'environnement lab (écrase base/values.yaml)
 zabbix-server:
-  enabled: true
   nodeSelector:
-    kubernetes.io/hostname: zabbix-monitoring
-  resources:
-    requests:
-      cpu: 300m
-      memory: 512Mi
-
-# Configuration pour Zabbix Web (interface)
-zabbix-web:
-  enabled: true
-  ingress:
-    enabled: true
-    ingressClassName: nginx
-    hosts:
-      - zabbix.nova-syndicate.local
-
-# Configuration pour Zabbix Proxy (optionnel)
-zabbix-proxy:
-  enabled: false
-
-# Configuration pour PostgreSQL
-postgresql:
-  enabled: true
-  persistence:
-    storageClass: "longhorn"
-    size: 5Gi
-
-# Configuration pour le stockage persistant
-persistence:
-  enabled: true
-  storageClass: "longhorn"
-  size: 5Gi
+    kubernetes.io/hostname: zabbix-monitoring  # ✅ Spécifique au lab

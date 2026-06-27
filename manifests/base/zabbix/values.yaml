@@ -1,14 +1,11 @@
-# Configuration pour Zabbix Server
+# Configuration par défaut pour Zabbix (base)
 zabbix-server:
   enabled: true
-  nodeSelector:
-    kubernetes.io/hostname: zabbix-monitoring
   resources:
     requests:
       cpu: 300m
       memory: 512Mi
 
-# Configuration pour Zabbix Web (interface)
 zabbix-web:
   enabled: true
   ingress:
@@ -17,18 +14,15 @@ zabbix-web:
     hosts:
       - zabbix.nova-syndicate.local
 
-# Configuration pour Zabbix Proxy
 zabbix-proxy:
   enabled: false
 
-# Configuration pour PostgreSQL
 postgresql:
   enabled: true
   persistence:
     storageClass: "longhorn"
     size: 5Gi
 
-# Configuration du stockage persistant
 persistence:
   enabled: true
   storageClass: "longhorn"
