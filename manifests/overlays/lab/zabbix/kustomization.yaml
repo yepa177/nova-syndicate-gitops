@@ -1,30 +1,12 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-
-# Référence au base
+namespace: zabbix
 resources:
-  - ../../../base/zabbix
-
-# Patch pour l'environnement lab
-patches:
-  - target:
-      kind: Application
-      name: nova-zabbix
-    patch: |-
-      - op: replace
-        path: /spec/source/targetRevision
-        value: 7.0.12
-      - op: replace
-        path: /spec/source/helm/values
-        value: |
-          zabbix-server:
-            enabled: true
-            nodeSelector:
-              kubernetes.io/hostname: zabbix-monitoring
-          zabbix-web:
-            enabled: true
-            ingress:
-              enabled: true
-              ingressClassName: nginx
-              hosts:
-                - zabbix-lab.nova-syndicate.local
+  - ../../../base/namespace/zabbix.yaml
+helmCharts:
+  - name: zabbix
+    repo: https://zabbix-community.github.io/helm-zabbix
+    version: 7.0.12
+    releaseName: nova-zabbix
+    namespace: zabbix
+    valuesFile: values.yaml  # Fichier de valeurs personnalisées
