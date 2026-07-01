@@ -47,7 +47,7 @@ spec:
                   type: prometheus
                   url: http://prometheus-kube-prometheus-prometheus.monitoring:9090
                   access: proxy
-                  isDefault: true
+                  # isDefault: true
 
         # Désactive AlertManager (optionnel)
         alertmanager:
