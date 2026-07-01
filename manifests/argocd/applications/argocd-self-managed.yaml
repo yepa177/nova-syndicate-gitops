@@ -1,0 +1,71 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://argoproj.github.io/argo-helm
+    chart: argo-cd
+    targetRevision: 7.7.0
+    helm:
+      values: |
+        controller:
+          nodeSelector:
+            kubernetes.io/hostname: k3s-lyon-01
+          tolerations:
+            - key: node-role.kubernetes.io/control-plane
+              operator: Exists
+              effect: NoSchedule
+        server:
+          nodeSelector:
+            kubernetes.io/hostname: k3s-lyon-01
+          tolerations:
+            - key: node-role.kubernetes.io/control-plane
+              operator: Exists
+              effect: NoSchedule
+        repoServer:
+          nodeSelector:
+            kubernetes.io/hostname: k3s-lyon-01
+          tolerations:
+            - key: node-role.kubernetes.io/control-plane
+              operator: Exists
+              effect: NoSchedule
+        dex:
+          nodeSelector:
+            kubernetes.io/hostname: k3s-lyon-01
+          tolerations:
+            - key: node-role.kubernetes.io/control-plane
+              operator: Exists
+              effect: NoSchedule
+        redis:
+          nodeSelector:
+            kubernetes.io/hostname: k3s-lyon-01
+          tolerations:
+            - key: node-role.kubernetes.io/control-plane
+              operator: Exists
+              effect: NoSchedule
+        notifications:
+          nodeSelector:
+            kubernetes.io/hostname: k3s-lyon-01
+          tolerations:
+            - key: node-role.kubernetes.io/control-plane
+              operator: Exists
+              effect: NoSchedule
+        applicationSet:
+          nodeSelector:
+            kubernetes.io/hostname: k3s-lyon-01
+          tolerations:
+            - key: node-role.kubernetes.io/control-plane
+              operator: Exists
+              effect: NoSchedule
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
