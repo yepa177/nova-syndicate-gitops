@@ -33,7 +33,7 @@ spec:
             enabled: true
             storageClassName: longhorn
             size: 5Gi
-          adminPassword: "admin123"
+          adminPassword: "admin123456"
           ingress:
             enabled: true
             ingressClassName: nginx
