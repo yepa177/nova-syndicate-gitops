@@ -1,0 +1,33 @@
+grafana:
+  persistence:
+    enabled: true
+    storageClass: "longhorn"
+    size: 3Gi
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hosts:
+      - grafana.nova-syndicate.local
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+
+prometheus:
+  prometheusSpec:
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: longhorn
+          resources:
+            requests:
+              storage: 5Gi
+    nodeSelector:
+      kubernetes.io/hostname: zabbix-monitoring
+    resources:
+      requests:
+        cpu: 400m
+        memory: 1Gi
+
+alertmanager:
+  enabled: true
