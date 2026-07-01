@@ -6,9 +6,52 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/yepa177/nova-syndicate-gitops.git
-    targetRevision: main
-    path:  manifests/overlays/lab/monitoring  # Chemin vers l'overlay Kustomize
+    repoURL: https://prometheus-community.github.io/helm-charts
+    targetRevision: 87.2.1  # Version stable de kube-prometheus-stack
+    chart: kube-prometheus-stack
+    helm:
+      releaseName: prometheus
+      values: |
+        # Configuration pour Prometheus
+        prometheus:
+          prometheusSpec:
+            storageSpec:
+              volumeClaimTemplate:
+                spec:
+                  storageClassName: longhorn
+                  accessModes: ["ReadWriteOnce"]
+                  resources:
+                    requests:
+                      storage: 5Gi
+            retention: 7d
+            nodeSelector:
+              kubernetes.io/hostname: zabbix-monitoring
+
+        # Configuration pour Grafana
+        grafana:
+          persistence:
+            enabled: true
+            storageClassName: longhorn
+            size: 5Gi
+          adminPassword: "admin123"
+          ingress:
+            enabled: true
+            ingressClassName: nginx
+            hosts:
+              - grafana.nova-syndicate.local
+          datasources:
+            datasources.yaml:
+              apiVersion: 1
+              datasources:
+                - name: Prometheus
+                  type: prometheus
+                  url: http://prometheus-kube-prometheus-prometheus.monitoring:9090
+                  access: proxy
+                  isDefault: true
+
+        # Désactive AlertManager (optionnel)
+        alertmanager:
+          enabled: false
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
