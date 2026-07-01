@@ -1,0 +1,70 @@
+---
+- name: Install Zabbix Agent on workers
+  hosts: workers
+  become: yes
+  vars:
+    zabbix_server: "10.96.235.107"
+
+  tasks:
+    - name: Download Zabbix repository package
+      get_url:
+        url: "https://repo.zabbix.com/zabbix/7.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_7.0-1+ubuntu24.04_all.deb"
+        dest: /tmp/zabbix-release.deb
+        mode: '0644'
+
+    - name: Install Zabbix repository
+      apt:
+        deb: /tmp/zabbix-release.deb
+        state: present
+
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install Zabbix Agent
+      apt:
+        name: zabbix-agent
+        state: present
+
+    - name: Configure Zabbix Agent - Server
+      lineinfile:
+        path: /etc/zabbix/zabbix_agentd.conf
+        regexp: '^Server='
+        line: "Server={{ zabbix_server }},192.168.205.0/24,10.0.1.2,10.1.1.2,10.0.4.2"
+
+    - name: Configure Zabbix Agent - ServerActive
+      lineinfile:
+        path: /etc/zabbix/zabbix_agentd.conf
+        regexp: '^ServerActive='
+        line: "ServerActive={{ zabbix_server }}"
+
+    - name: Configure Zabbix Agent - Hostname
+      lineinfile:
+        path: /etc/zabbix/zabbix_agentd.conf
+        regexp: '^Hostname='
+        line: "Hostname={{ ansible_hostname }}"
+
+    - name: Configure Zabbix Agent - ListenIP
+      lineinfile:
+        path: /etc/zabbix/zabbix_agentd.conf
+        regexp: '^ListenIP='
+        line: "ListenIP=0.0.0.0"
+
+    - name: Restart and enable Zabbix Agent
+      systemd:
+        name: zabbix-agent
+        state: restarted
+        enabled: yes
+        daemon_reload: yes
+
+    - name: Clean up repository package
+      file:
+        path: /tmp/zabbix-release.deb
+        state: absent
+
+    - name: Display success message
+      debug:
+        msg: |
+          ✅ Zabbix Agent installed on {{ ansible_hostname }} ({{ ansible_default_ipv4.address }})
+          📊 Verify from Zabbix Server: zabbix_get -s {{ ansible_default_ipv4.address }} -k system.hostname
