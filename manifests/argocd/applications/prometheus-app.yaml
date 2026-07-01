@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/yepa177/nova-syndicate-gitops.git
     targetRevision: main
-    path: overlays/lab/monitoring  # Chemin vers l'overlay Kustomize
+    path:  manifests/overlays/lab/monitoring  # Chemin vers l'overlay Kustomize
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
