@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://prometheus-community.github.io/helm-charts
-    targetRevision: 87.2.1  # Version stable de kube-prometheus-stack
+    targetRevision: 87.2.1
     chart: kube-prometheus-stack
     helm:
       releaseName: prometheus
@@ -25,7 +25,7 @@ spec:
                       storage: 5Gi
             retention: 7d
             nodeSelector:
-              kubernetes.io/hostname: zabbix-monitoring
+              kubernetes.io/hostname: k3s-worker-mrs  # Changé ici
 
         # Configuration pour Grafana
         grafana:
@@ -47,7 +47,8 @@ spec:
                   type: prometheus
                   url: http://prometheus-kube-prometheus-prometheus.monitoring:9090
                   access: proxy
-                  # isDefault: true
+          nodeSelector:  # Ajouté ici pour Grafana
+            kubernetes.io/hostname: k3s-worker-mrs
 
         # Désactive AlertManager (optionnel)
         alertmanager:

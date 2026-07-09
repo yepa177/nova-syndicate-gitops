@@ -12,6 +12,8 @@ grafana:
     requests:
       cpu: 100m
       memory: 256Mi
+  nodeSelector:  # Ajouté
+    kubernetes.io/hostname: k3s-worker-mrs
 
 prometheus:
   prometheusSpec:
@@ -23,7 +25,7 @@ prometheus:
             requests:
               storage: 5Gi
     nodeSelector:
-      kubernetes.io/hostname: zabbix-monitoring
+      kubernetes.io/hostname: k3s-worker-mrs  # Changé
     resources:
       requests:
         cpu: 400m
@@ -31,3 +33,6 @@ prometheus:
 
 alertmanager:
   enabled: true
+  alertmanagerSpec:
+    nodeSelector:  # Ajouté si alertmanager est activé
+      kubernetes.io/hostname: k3s-worker-mrs
