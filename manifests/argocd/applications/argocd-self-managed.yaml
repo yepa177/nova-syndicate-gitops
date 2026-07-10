@@ -18,6 +18,10 @@ spec:
             - key: node-role.kubernetes.io/control-plane
               operator: Exists
               effect: NoSchedule
+            - key: dedicated
+              operator: Equal
+              value: monitoring
+              effect: NoSchedule   
         server:
           nodeSelector:
             kubernetes.io/hostname: k3s-lyon-01
@@ -25,6 +29,10 @@ spec:
             - key: node-role.kubernetes.io/control-plane
               operator: Exists
               effect: NoSchedule
+            - key: dedicated
+              operator: Equal
+              value: monitoring
+              effect: NoSchedule   
           # Ajoute ces lignes pour forcer le label sur le Pod
           labels:
             app.kubernetes.io/instance: argocd
@@ -42,6 +50,10 @@ spec:
             - key: node-role.kubernetes.io/control-plane
               operator: Exists
               effect: NoSchedule
+            - key: dedicated
+              operator: Equal
+              value: monitoring
+              effect: NoSchedule  
         dex:
           nodeSelector:
             kubernetes.io/hostname: k3s-lyon-01
@@ -49,6 +61,10 @@ spec:
             - key: node-role.kubernetes.io/control-plane
               operator: Exists
               effect: NoSchedule
+            - key: dedicated
+              operator: Equal
+              value: monitoring
+              effect: NoSchedule 
         redis:
           nodeSelector:
             kubernetes.io/hostname: k3s-lyon-01
@@ -56,6 +72,10 @@ spec:
             - key: node-role.kubernetes.io/control-plane
               operator: Exists
               effect: NoSchedule
+            - key: dedicated
+              operator: Equal
+              value: monitoring
+              effect: NoSchedule   
         notifications:
           nodeSelector:
             kubernetes.io/hostname: k3s-lyon-01
@@ -63,6 +83,10 @@ spec:
             - key: node-role.kubernetes.io/control-plane
               operator: Exists
               effect: NoSchedule
+            - key: dedicated
+              operator: Equal
+              value: monitoring
+              effect: NoSchedule   
         applicationSet:
           nodeSelector:
             kubernetes.io/hostname: k3s-lyon-01
@@ -70,6 +94,10 @@ spec:
             - key: node-role.kubernetes.io/control-plane
               operator: Exists
               effect: NoSchedule
+            - key: dedicated
+              operator: Equal
+              value: monitoring
+              effect: NoSchedule   
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
