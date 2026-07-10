@@ -17,6 +17,8 @@ grafana:
 
 prometheus:
   prometheusSpec:
+    nodeSelector:  # Ajouté
+      kubernetes.io/hostname: k3s-worker-mrs # j'ai changé ici pour spécifier le nœud où Prometheus doit être déployé sans taint
     storageSpec:
       volumeClaimTemplate:
         spec:
@@ -24,8 +26,6 @@ prometheus:
           resources:
             requests:
               storage: 5Gi
-    nodeSelector:
-      kubernetes.io/hostname: k3s-worker-mrs  # Changé
     resources:
       requests:
         cpu: 400m
