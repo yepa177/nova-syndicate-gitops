@@ -2,11 +2,11 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: zabbix
 resources:
-  - namespace/zabbix
+  - namespace/zabbix.yaml
 helmCharts:
   - name: zabbix
     repo: https://zabbix-community.github.io/helm-zabbix
     version: 7.0.12
     releaseName: nova-zabbix
     namespace: zabbix
-    valuesFile: values.yaml  # ✅ Fichier local dans overlays/lab/zabbix/
+    valuesFile: values.yaml
