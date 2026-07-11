@@ -4,6 +4,7 @@ metadata:
   name: zabbix-ingress
   namespace: zabbix
   annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
