@@ -11,93 +11,36 @@ spec:
     targetRevision: 7.7.0
     helm:
       values: |
+        global:
+          nodeSelector:
+            kubernetes.io/hostname: k3s-lyon-01   # Préférence globale si possible
         controller:
-          nodeSelector:
-            kubernetes.io/hostname: k3s-lyon-01
-          tolerations:
-            - key: node-role.kubernetes.io/control-plane
-              operator: Exists
-              effect: NoSchedule
-            - key: dedicated
-              operator: Equal
-              value: monitoring
-              effect: NoSchedule   
+          nodeSelector: {}
+          tolerations: []  
         server:
-          nodeSelector:
-            kubernetes.io/hostname: k3s-lyon-01
-          tolerations:
-            - key: node-role.kubernetes.io/control-plane
-              operator: Exists
-              effect: NoSchedule
-            - key: dedicated
-              operator: Equal
-              value: monitoring
-              effect: NoSchedule   
-          # Ajoute ces lignes pour forcer le label sur le Pod
-          labels:
-            app.kubernetes.io/instance: argocd
+          nodeSelector: {}
+          tolerations: []
           extraArgs:
             - --insecure
-          # Assure-toi que le service utilise le bon sélecteur
           service:
             selector:
               app.kubernetes.io/instance: argocd
               app.kubernetes.io/name: argocd-server
         repoServer:
-          nodeSelector:
-            kubernetes.io/hostname: k3s-lyon-01
-          tolerations:
-            - key: node-role.kubernetes.io/control-plane
-              operator: Exists
-              effect: NoSchedule
-            - key: dedicated
-              operator: Equal
-              value: monitoring
-              effect: NoSchedule  
+          nodeSelector: {}
+          tolerations: []
         dex:
-          nodeSelector:
-            kubernetes.io/hostname: k3s-lyon-01
-          tolerations:
-            - key: node-role.kubernetes.io/control-plane
-              operator: Exists
-              effect: NoSchedule
-            - key: dedicated
-              operator: Equal
-              value: monitoring
-              effect: NoSchedule 
+          nodeSelector: {}
+          tolerations: []
         redis:
-          nodeSelector:
-            kubernetes.io/hostname: k3s-lyon-01
-          tolerations:
-            - key: node-role.kubernetes.io/control-plane
-              operator: Exists
-              effect: NoSchedule
-            - key: dedicated
-              operator: Equal
-              value: monitoring
-              effect: NoSchedule   
+          nodeSelector: {}
+          tolerations: []   
         notifications:
-          nodeSelector:
-            kubernetes.io/hostname: k3s-lyon-01
-          tolerations:
-            - key: node-role.kubernetes.io/control-plane
-              operator: Exists
-              effect: NoSchedule
-            - key: dedicated
-              operator: Equal
-              value: monitoring
-              effect: NoSchedule   
+          nodeSelector: {}
+          tolerations: []  
         applicationSet:
-          nodeSelector:
-            kubernetes.io/hostname: k3s-lyon-01
-          tolerations:
-            - key: node-role.kubernetes.io/control-plane
-              operator: Exists
-              effect: NoSchedule
-            - key: dedicated
-              operator: Equal
-              value: monitoring
-              effect: NoSchedule   
+          nodeSelector: {}
+          tolerations: []
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
