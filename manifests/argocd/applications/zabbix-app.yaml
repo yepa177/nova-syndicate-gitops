@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: nova-zabbix
+  name: zabbix
   namespace: argocd
 spec:
   project: default

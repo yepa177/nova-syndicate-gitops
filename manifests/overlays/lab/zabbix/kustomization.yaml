@@ -7,6 +7,6 @@ helmCharts:
   - name: zabbix
     repo: https://zabbix-community.github.io/helm-zabbix
     version: 7.0.12
-    releaseName: nova-zabbix
+    releaseName: zabbix
     namespace: zabbix
     valuesFile: values.yaml
