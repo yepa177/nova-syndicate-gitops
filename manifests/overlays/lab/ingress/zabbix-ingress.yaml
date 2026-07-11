@@ -16,6 +16,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: nova-zabbix-zabbix-web
+                name: zabbix-zabbix-web
                 port:
                   number: 80
