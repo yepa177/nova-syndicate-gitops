@@ -28,7 +28,7 @@ spec:
             enabled: true
             ingressClassName: nginx
             hosts:
-              - zabbix.nova-syndicate.local
+              - zabbix.local
 
         # Configuration pour Zabbix Proxy (optionnel)
         zabbix-proxy:
