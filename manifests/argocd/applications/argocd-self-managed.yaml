@@ -13,34 +13,43 @@ spec:
       values: |
         global:
           nodeSelector:
-            kubernetes.io/hostname: k3s-lyon-01   # Préférence globale si possible
+            kubernetes.io/hostname: k3s-lyon-01
+
+        # === Tolerations pour tous les composants ===
+        tolerations:
+          - key: dedicated
+            operator: Equal
+            value: monitoring
+            effect: NoSchedule
+          - key: node-role.kubernetes.io/control-plane
+            operator: Exists
+            effect: NoSchedule
+
         controller:
-          nodeSelector: {}
-          tolerations: []  
+          tolerations: []
+
         server:
-          nodeSelector: {}
           tolerations: []
           extraArgs:
             - --insecure
           service:
-            selector:
-              app.kubernetes.io/instance: argocd
-              app.kubernetes.io/name: argocd-server
+            type: ClusterIP
+
         repoServer:
-          nodeSelector: {}
           tolerations: []
+
         dex:
-          nodeSelector: {}
           tolerations: []
+
         redis:
-          nodeSelector: {}
-          tolerations: []   
-        notifications:
-          nodeSelector: {}
-          tolerations: []  
-        applicationSet:
-          nodeSelector: {}
           tolerations: []
+
+        notifications:
+          tolerations: []
+
+        applicationSet:
+          tolerations: []
+
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
