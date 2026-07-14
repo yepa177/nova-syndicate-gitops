@@ -14,42 +14,97 @@ spec:
         global:
           nodeSelector:
             kubernetes.io/hostname: k3s-lyon-01
-
-        # === Tolerations pour tous les composants ===
-        tolerations:
-          - key: dedicated
-            operator: Equal
-            value: monitoring
-            effect: NoSchedule
-          - key: node-role.kubernetes.io/control-plane
-            operator: Exists
-            effect: NoSchedule
-
+          tolerations:
+            - key: dedicated
+              operator: Equal
+              value: monitoring
+              effect: NoSchedule
+            - key: node-role.kubernetes.io/control-plane
+              operator: Exists
+              effect: NoSchedule
         controller:
-          tolerations: []
-
+          nodeSelector:
+            kubernetes.io/hostname: k3s-lyon-01
+          tolerations:
+            - key: dedicated
+              operator: Equal
+              value: monitoring
+              effect: NoSchedule
+            - key: node-role.kubernetes.io/control-plane
+              operator: Exists
+              effect: NoSchedule
         server:
-          tolerations: []
+          nodeSelector:
+            kubernetes.io/hostname: k3s-lyon-01
+          tolerations:
+            - key: dedicated
+              operator: Equal
+              value: monitoring
+              effect: NoSchedule
+            - key: node-role.kubernetes.io/control-plane
+              operator: Exists
+              effect: NoSchedule
           extraArgs:
             - --insecure
           service:
-            type: ClusterIP
-
+            selector:
+              app.kubernetes.io/instance: argocd
+              app.kubernetes.io/name: argocd-server
         repoServer:
-          tolerations: []
-
+          nodeSelector:
+            kubernetes.io/hostname: k3s-lyon-01
+          tolerations:
+            - key: dedicated
+              operator: Equal
+              value: monitoring
+              effect: NoSchedule
+            - key: node-role.kubernetes.io/control-plane
+              operator: Exists
+              effect: NoSchedule
         dex:
-          tolerations: []
-
+          nodeSelector:
+            kubernetes.io/hostname: k3s-lyon-01
+          tolerations:
+            - key: dedicated
+              operator: Equal
+              value: monitoring
+              effect: NoSchedule
+            - key: node-role.kubernetes.io/control-plane
+              operator: Exists
+              effect: NoSchedule
         redis:
-          tolerations: []
-
+          nodeSelector:
+            kubernetes.io/hostname: k3s-lyon-01
+          tolerations:
+            - key: dedicated
+              operator: Equal
+              value: monitoring
+              effect: NoSchedule
+            - key: node-role.kubernetes.io/control-plane
+              operator: Exists
+              effect: NoSchedule
         notifications:
-          tolerations: []
-
+          nodeSelector:
+            kubernetes.io/hostname: k3s-lyon-01
+          tolerations:
+            - key: dedicated
+              operator: Equal
+              value: monitoring
+              effect: NoSchedule
+            - key: node-role.kubernetes.io/control-plane
+              operator: Exists
+              effect: NoSchedule
         applicationSet:
-          tolerations: []
-
+          nodeSelector:
+            kubernetes.io/hostname: k3s-lyon-01
+          tolerations:
+            - key: dedicated
+              operator: Equal
+              value: monitoring
+              effect: NoSchedule
+            - key: node-role.kubernetes.io/control-plane
+              operator: Exists
+              effect: NoSchedule
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
