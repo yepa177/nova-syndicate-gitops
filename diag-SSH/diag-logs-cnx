@@ -1,0 +1,1855 @@
+[13:34:36.672] Log Level: 2
+[13:34:36.687] VS Code version: 1.130.0
+[13:34:36.688] Remote-SSH version: remote-ssh@0.124.0
+[13:34:36.688] darwin arm64
+[13:34:36.694] SSH Resolver called for "ssh-remote+k3s-lyon-01", attempt 1
+[13:34:36.704] remote.SSH.useLocalServer = true
+[13:34:36.704] remote.SSH.useExecServer = true
+[13:34:36.705] remote.SSH.bindHost = {}
+[13:34:36.705] remote.SSH.path = 
+[13:34:36.705] remote.SSH.configFile = 
+[13:34:36.706] remote.SSH.useFlock = true
+[13:34:36.706] remote.SSH.lockfilesInTmp = false
+[13:34:36.706] remote.SSH.localServerDownload = auto
+[13:34:36.707] remote.SSH.remoteServerListenOnSocket = false
+[13:34:36.707] remote.SSH.defaultExtensions = []
+[13:34:36.707] remote.SSH.defaultExtensionsIfInstalledLocally = []
+[13:34:36.708] remote.SSH.loglevel = 2
+[13:34:36.708] remote.SSH.enableDynamicForwarding = true
+[13:34:36.708] remote.SSH.enableRemoteCommand = false
+[13:34:36.708] remote.SSH.serverPickPortsFromRange = {}
+[13:34:36.709] remote.SSH.serverInstallPath = {}
+[13:34:36.709] remote.SSH.permitPtyAllocation = false
+[13:34:36.709] remote.SSH.preferredLocalPortRange = undefined
+[13:34:36.710] remote.SSH.useCurlAndWgetConfigurationFiles = false
+[13:34:36.710] remote.SSH.experimental.chat = true
+[13:34:36.710] remote.SSH.experimental.enhancedSessionLogs = true
+[13:34:36.711] remote.SSH.httpProxy = {"*":""}
+[13:34:36.711] remote.SSH.httpsProxy = {"*":""}
+[13:34:36.718] SSH Resolver called for host: k3s-lyon-01
+[13:34:36.719] Setting up SSH remote "k3s-lyon-01"
+[13:34:36.740] Acquiring local install lock: /var/folders/pg/jvs7kp557zzftmxc866fgcxr0000gn/T/vscode-remote-ssh-2bb7a5bf-install.lock
+[13:34:36.741] Looking for existing server data file at /Users/fritzio06/Library/Application Support/Code/User/globalStorage/ms-vscode-remote.remote-ssh/vscode-ssh-host-2bb7a5bf-1b6a188127eeaf9194f945eb6eb89a657e93c54c-0.124.0-es/data.json
+[13:34:36.742] No existing data file
+[13:34:36.744] Using commit id "1b6a188127eeaf9194f945eb6eb89a657e93c54c" and quality "stable" for server
+[13:34:36.744] Extensions to install: 
+[13:34:36.755] Install and start server if needed
+[13:34:36.763] PATH: /Users/fritzio06/.grok/bin:/Users/fritzio06/.local/bin:/opt/homebrew/opt/postgresql@16/bin:/Library/Frameworks/Python.framework/Versions/3.14/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/opt/X11/bin:/Library/Apple/usr/bin:/Applications/VMware Fusion.app/Contents/Public:/Users/fritzio06/.local/bin
+[13:34:36.763] Checking ssh with "ssh -V"
+[13:34:36.779] > OpenSSH_10.2p1, LibreSSL 3.3.6
+
+[13:34:36.782] askpass server listening on /var/folders/pg/jvs7kp557zzftmxc866fgcxr0000gn/T/vscode-ssh-askpass-9889f4270747e8c0038cde7496edb7.sock
+[13:34:36.783] Spawning local server with {"serverId":1,"ipcHandlePath":"/var/folders/pg/jvs7kp557zzftmxc866fgcxr0000gn/T/vscode-ssh-askpass-546efe0cc8c2a2dac345d4bc79a468.sock","sshCommand":"ssh","sshArgs":["-v","-T","-D","63412","-o","ConnectTimeout=15","k3s-lyon-01"],"serverDataFolderName":".vscode-server","dataFilePath":"/Users/fritzio06/Library/Application Support/Code/User/globalStorage/ms-vscode-remote.remote-ssh/vscode-ssh-host-2bb7a5bf-1b6a188127eeaf9194f945eb6eb89a657e93c54c-0.124.0-es/data.json"}
+[13:34:36.783] Local server env: {"SSH_AUTH_SOCK":"/var/run/com.apple.launchd.kA1xgZpf1l/Listeners","SHELL":"/bin/zsh","DISPLAY":"/var/run/com.apple.launchd.mVg1Jjn6Lv/org.xquartz:0","ELECTRON_RUN_AS_NODE":"1","SSH_ASKPASS":"/Users/fritzio06/.vscode/extensions/ms-vscode-remote.remote-ssh-0.124.0/out/local-server/askpass.sh","VSCODE_SSH_ASKPASS_NODE":"/Applications/Visual Studio Code.app/Contents/Frameworks/Code Helper (Plugin).app/Contents/MacOS/Code Helper (Plugin)","VSCODE_SSH_ASKPASS_EXTRA_ARGS":"","VSCODE_SSH_ASKPASS_MAIN":"/Users/fritzio06/.vscode/extensions/ms-vscode-remote.remote-ssh-0.124.0/out/askpass-main.js","VSCODE_SSH_ASKPASS_HANDLE":"/var/folders/pg/jvs7kp557zzftmxc866fgcxr0000gn/T/vscode-ssh-askpass-9889f4270747e8c0038cde7496edb7.sock"}
+[13:34:36.784] Spawned 92293
+[13:34:36.785] Using connect timeout of 17 seconds
+[13:34:36.937] > local-server-1> Running ssh connection command: ssh -v -T -D 63412 -o ConnectTimeout=15 k3s-lyon-01
+[13:34:36.938] > local-server-1> Spawned ssh, pid=92302
+[13:34:37.297] stderr> (node:92293) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+[13:34:37.298] stderr> (Use `Code Helper (Plugin) --trace-deprecation ...` to show where the warning was created)
+[13:34:37.420] stderr> debug1: Server host key: ssh-ed25519 SHA256:N2VMPP37tnhmc7ihXfk7A5cvn/sIbp/TzsP0wUJz/hM
+[13:34:38.495] stderr> Authenticated to 10.20.67.106 ([10.20.67.106]:22) using "publickey".
+[13:34:40.182] stderr> debug1: Server host key: ssh-ed25519 SHA256:9H8bNQ+TJXshm3MLmVqw9vSpaN33Rnkcl9ObwgGM+8g
+[13:34:41.635] stderr> Authenticated to 10.0.1.2 (via proxy) using "publickey".
+[13:34:44.847] > Welcome to Ubuntu 24.04.4 LTS (GNU/Linux 6.8.0-136-generic x86_64)
+> 
+>  * Documentation:  https://help.ubuntu.com
+>  * Management:     https://landscape.canonical.com
+>  * Support:        https://ubuntu.com/pro
+> 
+>  System information as of Sun Jul 26 11:34:41 AM UTC 2026
+> 
+>   System load:  1.61               Processes:               320
+>   Usage of /:   75.1% of 27.45GB   Users logged in:         1
+>   Memory usage: 36%                IPv4 address for vlan10: 10.0.1.2
+>   Swap usage:   0%
+> 
+>  * Strictly confined Kubernetes makes edge and IoT secure. Learn how MicroK8s
+>    just raised the bar for easy, resilient and secure K8s cluster deployment.
+> 
+>    https://ubuntu.com/engage/secure-kubernetes-at-the-edge
+> 
+> Expanded Security Maintenance for Applications is not enabled.
+> 
+> 22 updates can be applied immediately.
+> To see these additional updates run: apt list --upgradable
+> 
+> 6 additional security updates can be applied with ESM Apps.
+> Learn more about enabling ESM Apps service at https://ubuntu.com/esm
+> 
+[13:34:44.956] > ready: 6827d5631f13
+[13:34:45.087] > Linux 6.8.0-136-generic #136-Ubuntu SMP PREEMPT_DYNAMIC Wed Jul  1 21:53:05 UTC 2026
+[13:34:45.088] Platform: linux
+[13:34:45.208] > /bin/bash
+[13:34:45.210] Parent Shell: bash
+[13:34:45.211] Parent Shell pid: 92293
+[13:34:45.214] Waiting for subshell to start
+[13:34:45.266] Waiting for subshell to start
+[13:34:45.319] Waiting for subshell to start
+[13:34:45.339] > 231482
+[13:34:45.340] stdout -> '231482'
+[13:34:45.341] sub-process detected
+[13:34:45.433] > 231482
+[13:34:45.468] > 231482
+[13:34:45.650] > 6827d5631f13: running
+> Script executing under PID: 231482
+[13:34:45.759] > Installing to /home/user/.vscode-server...
+[13:34:45.762] > 6827d5631f13%%1%%
+> Downloading with wget
+> wget is from busybox: no
+[13:34:45.764] stderr> Program 'wget' appears to support flag '--no-config'
+[13:34:46.535] > Download complete
+[13:34:46.641] > 6827d5631f13%%2%%
+[13:34:46.643] > tar --version: tar (GNU tar) 1.35
+> Copyright (C) 2023 Free Software Foundation, Inc.
+> License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+> This is free software: you are free to change and redistribute it.
+> There is NO WARRANTY, to the extent permitted by law.
+> 
+> Written by John Gilmore and Jay Fenlason.
+[13:34:47.945] > code 1.130.0 (commit 1b6a188127eeaf9194f945eb6eb89a657e93c54c)
+[13:34:48.207] > Starting VS Code CLI...
+[13:34:48.208] > Spawned remote CLI: 231536
+> Waiting for server log...
+> Waiting for server log...
+> Waiting for server log...
+> Waiting for server log...
+[13:34:48.806] > Waiting for server log...
+[13:34:48.808] > 6827d5631f13: start
+> listeningOn==127.0.0.1:40407==
+> osReleaseId==ubuntu==
+> arch==x86_64==
+> vscodeArch==x64==
+> bitness==64==
+> tmpDir==/run/user/1000==
+> platform==linux==
+> unpackResult==success==
+> didLocalDownload==0==
+> downloadTime==833==
+> installTime==1370==
+> serverStartTime==293==
+> execServerToken==1111111a-11a1-111a-a1a1-a111aaaaaa11==
+> platformDownloadPath==cli-alpine-x64==
+> SSH_AUTH_SOCK====
+> DISPLAY====
+> 6827d5631f13: end
+[13:34:48.810] Received install output: 
+listeningOn==127.0.0.1:40407==
+osReleaseId==ubuntu==
+arch==x86_64==
+vscodeArch==x64==
+bitness==64==
+tmpDir==/run/user/1000==
+platform==linux==
+unpackResult==success==
+didLocalDownload==0==
+downloadTime==833==
+installTime==1370==
+serverStartTime==293==
+execServerToken==1111111a-11a1-111a-a1a1-a111aaaaaa11==
+platformDownloadPath==cli-alpine-x64==
+SSH_AUTH_SOCK====
+DISPLAY====
+
+[13:34:48.811] Remote server is listening on port 40407
+[13:34:48.812] Parsed server configuration: {"serverConfiguration":{"remoteListeningOn":{"port":40407},"osReleaseId":"ubuntu","arch":"x86_64","sshAuthSock":"","display":"","tmpDir":"/run/user/1000","platform":"linux","execServerToken":"1111111a-11a1-111a-a1a1-a111aaaaaa11"},"downloadTime":833,"installTime":1370,"serverStartTime":293,"installUnpackCode":"success"}
+[13:34:48.815] Persisting server connection details to /Users/fritzio06/Library/Application Support/Code/User/globalStorage/ms-vscode-remote.remote-ssh/vscode-ssh-host-2bb7a5bf-1b6a188127eeaf9194f945eb6eb89a657e93c54c-0.124.0-es/data.json
+[13:34:48.820] Starting forwarding server. local port 63485 -> socksPort 63412 -> remotePort 40407
+[13:34:48.822] Forwarding server listening on port 63485
+[13:34:48.823] Waiting for ssh tunnel to be ready
+[13:34:48.826] Tunneled port 40407 to local port 63485
+[13:34:48.826] Resolved "ssh-remote+k3s-lyon-01" to "port 63485"
+[13:34:48.831] Initizing new exec server for ssh-remote+k3s-lyon-01
+[13:34:48.832] Resolving exec server at port 63485
+[13:34:48.833] [Forwarding server port 63485] Got connection 0
+[13:34:48.834] [Forwarding server port 63485] Got connection 1
+[13:34:53.030] Exec server for ssh-remote+k3s-lyon-01 created and cached
+[13:34:53.032] Extensions to install: 
+[13:34:53.047] ------
+
+
+
+
+[13:34:53.048] No hints found in the recent session.
+[13:34:53.266] [server] Checking /home/user/.vscode-server/cli/servers/Stable-1b6a188127eeaf9194f945eb6eb89a657e93c54c/log.txt and /home/user/.vscode-server/cli/servers/Stable-1b6a188127eeaf9194f945eb6eb89a657e93c54c/pid.txt for a running server...
+[13:34:53.921] [server] Installing and setting up Visual Studio Code Server...
+[13:34:53.923] [server] Server setup complete
+[13:34:53.924] [server] Starting server...
+[13:34:53.926] [server] Starting server with command... Command { std: "/home/user/.vscode-server/cli/servers/Stable-1b6a188127eeaf9194f945eb6eb89a657e93c54c/server/bin/code-server" "--connection-token=remotessh" "--accept-server-license-terms" "--agent-host-bridge-port=34831" "--agent-host-bridge-host=127.0.0.1" "--agent-host-bridge-connection-token=26bbd31e-54af-4aaa-a372-a2bbfb30e482" "--start-server" "--enable-remote-auto-shutdown" "--socket-path=/tmp/code-ae7b2818-77b4-4802-8e5e-013fdca0c884", kill_on_drop: false }
+[13:34:55.502] [server] *
+[13:34:55.506] [server] * Visual Studio Code Server
+[13:34:55.519] [server] *
+[13:34:55.520] [server] * By using the software, you agree to
+[13:34:55.521] [server] * the Visual Studio Code Server License Terms (https://aka.ms/vscode-server-license) and
+[13:34:55.522] [server] * the Microsoft Privacy Statement (https://privacy.microsoft.com/en-US/privacystatement).
+[13:34:55.523] [server] *
+[13:34:55.952] [server] Server bound to /tmp/code-ae7b2818-77b4-4802-8e5e-013fdca0c884
+[13:34:55.953] [server] Extension host agent listening on /tmp/code-ae7b2818-77b4-4802-8e5e-013fdca0c884
+[13:34:55.955] [server] parsed location: "/tmp/code-ae7b2818-77b4-4802-8e5e-013fdca0c884"
+[13:34:55.956] [server] 
+[13:34:55.957] [server] Server started
+[13:34:56.437] [server] [11:34:56] 
+[13:34:56.437] [server] 
+[13:34:56.438] [server] 
+[13:34:56.439] [server] 
+[13:34:56.467] [server] [reconnection-grace-time] No CLI argument provided, using default: 10800000ms (10800s)
+[13:34:56.470] [server] [11:34:56] [AgentHostChannel] Registered IPC channel 'agentHostProxy' (upstream: 127.0.0.1:34831)
+[13:34:56.688] [server] [11:34:56] Extension host agent started.
+[13:34:57.159] [server] (node:231618) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+[13:34:57.161] [server] (Use `node --trace-deprecation ...` to show where the warning was created)
+[13:34:58.583] [server] [11:34:58] [<unknown>][8b9767fa][ManagementConnection] New connection established.
+[13:34:58.604] [server] [11:34:58] [<unknown>][574533d5][ExtensionHostConnection] New connection established.
+[13:34:58.605] [server] [11:34:58] [<unknown>][574533d5][ExtensionHostConnection] Starting extension host process...
+[13:34:59.101] [server] [11:34:59] [<unknown>][574533d5][ExtensionHostConnection] <231699> Launched Extension Host Process.
+[13:35:01.052] [server] [11:35:00] [<unknown>][574533d5][ExtensionHostConnection] <231699> [reconnection-grace-time] Extension host: read VSCODE_RECONNECTION_GRACE_TIME=10800000ms (10800s)
+[13:35:01.054] [server] 
+[13:35:58.451] Opening exec server for ssh-remote+k3s-lyon-01
+[13:36:01.456] Existing exec server for ssh-remote+k3s-lyon-01 timed out
+[13:36:01.458] Initizing new exec server for ssh-remote+k3s-lyon-01
+[13:36:01.460] Acquiring local install lock: /var/folders/pg/jvs7kp557zzftmxc866fgcxr0000gn/T/vscode-remote-ssh-2bb7a5bf-install.lock
+[13:36:01.462] Looking for existing server data file at /Users/fritzio06/Library/Application Support/Code/User/globalStorage/ms-vscode-remote.remote-ssh/vscode-ssh-host-2bb7a5bf-1b6a188127eeaf9194f945eb6eb89a657e93c54c-0.124.0-es/data.json
+[13:36:01.465] Found existing data file
+[13:36:01.466] Found local server running: {"remoteListeningOn":{"port":40407},"osReleaseId":"ubuntu","arch":"x86_64","sshAuthSock":"","display":"","tmpDir":"/run/user/1000","platform":"linux","execServerToken":"7444877f-69a0-499b-a3c4-a274dfcaaa92","pid":92293,"ipcHandlePath":"/var/folders/pg/jvs7kp557zzftmxc866fgcxr0000gn/T/vscode-ssh-askpass-546efe0cc8c2a2dac345d4bc79a468.sock","socksPort":63412,"startupTime":1785065676784}
+[13:36:01.469] Found running server - short-circuiting install
+[13:36:01.473] Starting forwarding server. local port 63532 -> socksPort 63412 -> remotePort 40407
+[13:36:01.474] Forwarding server listening on port 63532
+[13:36:01.476] Waiting for ssh tunnel to be ready
+[13:36:01.478] Tunneled port 40407 to local port 63532
+[13:36:01.479] Resolved "ssh-remote+k3s-lyon-01" to "port 63532"
+[13:36:01.480] Resolving exec server at port 63532
+[13:36:01.482] [Forwarding server port 63532] Got connection 0
+[13:36:01.483] [Forwarding server port 63532] Got connection 1
+[13:36:31.486] Failed to set up socket for dynamic port forward to remote port 40407: Proxy connection timed out. TCP port forwarding may be disabled, or the remote server may have crashed. See the VS Code Server log above for details.
+[13:36:31.490] Failed to set up socket for dynamic port forward to remote port 40407: Proxy connection timed out. TCP port forwarding may be disabled, or the remote server may have crashed. See the VS Code Server log above for details.
+[13:37:32.115] [server] [11:37:24] [<unknown>][574533d5][ExtensionHostConnection] The client has reconnected.
+
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ ss -tnp | grep :22
+ESTAB 0      0               10.0.1.2:22                  10.0.1.1:21589                                             
+ESTAB 0      0               10.0.1.2:37052           10.20.67.106:22    users:(("python3",pid=188957,fd=51))        
+ESTAB 0      0               10.0.1.2:22                  10.0.1.1:56991                                             
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ ss -tnp | grep sshd
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo ss -tnp | grep sshd
+[sudo] password for user: 
+ESTAB 0      0              127.0.0.1:43932              127.0.0.1:40407 users:(("sshd",pid=231470,fd=11))                        
+ESTAB 0      0               10.0.1.2:22                  10.0.1.1:21589 users:(("sshd",pid=188956,fd=4),("sshd",pid=188796,fd=4))
+ESTAB 0      0               10.0.1.2:22                  10.0.1.1:56991 users:(("sshd",pid=231470,fd=4),("sshd",pid=231305,fd=4))
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ neststat -tnp | grep sshd
+Command 'neststat' not found, did you mean:
+  command 'netstat' from deb net-tools (2.10-0.1ubuntu4.4)
+Try: sudo apt install <deb name>
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ netstat -tnp | grep sshd
+(Not all processes could be identified, non-owned process info
+ will not be shown, you would have to be root to see it all.)
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo netstat -tnp | grep sshd
+tcp        0      0 127.0.0.1:43932         127.0.0.1:40407         ESTABLISHED 231470/sshd: user@n 
+tcp        0      0 10.0.1.2:22             10.0.1.1:21589          ESTABLISHED 188796/sshd: user [ 
+tcp        0      0 10.0.1.2:22             10.0.1.1:56991          ESTABLISHED 231305/sshd: user [ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo tail -f /var/log/auth.log | grep ssh
+
+^C
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo journactl -u ssh -f
+sudo: journactl: command not found
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo journalctl -u ssh -f
+Jul 25 20:05:23 k3s-lyon-01 sshd[1112]: ssh_dispatch_run_fatal: Connection from 10.0.1.1 port 29471: Broken pipe [preauth]
+Jul 25 20:05:23 k3s-lyon-01 sshd[1117]: ssh_dispatch_run_fatal: Connection from 10.0.1.1 port 40191: Broken pipe [preauth]
+Jul 25 20:05:24 k3s-lyon-01 sshd[1121]: Accepted publickey for user from 10.0.1.1 port 40256 ssh2: ED25519 SHA256:pYJSgDBktjYFKO3lCI/d5xseCgbjgfQc2cXL5bbNMzY
+Jul 25 20:05:24 k3s-lyon-01 sshd[1121]: pam_unix(sshd:session): session opened for user user(uid=1000) by user(uid=0)
+Jul 25 20:05:38 k3s-lyon-01 sshd[2088]: Accepted publickey for user from 10.0.1.1 port 23470 ssh2: ED25519 SHA256:pYJSgDBktjYFKO3lCI/d5xseCgbjgfQc2cXL5bbNMzY
+Jul 25 20:05:38 k3s-lyon-01 sshd[2088]: pam_unix(sshd:session): session opened for user user(uid=1000) by user(uid=0)
+Jul 26 08:39:28 k3s-lyon-01 sshd[188796]: Accepted publickey for user from 10.0.1.1 port 21589 ssh2: ED25519 SHA256:pYJSgDBktjYFKO3lCI/d5xseCgbjgfQc2cXL5bbNMzY
+Jul 26 08:39:28 k3s-lyon-01 sshd[188796]: pam_unix(sshd:session): session opened for user user(uid=1000) by user(uid=0)
+Jul 26 11:34:41 k3s-lyon-01 sshd[231305]: Accepted publickey for user from 10.0.1.1 port 56991 ssh2: ED25519 SHA256:pYJSgDBktjYFKO3lCI/d5xseCgbjgfQc2cXL5bbNMzY
+Jul 26 11:34:41 k3s-lyon-01 sshd[231305]: pam_unix(sshd:session): session opened for user user(uid=1000) by user(uid=0)
+^C
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo grep "sshd" /var/log/auth.log | tail -20 
+2026-07-26T08:39:28.964396+00:00 k3s-lyon-01 sshd[188796]: Accepted publickey for user from 10.0.1.1 port 21589 ssh2: ED25519 SHA256:pYJSgDBktjYFKO3lCI/d5xseCgbjgfQc2cXL5bbNMzY
+2026-07-26T08:39:28.976228+00:00 k3s-lyon-01 sshd[188796]: pam_unix(sshd:session): session opened for user user(uid=1000) by user(uid=0)
+2026-07-26T11:29:35.003897+00:00 k3s-lyon-01 sshd[2155]: Received disconnect from 10.0.1.1 port 23470:11: disconnected by user
+2026-07-26T11:29:35.018256+00:00 k3s-lyon-01 sshd[2155]: Disconnected from user user 10.0.1.1 port 23470
+2026-07-26T11:29:35.028250+00:00 k3s-lyon-01 sshd[2088]: pam_unix(sshd:session): session closed for user user
+2026-07-26T11:34:41.856412+00:00 k3s-lyon-01 sshd[231305]: Accepted publickey for user from 10.0.1.1 port 56991 ssh2: ED25519 SHA256:pYJSgDBktjYFKO3lCI/d5xseCgbjgfQc2cXL5bbNMzY
+2026-07-26T11:34:41.863654+00:00 k3s-lyon-01 sshd[231305]: pam_unix(sshd:session): session opened for user user(uid=1000) by user(uid=0)
+2026-07-26T11:50:46.875320+00:00 k3s-lyon-01 sudo:     user : TTY=pts/0 ; PWD=/home/user/nova-syndicate-gitops ; USER=root ; COMMAND=/usr/bin/grep sshd /var/log/auth.log
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo grep "sshd" /var/log/auth.log | tail -50
+2026-07-26T08:39:28.964396+00:00 k3s-lyon-01 sshd[188796]: Accepted publickey for user from 10.0.1.1 port 21589 ssh2: ED25519 SHA256:pYJSgDBktjYFKO3lCI/d5xseCgbjgfQc2cXL5bbNMzY
+2026-07-26T08:39:28.976228+00:00 k3s-lyon-01 sshd[188796]: pam_unix(sshd:session): session opened for user user(uid=1000) by user(uid=0)
+2026-07-26T11:29:35.003897+00:00 k3s-lyon-01 sshd[2155]: Received disconnect from 10.0.1.1 port 23470:11: disconnected by user
+2026-07-26T11:29:35.018256+00:00 k3s-lyon-01 sshd[2155]: Disconnected from user user 10.0.1.1 port 23470
+2026-07-26T11:29:35.028250+00:00 k3s-lyon-01 sshd[2088]: pam_unix(sshd:session): session closed for user user
+2026-07-26T11:34:41.856412+00:00 k3s-lyon-01 sshd[231305]: Accepted publickey for user from 10.0.1.1 port 56991 ssh2: ED25519 SHA256:pYJSgDBktjYFKO3lCI/d5xseCgbjgfQc2cXL5bbNMzY
+2026-07-26T11:34:41.863654+00:00 k3s-lyon-01 sshd[231305]: pam_unix(sshd:session): session opened for user user(uid=1000) by user(uid=0)
+2026-07-26T11:50:46.875320+00:00 k3s-lyon-01 sudo:     user : TTY=pts/0 ; PWD=/home/user/nova-syndicate-gitops ; USER=root ; COMMAND=/usr/bin/grep sshd /var/log/auth.log
+2026-07-26T11:50:59.190513+00:00 k3s-lyon-01 sudo:     user : TTY=pts/0 ; PWD=/home/user/nova-syndicate-gitops ; USER=root ; COMMAND=/usr/bin/grep sshd /var/log/auth.log
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ grep "Failed password" /var/log/auth.log
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo grep "Failed password" /var/log/auth.log
+2026-07-26T11:52:55.050218+00:00 k3s-lyon-01 sudo:     user : TTY=pts/0 ; PWD=/home/user/nova-syndicate-gitops ; USER=root ; COMMAND=/usr/bin/grep 'Failed password' /var/log/auth.log
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo grep "Connection closed" /var/log/auth.log
+2026-07-26T11:53:19.155809+00:00 k3s-lyon-01 sudo:     user : TTY=pts/0 ; PWD=/home/user/nova-syndicate-gitops ; USER=root ; COMMAND=/usr/bin/grep 'Connection closed' /var/log/auth.log
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo grep "forwarding" /var/log/auth.log
+2026-07-26T11:53:40.767647+00:00 k3s-lyon-01 sudo:     user : TTY=pts/0 ; PWD=/home/user/nova-syndicate-gitops ; USER=root ; COMMAND=/usr/bin/grep forwarding /var/log/auth.log
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ ps aux | grep sshd
+root        1089  0.0  0.1  12024  8424 ?        Ss   Jul25   0:00 sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups
+root      188796  0.0  0.1  14736 10556 ?        Ss   08:39   0:00 sshd: user [priv]
+user      188956  0.0  0.0  15256  7396 ?        S    08:39   0:05 sshd: user@notty
+root      231305  0.0  0.1  14740 10592 ?        Ss   11:34   0:00 sshd: user [priv]
+user      231470  0.2  0.1  19384 11508 ?        S    11:34   0:02 sshd: user@notty
+user      238393  0.0  0.0   6544  2332 pts/0    S+   11:54   0:00 grep --color=auto sshd
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ pgrep -a sshd
+1089 sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups
+188796 sshd: user [priv]
+188956 sshd: user@notty
+231305 sshd: user [priv]
+231470 sshd: user@notty
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo grep "Connection refused" /var/log/auth.log
+[sudo] password for user: 
+2026-07-26T12:19:26.174318+00:00 k3s-lyon-01 sudo:     user : TTY=pts/0 ; PWD=/home/user/nova-syndicate-gitops ; USER=root ; COMMAND=/usr/bin/grep 'Connection refused' /var/log/auth.log
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo grep "Connection reset" /var/log/auth.log
+2026-07-26T12:19:34.921955+00:00 k3s-lyon-01 sudo:     user : TTY=pts/0 ; PWD=/home/user/nova-syndicate-gitops ; USER=root ; COMMAND=/usr/bin/grep 'Connection reset' /var/log/auth.log
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo grep "timeout" /var/log/auth.log
+2026-07-26T12:19:41.160313+00:00 k3s-lyon-01 sudo:     user : TTY=pts/0 ; PWD=/home/user/nova-syndicate-gitops ; USER=root ; COMMAND=/usr/bin/grep timeout /var/log/auth.log
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo grep "error" /var/log/auth.log | grep ssh
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo grep "error" /var/log/auth.log 
+2026-07-26T12:19:47.583948+00:00 k3s-lyon-01 sudo:     user : TTY=pts/0 ; PWD=/home/user/nova-syndicate-gitops ; USER=root ; COMMAND=/usr/bin/grep error /var/log/auth.log
+2026-07-26T12:20:01.427078+00:00 k3s-lyon-01 sudo:     user : TTY=pts/0 ; PWD=/home/user/nova-syndicate-gitops ; USER=root ; COMMAND=/usr/bin/grep error /var/log/auth.log
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo tail -f /var/log/auth.log | grep -E "sshd|error|failed|timeout|refused|closed"
+2026-07-26T12:19:41.184364+00:00 k3s-lyon-01 sudo: pam_unix(sudo:session): session closed for user root
+2026-07-26T12:19:47.583948+00:00 k3s-lyon-01 sudo:     user : TTY=pts/0 ; PWD=/home/user/nova-syndicate-gitops ; USER=root ; COMMAND=/usr/bin/grep error /var/log/auth.log
+2026-07-26T12:19:47.595700+00:00 k3s-lyon-01 sudo: pam_unix(sudo:session): session closed for user root
+2026-07-26T12:20:01.427078+00:00 k3s-lyon-01 sudo:     user : TTY=pts/0 ; PWD=/home/user/nova-syndicate-gitops ; USER=root ; COMMAND=/usr/bin/grep error /var/log/auth.log
+2026-07-26T12:20:01.447399+00:00 k3s-lyon-01 sudo: pam_unix(sudo:session): session closed for user root
+^C
+user@k3s-lyon-01:~/nova-syndicate-gitops$ ps aux | grep -E "vscode|.vscode-server"
+user        2267  0.0  0.2  43772 18284 ?        Ssl  Jul25   0:00 /home/user/.vscode-server/code-fcf604774b9f2674b473065736ee75077e256353 --cli-data-dir /home/user/.vscode-server/cli agent host
+user      231536  0.3  0.2  48360 23192 ?        Sl   11:34   0:09 /home/user/.vscode-server/code-1b6a188127eeaf9194f945eb6eb89a657e93c54c command-shell --cli-data-dir /home/user/.vscode-server/cli --parent-process-id 231482 --on-host=127.0.0.1 --on-port
+user      231610  0.0  0.0   2800  1924 ?        S    11:34   0:00 sh /home/user/.vscode-server/cli/servers/Stable-1b6a188127eeaf9194f945eb6eb89a657e93c54c/server/bin/code-server --connection-token=remotessh --accept-server-license-terms --agent-host-bridge-port=34831 --agent-host-bridge-host=127.0.0.1 --agent-host-bridge-connection-token=26bbd31e-54af-4aaa-a372-a2bbfb30e482 --start-server --enable-remote-auto-shutdown --socket-path=/tmp/code-ae7b2818-77b4-4802-8e5e-013fdca0c884
+user      231618  0.9  1.8 1792492 151596 ?      Sl   11:34   0:26 /home/user/.vscode-server/cli/servers/Stable-1b6a188127eeaf9194f945eb6eb89a657e93c54c/server/node /home/user/.vscode-server/cli/servers/Stable-1b6a188127eeaf9194f945eb6eb89a657e93c54c/server/out/server-main.js --connection-token=remotessh --accept-server-license-terms --agent-host-bridge-port=34831 --agent-host-bridge-host=127.0.0.1 --agent-host-bridge-connection-token=26bbd31e-54af-4aaa-a372-a2bbfb30e482 --start-server --enable-remote-auto-shutdown --socket-path=/tmp/code-ae7b2818-77b4-4802-8e5e-013fdca0c884
+user      231699  0.3  1.2 1760152 104940 ?      Sl   11:34   0:10 /home/user/.vscode-server/cli/servers/Stable-1b6a188127eeaf9194f945eb6eb89a657e93c54c/server/node --dns-result-order=ipv4first /home/user/.vscode-server/cli/servers/Stable-1b6a188127eeaf9194f945eb6eb89a657e93c54c/server/out/bootstrap-fork --type=extensionHost --transformURIs --useHostProxy=false
+user      231725  0.0  0.7 1529052 58088 ?       Sl   11:35   0:01 /home/user/.vscode-server/cli/servers/Stable-1b6a188127eeaf9194f945eb6eb89a657e93c54c/server/node /home/user/.vscode-server/cli/servers/Stable-1b6a188127eeaf9194f945eb6eb89a657e93c54c/server/out/bootstrap-fork --type=fileWatcher
+user      231800  0.5  0.9 1556100 78028 ?       Sl   11:35   0:16 /home/user/.vscode-server/cli/servers/Stable-1b6a188127eeaf9194f945eb6eb89a657e93c54c/server/node /home/user/.vscode-server/cli/servers/Stable-1b6a188127eeaf9194f945eb6eb89a657e93c54c/server/out/bootstrap-fork --type=ptyHost --logsPath /home/user/.vscode-server/data/logs/20260726T113456
+user      232354  0.0  0.0   9024  5932 pts/0    Ss   11:37   0:00 /bin/bash --init-file /home/user/.vscode-server/cli/servers/Stable-1b6a188127eeaf9194f945eb6eb89a657e93c54c/server/out/vs/workbench/contrib/terminal/common/scripts/shellIntegration-bash.sh
+user      245733  0.0  0.0   6684  2340 pts/0    S+   12:20   0:00 grep --color=auto -E vscode|.vscode-server
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ ps aux | grep "sshd:.*@pts" | grep -v grep
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo ps aux | grep "sshd:.*@pts" | grep -v grep
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo grep "sshd" /var/log/auth.log | awk '{print $6,$7,$8}' | sort | uniq -c | sort -rn
+      3 TTY=pts/0 ; PWD=/home/user/nova-syndicate-gitops
+      2 opened for user
+      2 for user from
+      1 user user 10.0.1.1
+      1 from 10.0.1.1 port
+      1 closed for user
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo cat /etc/ssh/sshd_config | grep -E "AllowTcpForwarding|PermitTunnel|GatewayPorts"
+#AllowTcpForwarding yes
+#GatewayPorts no
+#PermitTunnel no
+#       AllowTcpForwarding no
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo systemctl status ssh
+● ssh.service - OpenBSD Secure Shell server
+     Loaded: loaded (/usr/lib/systemd/system/ssh.service; enabled; preset: enabled)
+     Active: active (running) since Sat 2026-07-25 20:05:23 UTC; 16h ago
+TriggeredBy: ● ssh.socket
+       Docs: man:sshd(8)
+             man:sshd_config(5)
+    Process: 1065 ExecStartPre=/usr/sbin/sshd -t (code=exited, status=0/SUCCESS)
+   Main PID: 1089 (sshd)
+      Tasks: 1 (limit: 9431)
+     Memory: 6.7M (peak: 8.8M)
+        CPU: 779ms
+     CGroup: /system.slice/ssh.service
+             └─1089 "sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups"
+
+Jul 25 20:05:23 k3s-lyon-01 sshd[1112]: ssh_dispatch_run_fatal: Connection from 10.0.1.1 port 29471: Broken pipe [preauth]
+Jul 25 20:05:23 k3s-lyon-01 sshd[1117]: ssh_dispatch_run_fatal: Connection from 10.0.1.1 port 40191: Broken pipe [preauth]
+Jul 25 20:05:24 k3s-lyon-01 sshd[1121]: Accepted publickey for user from 10.0.1.1 port 40256 ssh2: ED25519 SHA256:pYJSgDBktjYFKO3lCI/d5xseCgbjgfQc2cXL5bbNMzY
+Jul 25 20:05:24 k3s-lyon-01 sshd[1121]: pam_unix(sshd:session): session opened for user user(uid=1000) by user(uid=0)
+Jul 25 20:05:38 k3s-lyon-01 sshd[2088]: Accepted publickey for user from 10.0.1.1 port 23470 ssh2: ED25519 SHA256:pYJSgDBktjYFKO3lCI/d5xseCgbjgfQc2cXL5bbNMzY
+Jul 25 20:05:38 k3s-lyon-01 sshd[2088]: pam_unix(sshd:session): session opened for user user(uid=1000) by user(uid=0)
+Jul 26 08:39:28 k3s-lyon-01 sshd[188796]: Accepted publickey for user from 10.0.1.1 port 21589 ssh2: ED25519 SHA256:pYJSgDBktjYFKO3lCI/d5xseCgbjgfQc2cXL5bbNMzY
+Jul 26 08:39:28 k3s-lyon-01 sshd[188796]: pam_unix(sshd:session): session opened for user user(uid=1000) by user(uid=0)
+Jul 26 11:34:41 k3s-lyon-01 sshd[231305]: Accepted publickey for user from 10.0.1.1 port 56991 ssh2: ED25519 SHA256:pYJSgDBktjYFKO3lCI/d5xseCgbjgfQc2cXL5bbNMzY
+Jul 26 11:34:41 k3s-lyon-01 sshd[231305]: pam_unix(sshd:session): session opened for user user(uid=1000) by user(uid=0)
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo grep "AllowTcpForwarding" /etc/ssh/sshd_config
+#AllowTcpForwarding yes
+#       AllowTcpForwarding no
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo grep -i "forward" /var/log/auth.log | tail -10
+2026-07-26T11:53:40.767647+00:00 k3s-lyon-01 sudo:     user : TTY=pts/0 ; PWD=/home/user/nova-syndicate-gitops ; USER=root ; COMMAND=/usr/bin/grep forwarding /var/log/auth.log
+2026-07-26T12:22:12.242679+00:00 k3s-lyon-01 sudo:     user : TTY=pts/0 ; PWD=/home/user/nova-syndicate-gitops ; USER=root ; COMMAND=/usr/bin/grep AllowTcpForwarding /etc/ssh/sshd_config
+2026-07-26T12:22:30.783805+00:00 k3s-lyon-01 sudo:     user : TTY=pts/0 ; PWD=/home/user/nova-syndicate-gitops ; USER=root ; COMMAND=/usr/bin/grep -i forward /var/log/auth.log
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo journalctl -u ssh | grep -i "forward"
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo ss -tlnp | grep 40407
+[sudo] password for user: 
+LISTEN 0      128        127.0.0.1:40407      0.0.0.0:*    users:(("code-1b6a188127",pid=231536,fd=11))                                                                                                                                                                                                                                                                                                                                                                              
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo vim /etc/ssh/sshd/sshd_config
+[sudo] password for user: 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo vim /etc/ssh/sshd_config
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo vim /etc/ssh/sshd_config
+[sudo] password for user: 
+Sorry, try again.
+[sudo] password for user: 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ ss -tulnp | grep 40407
+tcp   LISTEN 0      128          127.0.0.1:40407      0.0.0.0:*    users:(("code-1b6a188127",pid=231536,fd=11))
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+
+
+
+-----------------------------------
+
+ Excellente question ! Pourquoi la connexion SSH a réussi alors qu'il y a eu une erreur ?
+
+La réponse est subtile mais cruciale : il y a deux types de connexions dans VS Code Remote !
+
+📊 Les 2 phases de connexion VS Code
+
+Phase 1 : Connexion SSH basique ✅ (RÉUSSIE)
+
+text
+VS Code → ssh -T k3s-lyon-01
+Ce que ça fait :
+
+Authentification par clé publique
+Obtention d'un shell distant
+Lancement du script d'installation
+Pourquoi ça marche :
+
+Le serveur SSH autorise les connexions normales
+L'authentification est valide
+Pas besoin de AllowTcpForwarding
+Phase 2 : Tunnel dynamique ❌ (ÉCHEC)
+
+text
+VS Code → ssh -D 63412 k3s-lyon-01
+         (tunnel SOCKS)
+Ce que ça fait :
+
+Crée un proxy SOCKS pour transférer des données
+Permet à VS Code local de communiquer avec le serveur distant
+Pourquoi ça échoue :
+
+AllowTcpForwarding est désactivé
+Le serveur refuse le forwarding
+🔍 Analyse détaillée de vos logs
+
+1. La connexion SSH initiale (13:34:36 - 13:34:44)
+
+log
+[13:34:36.783] ssh -v -T -D 63412 k3s-lyon-01
+                          ↑
+                    Tunnel demandé MAIS
+
+[13:34:37.420] debug1: Server host key: ssh-ed25519...
+[13:34:38.495] Authenticated to 10.20.67.106 using "publickey".
+[13:34:41.635] Authenticated to 10.0.1.2 (via proxy) using "publickey".
+                                    ↑
+                            Connexion SSH OK !
+Pourquoi ça marche ? La commande ssh -T demande un shell, pas un tunnel.
+
+2. Installation du serveur VS Code (13:34:44 - 13:34:48)
+
+log
+[13:34:45.759] Installing to /home/user/.vscode-server...
+[13:34:48.811] Remote server is listening on port 40407
+                              ↑
+                    Serveur installé et démarré !
+                    (sur 127.0.0.1:40407)
+Point important : L'installation se fait via des commandes SSH normales, SANS tunnel.
+
+3. Tentative de création du tunnel (13:34:48 - 13:36:31)
+
+log
+[13:34:48.820] Starting forwarding server. local port 63485 -> socksPort 63412 -> remotePort 40407
+[13:34:48.826] Tunneled port 40407 to local port 63485
+[13:34:48.833] [Forwarding server port 63485] Got connection 0
+[13:34:48.834] [Forwarding server port 63485] Got connection 1
+         ↑
+    VS Code essaie d'établir le tunnel
+
+[13:36:31.486] Failed to set up socket for dynamic port forward to remote port 40407: 
+                Proxy connection timed out.
+                TCP port forwarding may be disabled
+         ↑
+    ÉCHEC ! Le tunnel ne fonctionne pas
+🎭 Comment VS Code "contourne" le problème ?
+
+VS Code a des mécanismes de fallback (repli) :
+
+Mécanisme 1 : Socket Unix vs TCP
+
+log
+[13:34:55.952] Server bound to /tmp/code-ae7b2818-77b4-4802-8e5e-013fdca0c884
+                                 ↑
+                          Utilise un socket Unix local !
+VS Code essaie d'abord via TCP, mais si ça échoue, il utilise un socket Unix.
+
+Mécanisme 2 : Reconnection automatique
+
+log
+[13:37:32.115] The client has reconnected.
+VS Code tente de se reconnecter avec une autre méthode.
+
+Mécanisme 3 : Multiples tentatives
+
+log
+[13:36:01.469] Found running server - short-circuiting install
+[13:36:01.473] Starting forwarding server. local port 63532...
+[13:36:31.486] Failed to set up socket... (TIMEOUT)
+[13:37:32.115] The client has reconnected. (SUCCÈS)
+📋 Schéma des connexions
+
+text
+TIMELINE DE LA CONNEXION VS CODE
+═══════════════════════════════════════════════════════════
+
+13:34:36  🔄 VS Code démarre
+          │
+          ├─ Phase 1 : Connexion SSH
+          │  ssh -T k3s-lyon-01
+          │  ✅ Authentification OK
+          │  ✅ Shell distant obtenu
+          │
+          ├─ Phase 2 : Installation
+          │  📦 Télécharge et installe VS Code Server
+          │  ✅ Serveur installé sur 127.0.0.1:40407
+          │
+          ├─ Phase 3 : Tunnel TCP
+          │  ssh -D 63412 k3s-lyon-01
+          │  ❌ AllowTcpForwarding = no
+          │  ❌ TIMEOUT (17 secondes)
+          │
+          ├─ Phase 4 : Fallback #1
+          │  📡 Tente socket Unix
+          │  /tmp/code-ae7b2818...
+          │  ✅ Communication établie !
+          │
+          ├─ Phase 5 : Reconnection
+          │  🔄 Client reconnected
+          │  ✅ VS Code fonctionne (en mode dégradé)
+          │
+          └─ 13:37:32  ✅ VS Code prêt à l'emploi !
+🔬 Pourquoi l'erreur apparaît quand même ?
+
+L'erreur est ASYNCHRONE
+
+log
+[13:36:31.486] Failed to set up socket...
+[13:37:32.115] The client has reconnected.
+    ↑                    ↑
+    Erreur (timeout)     Puis succès (reconnection)
+VS Code :
+
+Tente le tunnel TCP (échec)
+Continue à essayer en parallèle
+Réussit avec une autre méthode
+Affiche l'erreur mais continue de fonctionner
+🎯 La vraie différence
+
+Élément	Connexion SSH	Tunnel dynamique	Résultat final
+Authentification	✅ OK	✅ OK (même session)	Fonctionne
+Shell distant	✅ OK	N/A	Fonctionne
+Installation	✅ OK (via SCP/rsync)	N/A	Fonctionne
+Transfert de données	❌ BLOQUÉ	✅ Via socket Unix	Fonctionne en mode dégradé
+Extensions lourdes	❌ BLOQUÉ	⚠️ Lent	Peut ralentir
+💡 Conclusion
+
+Votre connexion "réussit" mais avec un handicap :
+
+text
+✅ Connexion SSH : OK
+⚠️ Tunnel TCP : ÉCHEC (timeout)
+✅ Communication : OK (via socket Unix)
+⚠️ Performance : Dégradée (pas de forwarding)
+Pourquoi VS Code affiche "connected" ?
+
+Parce que même sans le tunnel TCP, VS Code peut :
+
+Utiliser des sockets Unix pour les commandes
+Utiliser des transferts SCP/rsync pour les fichiers
+Communiquer via des canaux SSH de base
+Mais sans AllowTcpForwarding yes :
+
+❌ Pas de tunnel SOCKS
+❌ Pas de forwarding de ports
+⚠️ Performance réduite
+⚠️ Certaines extensions peuvent échouer
+La solution reste : activer AllowTcpForwarding yes pour une expérience complète et performante !
+
+--------------------------------------------
+
+ Détail de votre diagnostic
+
+Voici une explication très détaillée de chaque élément :
+
+1️⃣ Qu'est-ce qu'un "socket" ?
+
+Définition simple
+
+Un socket = une porte de communication entre deux programmes.
+
+text
+Programme A ←→ [Socket] ←→ Programme B
+Exemple concret
+
+bash
+# Un socket, c'est comme un tuyau :
+Votre navigateur ←→ socket:443 ←→ Serveur web
+VS Code local   ←→ socket:40407 ←→ VS Code distant
+Types de sockets
+
+Type	Exemple	Utilisation
+Socket réseau	127.0.0.1:40407	Communication via réseau (IP + port)
+Socket Unix	/tmp/code-xxx.sock	Communication entre processus locaux
+Socket SSH	Tunnel dynamique	Communication chiffrée via SSH
+2️⃣ Le serveur VSCode distant 127.0.0.1:40407
+
+📍 Où il se trouve ?
+
+text
+[VOTRE MACHINE]                    [SERVEUR k3s-lyon-01]
+    ↓                                      ↓
+VS Code local                    VS Code Server (code-server)
+    ↓                                      ↓
+    ↓                    écoute sur → 127.0.0.1:40407
+    ↓                                         ↑
+    └─────────── Tunnel SSH ──────────────────┘
+                (via le socket)
+🌐 Sur quel équipement ?
+
+Le serveur 127.0.0.1:40407 est sur le serveur distant (k3s-lyon-01) :
+
+bash
+# Sur k3s-lyon-01, vérifions :
+sudo ss -tlnp | grep 40407
+# Résultat :
+LISTEN 127.0.0.1:40407    0.0.0.0:*    users:(("code-server",pid=xxx))
+#        ↑
+#    Écoute sur localhost uniquement
+🔒 Pourquoi 127.0.0.1 et pas 0.0.0.0 ?
+
+Sécurité ! Le serveur n'écoute que sur localhost pour éviter que d'autres machines y accèdent.
+
+text
+✅ 127.0.0.1:40407  → Accessible UNIQUEMENT depuis le serveur lui-même
+❌ 0.0.0.0:40407    → Accessible depuis l'extérieur (risqué)
+3️⃣ Le "dynamic port forward to remote port 40407"
+
+🗺️ Visualisation complète
+
+text
+Ordinateur LOCAL                    Serveur k3s-lyon-01
+─────────────────────               ─────────────────────
+                                      [VS Code Server]
+                                            ↓
+                                      écoute sur : 
+                                     127.0.0.1:40407
+                                            ↑
+                                      (pas accessible depuis
+                                       l'extérieur !)
+                                            ↑
+┌──────────────────┐                 ┌──────────────────┐
+│ VS Code Local    │                 │ sshd (serveur)   │
+│                  │                 │                  │
+│ Crée un tunnel   │                 │ Vérifie :        │
+│ dynamique :      │                 │ AllowTcpForwarding│
+│ -D 63412         │                 │ = ???           │
+└────────┬─────────┘                 └────────┬─────────┘
+         │                                     │
+         │   Étape 1 : Connexion SSH           │
+         └─────────────────────────────────────►│
+         │                                     │
+         │   Étape 2 : Demande un tunnel       │
+         │   "Crée un socket vers 40407"      │
+         │   (via le port dynamique 63412)    │
+         │                                     │
+         │                                     │ ❌ SI AllowTcpForwarding=no
+         │                                     │ → REFUSÉ !
+         │                                     │
+         │   ⚠️ Timeout après 17s              │
+         │   "Failed to set up socket"         │
+         │                                     │
+🔄 Étapes détaillées
+
+Étape 1 : VS Code lance la commande SSH
+
+bash
+ssh -v -T -D 63412 k3s-lyon-01
+         ↑
+    Port dynamique (SOCKS proxy)
+    VS Code l'utilise pour rediriger le trafic
+Étape 2 : VS Code essaie d'accéder au serveur distant
+
+bash
+# Via le tunnel, VS Code demande d'accéder à :
+127.0.0.1:40407
+
+# Le tunnel SSH transforme la requête :
+Requête locale → Tunnel SSH → Destination distante
+[localhost:63412] → [SSH] → [127.0.0.1:40407]
+Étape 3 : Le serveur SSH vérifie les permissions
+
+text
+sshd (sur k3s-lyon-01) :
+→ "AllowTcpForwarding ?"
+→ "NON ! Refusé."
+Étape 4 : Résultat
+
+text
+❌ Timeout → "Failed to set up socket for dynamic port forward"
+4️⃣ Les "sockets" en jeu
+
+Socket 1 : Le tunnel SSH
+
+text
+Local : 127.0.0.1:63412 (SOCKS proxy créé par VS Code)
+Distant : 10.0.1.2:22 (serveur SSH)
+Rôle : Transporte TOUTES les communications chiffrées.
+
+Socket 2 : Le serveur VSCode
+
+text
+Distant : 127.0.0.1:40407 (code-server)
+Rôle : Gère l'éditeur, les extensions, le terminal.
+
+Socket 3 : La communication finale (qui échoue)
+
+text
+VS Code Local → Tunnel SSH → VS Code Distant
+                                   ↓
+                            sur 127.0.0.1:40407
+                                   ↑
+                            ❌ PAS ACCESSIBLE
+5️⃣ Schéma explicatif complet
+
+text
+┌─────────────────────────────────────────────────────────────────┐
+│ VOTRE MACHINE (local)                                         │
+│                                                                 │
+│  ┌─────────────┐         ┌─────────────────────┐              │
+│  │ VS Code UI  │◄───────►│ Tunnel SSH Local    │              │
+│  │ (éditeur)   │         │ Port: 63412 (SOCKS) │              │
+│  └─────────────┘         └──────────┬──────────┘              │
+│                                      │                         │
+└──────────────────────────────────────┼─────────────────────────┘
+                                       │
+                                       │ SSH Connection
+                                       │ (chiffrée)
+                                       │
+┌──────────────────────────────────────┼─────────────────────────┐
+│ SERVEUR k3s-lyon-01                 │                         │
+│                                      │                         │
+│  ┌─────────────┐         ┌──────────▼──────────┐              │
+│  │ sshd       │◄────────│ AllowTcpForwarding?  │              │
+│  │ (port 22)  │         │                      │              │
+│  └─────────────┘         └──────────┬──────────┘              │
+│                                      │                         │
+│                          ┌───────────▼───────────┐            │
+│                          │ Fichier config SSH   │            │
+│                          │ /etc/ssh/sshd_config │            │
+│                          │ #AllowTcpForwarding  │            │
+│                          │      yes             │            │
+│                          └───────────┬───────────┘            │
+│                                      │                         │
+│                          ┌───────────▼───────────┐            │
+│                          │ VS Code Server       │            │
+│                          │ code-server          │            │
+│                          │ sur 127.0.0.1:40407 │            │
+│                          └──────────────────────┘            │
+│                                                               │
+│  ⚠️ Si AllowTcpForwarding = no :                             │
+│     Le tunnel ne peut PAS être créé !                        │
+│     VS Code ne peut PAS accéder à 127.0.0.1:40407 !          │
+└───────────────────────────────────────────────────────────────┘
+6️⃣ Synthèse en langage simple
+
+🏠 Analogie avec une maison
+
+text
+[VOTRE MAISON]                    [MAISON DU SERVEUR]
+     │                                    │
+  Vous êtes                            Serveur SSH
+     │                                    │
+     │                                    │
+  VS Code local                      VS Code distant
+  veut accéder à                     (dans la chambre
+  la maison du serveur                du serveur, porte 40407)
+     │                                    │
+     │                                    │
+  Vous sonnez à                         MAIS la porte
+  la porte (port 22)                    est verrouillée !
+     │                                    │
+     ├────────────────────────────────────►│
+     │                                    │
+  Vous dites :                         Le serveur répond :
+  "Puis-je entrer ?"                   "Non, je n'autorise pas
+                                        les tunnels."
+     │                                    │
+     │◄───────────────────────────────────┤
+     │                                    │
+  ⏱️ Vous attendez                     ❌ Refusé !
+  17 secondes...
+     │
+  ⚠️ Timeout !
+📝 Résumé final
+
+Élément	Explication
+Socket	Un "tuyau" de communication entre programmes
+127.0.0.1:40407	Le serveur VS Code sur le serveur distant, accessible uniquement en local sur ce serveur
+Dynamic port forward	Un tunnel SSH qui permet de "transporter" des données à travers la connexion
+Le problème	Le serveur SSH refuse le tunnel car AllowTcpForwarding est désactivé
+La solution	Activer AllowTcpForwarding yes dans /etc/ssh/sshd_config
+En bref : VS Code local essaie de se connecter à VS Code distant via un tunnel, mais le serveur bloque ce tunnel → erreur de timeout.
+
+-------------------------------------------
+
+Tu as raison de poser la question : si code-server écoute uniquement sur 127.0.0.1:40407 et que AllowTcpForwarding était désactivé, comment VSCode arrive-t-il à se connecter ?
+La réponse réside dans le mécanisme de connexion de VSCode et les logs que tu as partagés. Voici l'explication détaillée, étape par étape.
+
+🔍 Pourquoi la connexion SSH finit par fonctionner ?
+1. VSCode utilise un double mécanisme de connexion
+D'après tes logs, VSCode ne se connecte pas directement à k3s-lyon-01 (10.0.1.2), mais passe par un serveur intermédiaire (10.20.67.106).
+Voici ce qui se passe :
+Étape 1 : Connexion SSH initiale (réussie)
+log
+Copier
+
+[13:34:38.495] Authenticated to 10.20.67.106 ([10.20.67.106]:22) using "publickey".
+[13:34:41.635] Authenticated to 10.0.1.2 (via proxy) using "publickey".
+
+
+
+
+VSCode se connecte d'abord à 10.20.67.106 (un bastion ou un proxy SSH).
+Puis, depuis ce serveur, il saute vers 10.0.1.2 (k3s-lyon-01).
+L'authentification SSH fonctionne car :
+
+Ta clé id_ed25519 est autorisée sur les deux serveurs.
+Le proxy SSH (10.20.67.106) a probablement AllowTcpForwarding yes activé.
+
+Étape 2 : Installation du serveur VSCode distant
+log
+Copier
+
+[13:34:45.759] Installing to /home/user/.vscode-server...
+[13:34:48.811] Remote server is listening on port 40407
+
+
+
+
+VSCode installe et lance code-server sur k3s-lyon-01.
+Le serveur écoute sur 127.0.0.1:40407 (comme tu l'as configuré pour la sécurité).
+Étape 3 : Création du tunnel SSH pour accéder à code-server
+log
+Copier
+
+[13:34:48.820] Starting forwarding server. local port 63485 -> socksPort 63412 -> remotePort 40407
+[13:34:48.826] Tunneled port 40407 to local port 63485
+
+
+
+
+VSCode établit un tunnel SSH dynamique (-D 63412) depuis ton Mac vers 10.20.67.106.
+Ce tunnel redirige le trafic vers 127.0.0.1:40407 sur k3s-lyon-01.
+Pourquoi ça marche ?
+
+Le proxy SSH (10.20.67.106) a AllowTcpForwarding yes activé.
+Le tunnel est établi entre ton Mac et 10.20.67.106, puis relayé vers k3s-lyon-01.
+k3s-lyon-01 n'a pas besoin d'avoir AllowTcpForwarding yes car le forwarding est géré par le proxy intermédiaire.
+
+
+2. Pourquoi l'erreur Proxy connection timed out apparaît plus tard ?
+log
+Copier
+
+[13:36:31.486] Failed to set up socket for dynamic port forward to remote port 40407: Proxy connection timed out.
+
+
+
+
+Cette erreur survient après la première connexion réussie, lorsque VSCode essaie de :
+
+Réutiliser le tunnel existant (pour une nouvelle session ou un rechargement).
+Établir un nouveau tunnel (si le premier a expiré).
+
+Causes possibles :
+
+Le proxy SSH (10.20.67.106) a fermé la connexion après un timeout.
+Le serveur code-server sur k3s-lyon-01 a redémarré (et changé de port).
+Un problème de stabilité du tunnel (ex : latence réseau entre 10.20.67.106 et 10.0.1.2).
+
+
+3. Schéma récapitulatif
+text
+Copier
+
+Ton Mac (VSCode)
+       │
+       ▼ (SSH + Tunnel dynamique -D 63412)
+10.20.67.106 (Proxy SSH avec AllowTcpForwarding yes)
+       │
+       ▼ (SSH + Port Forwarding vers 127.0.0.1:40407)
+10.0.1.2 (k3s-lyon-01)
+       │
+       ▼ (code-server écoute sur 127.0.0.1:40407)
+VSCode Server (accessible via le tunnel)
+
+
+
+
+La connexion initiale fonctionne car le proxy SSH (10.20.67.106) gère le forwarding.
+L'erreur apparaît plus tard car le tunnel n'est pas stable (timeout, reconnexion, etc.).
+
+✅ Solutions pour stabiliser la connexion
+1. Vérifier la configuration du proxy SSH (10.20.67.106)
+
+Sur 10.20.67.106, exécute :
+bash
+Copier
+
+sudo sshd -T | grep -iE "allowtcpforwarding|gatewayports"
+
+
+
+
+Doit afficher :
+text
+Copier
+
+allowtcpforwarding yes
+gatewayports no  # (ou yes, mais "no" est plus sécurisé)
+
+
+
+
+Si AllowTcpForwarding est à no, active-le :
+bash
+Copier
+
+sudo nano /etc/ssh/sshd_config
+
+
+
+Ajoute :
+ini
+Copier
+
+AllowTcpForwarding yes
+
+
+
+Puis redémarre SSH :
+bash
+Copier
+
+sudo systemctl restart ssh
+
+
+
+
+
+
+2. Augmenter le timeout du tunnel SSH
+
+Dans ~/.ssh/config (côté client, sur ton Mac), ajoute :
+ini
+Copier
+
+Host 10.20.67.106
+  ServerAliveInterval 60
+  ServerAliveCountMax 3
+  TCPKeepAlive yes
+
+
+
+
+Cela maintient le tunnel actif plus longtemps.
+
+
+3. Vérifier la stabilité du serveur code-server
+
+Sur k3s-lyon-01, vérifie que code-server ne redémarre pas :
+bash
+Copier
+
+sudo journalctl -u ssh --no-pager | grep -i "code-server"
+
+
+
+
+Si tu vois des redémarrages fréquents, c'est peut-être dû à :
+
+Un manque de mémoire (VSCode est gourmand).
+Un problème de permissions (vérifie chmod 700 ~/.vscode-server).
+
+
+
+4. Forcer VSCode à utiliser un tunnel SSH direct (sans proxy)
+Si 10.20.67.106 est un bastion, tu peux :
+
+Configurer VSCode pour se connecter directement à 10.0.1.2 (si possible).
+Dans ~/.ssh/config :
+ini
+Copier
+
+Host k3s-lyon-01
+  HostName 10.0.1.2
+  User user
+  ProxyJump 10.20.67.106  # Utilise le bastion comme proxy
+  ForwardAgent yes
+  LocalForward 63485 localhost:40407  # Port forwarding explicite
+
+
+
+
+Cela simplifie le tunnel et évite les problèmes de double saut.
+
+
+📌 Résumé des actions
+
+  
+    
+      Problème
+      Cause
+      Solution
+    
+  
+  
+    
+      Connexion initiale fonctionne
+      Proxy SSH (10.20.67.106) gère le forwarding
+      ✅ Déjà OK, mais à vérifier.
+    
+    
+      Erreur Proxy connection timed out
+      Tunnel instable (timeout, redémarrage)
+      Augmenter ServerAliveInterval, vérifier code-server.
+    
+    
+      AllowTcpForwarding manquant
+      Sur 10.20.67.106 ou 10.0.1.2
+      Activer AllowTcpForwarding yes sur le proxy.
+    
+    
+      code-server écoute sur 127.0.0.1
+      Sécurisé, mais nécessite un tunnel SSH
+      ✅ Correct, ne pas changer.
+    
+  
+
+
+
+
+
+💡 Conclusion
+
+La connexion SSH fonctionne grâce au proxy intermédiaire (10.20.67.106) qui gère le forwarding.
+L'erreur apparaît plus tard à cause d'un problème de stabilité du tunnel (timeout, reconnexion).
+Solution :
+
+Vérifie AllowTcpForwarding yes sur 10.20.67.106.
+Augmente le timeout SSH (ServerAliveInterval).
+Vérifie que code-server ne redémarre pas sur k3s-lyon-01.
+
+
+
+
+------------------------------
+
+Tu as raison à 100% : 127.0.0.1 est bien plus sécurisé que 0.0.0.0 pour exposer un service comme code-server. Voici pourquoi, et comment concilier sécurité et fonctionnement de VSCode sans ouvrir le serveur à l’extérieur.
+
+🔒 Pourquoi 127.0.0.1 est plus sûr ?
+
+  
+    
+      Critère
+      127.0.0.1:40407
+      0.0.0.0:40407
+    
+  
+  
+    
+      Accès
+      Uniquement depuis la machine locale.
+      Depuis n’importe quelle IP (LAN, WAN).
+    
+    
+      Risque d’exposition
+      Aucun (isolé au serveur).
+      Élevé (exposé au réseau).
+    
+    
+      Attaques possibles
+      Aucune (sauf si le serveur est compromis).
+      Scans de ports, brute-force, exploits.
+    
+    
+      Compatibilité VPN
+      ✅ Fonctionne si le tunnel SSH est correct.
+      ❌ Nécessite des règles firewall strictes.
+    
+  
+
+
+
+
+→ Conclusion : 127.0.0.1 est la bonne pratique pour code-server. Le problème ne vient pas de cette configuration, mais de la manière dont VSCode essaie d’y accéder.
+
+🛠️ Solution sécurisée : Utiliser le port forwarding SSH
+VSCode n’a pas besoin que code-server écoute sur 0.0.0.0. Il suffit de :
+
+Activer AllowTcpForwarding dans sshd_config (pour autoriser le forwarding).
+Laisser code-server sur 127.0.0.1:40407 (sécurisé).
+Configurer VSCode pour utiliser un tunnel SSH (déjà fait automatiquement).
+
+🔧 Étapes détaillées
+1. Sur le serveur (k3s-lyon-01)
+
+Modifie /etc/ssh/sshd_config :
+ini
+Copier
+
+AllowTcpForwarding yes    # Autorise le forwarding de ports
+GatewayPorts no          # Pas besoin de "yes" ici (sécurité)
+PermitTunnel yes         # Optionnel (pour les tunnels SSH avancés)
+
+
+
+
+Redémarre SSH :
+bash
+Copier
+
+sudo systemctl restart ssh
+
+
+
+
+Vérifie que code-server écoute bien sur 127.0.0.1:40407 :
+bash
+Copier
+
+ss -tulnp | grep 40407
+
+
+
+→ Doit afficher :
+text
+Copier
+
+tcp   LISTEN 0  128  127.0.0.1:40407  0.0.0.0:*  users:(("code-server",pid=...,fd=...))
+
+
+
+
+2. Depuis ton Mac (VSCode)
+
+VSCode utilise déjà -D 63412 (port forwarding dynamique) pour accéder à 127.0.0.1:40407 via le tunnel SSH.
+Teste manuellement que le forwarding fonctionne :
+bash
+Copier
+
+ssh -L 8080:localhost:40407 user@10.0.1.2
+
+
+
+
+Si ça marche, ouvre http://localhost:8080 dans ton navigateur → tu devrais voir VSCode.
+Si ça échoue :
+
+Vérifie que AllowTcpForwarding yes est bien appliqué :
+bash
+Copier
+
+sudo sshd -T | grep allowtcpforwarding
+
+
+
+
+Vérifie que aucune règle firewall ne bloque le port 40407 localement sur k3s-lyon-01 :
+bash
+Copier
+
+sudo iptables -L -n | grep 40407
+sudo ufw status | grep 40407
+
+
+
+
+
+
+3. Forcer VSCode à utiliser le bon hôte
+
+Dans les paramètres de VSCode (côté client), ajoute ceci dans ~/.ssh/config :
+ini
+Copier
+
+Host k3s-lyon-01
+  HostName 10.0.1.2
+  User user
+  ForwardAgent yes
+  LocalForward 8080 localhost:40407  # Optionnel : forwarding manuel
+
+
+
+
+Relance VSCode et vérifie les logs (Remote-SSH Output).
+
+⚠️ Points de vigilance
+
+
+Ne jamais exposer code-server sur 0.0.0.0 sans :
+
+Un firewall strict (ufw allow from 10.0.1.1 to any port 40407).
+Une authentification forte (clé SSH + mot de passe).
+Un reverse proxy sécurisé (NGINX avec HTTPS + auth).
+
+
+Le proxy SSH (10.20.67.106) :
+
+Si 10.20.67.106 est un bastion, assure-toi que :
+
+AllowTcpForwarding yes est aussi activé sur ce serveur.
+La clé SSH utilisée (id_ed25519) est autorisée sur les deux machines.
+
+
+
+Les logs VSCode :
+
+L’erreur Proxy connection timed out peut aussi venir :
+
+D’un timeout trop court (VSCode attend 15s par défaut).
+D’un problème de résolution DNS dans le tunnel SSH.
+
+
+
+📌 Résumé des bonnes pratiques
+
+  
+    
+      Objectif
+      Solution sécurisée
+      À éviter
+    
+  
+  
+    
+      Accès à code-server
+      127.0.0.1:40407 + tunnel SSH (-L)
+      0.0.0.0:40407 sans protection
+    
+    
+      Port forwarding SSH
+      AllowTcpForwarding yes dans sshd_config
+      Désactiver le forwarding
+    
+    
+      Firewall
+      Bloquer tout sauf SSH (port 22)
+      Ouvrir 40407 en public
+    
+    
+      Clés SSH
+      chmod 600 ~/.ssh/authorized_keys
+      Permissions trop larges (777)
+    
+  
+
+
+
+
+
+🔎 Prochaine étape
+
+Applique les corrections (AllowTcpForwarding yes + vérifie code-server sur 127.0.0.1:40407).
+Teste manuellement :
+bash
+Copier
+
+ssh -L 8080:localhost:40407 user@10.0.1.2
+
+
+
+
+Si ça marche, le problème vient de VSCode (logs à vérifier).
+Si ça échoue, partage la sortie de :
+bash
+Copier
+
+sudo sshd -T | grep -i forward
+ss -tulnp | grep 40407
+
+
+
+
+
+Question : Est-ce que le test manuel (ssh -L 8080:localhost:40407 user@10.0.1.2) fonctionne ? Si non, quel est le message d’erreur ?
+
+
+-------------------
+
+
+D’après les logs VSCode et les manipulations que tu as effectuées sur k3s-lyon-01, voici une analyse précise du problème et des solutions pour le résoudre.
+
+🔍 Diagnostic approfondi
+1. Problème principal identifié
+Erreur clé dans les logs VSCode :
+text
+Copier
+
+[13:36:31.486] Failed to set up socket for dynamic port forward to remote port 40407: Proxy connection timed out. TCP port forwarding may be disabled, or the remote server may have crashed.
+
+
+
+Traduction :
+
+VSCode essaie d’établir un tunnel SSH avec port forwarding dynamique (-D 63412) pour accéder au serveur VSCode distant (127.0.0.1:40407).
+Le port forwarding échoue car :
+
+AllowTcpForwarding est désactivé (ou mal configuré) sur le serveur SSH (k3s-lyon-01).
+Le serveur VSCode distant (code-server) écoute uniquement sur 127.0.0.1:40407, ce qui empêche VSCode local d’y accéder via le tunnel SSH.
+
+
+2. Confirmation avec tes manipulations serveur
+
+sshd_config :
+ini
+Copier
+
+#AllowTcpForwarding yes  # Commenté = désactivé par défaut
+#GatewayPorts no        # Commenté = désactivé par défaut
+
+
+
+→ Le port forwarding est bloqué par la configuration SSH.
+ss -tnp | grep sshd :
+
+Les connexions SSH sont bien établies (ESTAB), mais pas de forwarding de port actif.
+
+journalctl -u ssh :
+
+Aucune erreur liée au forwarding, car la requête est rejetée avant même d’être loggée.
+
+
+3. Comportement de VSCode
+
+VSCode utilise 2 mécanismes pour se connecter :
+
+SSH direct (ssh -v -T -D 63412 k3s-lyon-01) → Réussit (authentification OK).
+Port forwarding dynamique (-D 63412) pour accéder au code-server distant (127.0.0.1:40407) → Échoue car AllowTcpForwarding est désactivé.
+
+
+✅ Solutions à appliquer
+
+📌 1. Activer le port forwarding dans SSH
+Modifie /etc/ssh/sshd_config sur k3s-lyon-01 :
+bash
+Copier
+
+sudo nano /etc/ssh/sshd_config
+
+
+
+Ajoute/modifie ces lignes (décommente et définis les valeurs) :
+ini
+Copier
+
+# Autoriser le forwarding TCP (nécessaire pour VSCode)
+AllowTcpForwarding yes
+GatewayPorts yes       # Permet de lier des ports distants à des interfaces locales
+PermitTunnel yes       # Autorise les tunnels SSH (optionnel mais utile)
+X11Forwarding yes      # Si tu utilises des apps graphiques
+
+
+
+Redémarre SSH :
+bash
+Copier
+
+sudo systemctl restart ssh
+
+
+
+
+📌 2. Vérifier que le serveur VSCode écoute sur toutes les interfaces
+Par défaut, code-server écoute sur 127.0.0.1:40407, ce qui limite l’accès uniquement depuis le serveur lui-même.
+Pour que VSCode local puisse y accéder via le tunnel SSH, il faut que code-server écoute sur toutes les interfaces (0.0.0.0).
+Solution 1 : Modifier la configuration de VSCode Server
+
+Sur k3s-lyon-01, édite le fichier de configuration du serveur VSCode :
+bash
+Copier
+
+nano ~/.vscode-server/cli/servers/Stable-1b6a188127eeaf9194f945eb6eb89a657e93c54c/server/config.json
+
+
+
+Ajoute :
+json
+Copier
+
+{
+  "bind-addr": "0.0.0.0:40407"
+}
+
+
+
+Si le fichier n’existe pas, crée-le.
+Solution 2 : Forcer le bind-addr via des arguments
+
+Arrête le serveur VSCode actuel :
+bash
+Copier
+
+pkill -f "code-server"
+
+
+
+
+Relance-le manuellement avec le bon bind-addr :
+bash
+Copier
+
+/home/user/.vscode-server/cli/servers/Stable-1b6a188127eeaf9194f945eb6eb89a657e93c54c/server/bin/code-server --bind-addr 0.0.0.0:40407 --accept-server-license-terms
+
+
+
+
+
+📌 3. Vérifier les permissions et le firewall
+
+Permissions :
+bash
+Copier
+
+chmod 700 ~/.ssh
+chmod 600 ~/.ssh/authorized_keys
+
+
+
+
+Firewall (si ufw est actif) :
+bash
+Copier
+
+sudo ufw allow 22/tcp
+sudo ufw allow 40407/tcp  # Port du serveur VSCode
+sudo ufw reload
+
+
+
+
+
+📌 4. Tester manuellement le port forwarding
+Depuis ton Mac local, teste si le forwarding fonctionne :
+bash
+Copier
+
+ssh -L 8080:localhost:40407 user@10.0.1.2
+
+
+
+
+Si ça marche, ouvre http://localhost:8080 dans ton navigateur → tu devrais voir l’interface VSCode.
+Si ça échoue, vérifie :
+
+Que AllowTcpForwarding yes est bien appliqué (sudo sshd -T | grep AllowTcpForwarding).
+Que code-server écoute sur 0.0.0.0:40407 (ss -tulnp | grep 40407).
+
+
+🔄 Étapes de validation
+
+Applique les corrections (config SSH + bind-addr).
+Redémarre SSH et code-server :
+bash
+Copier
+
+sudo systemctl restart ssh
+pkill -f "code-server"
+
+
+
+
+Relance VSCode et observe :
+
+Les logs de VSCode (Developer: Open Remote-SSH Output Channel).
+Les logs serveur (sudo tail -f /var/log/auth.log).
+
+
+📊 Résumé des causes et fixes
+
+  
+    
+      Problème
+      Cause
+      Solution
+    
+  
+  
+    
+      Échec du port forwarding
+      AllowTcpForwarding no dans sshd_config
+      Décommenter et mettre yes + redémarrer SSH.
+    
+    
+      code-server inaccessible via tunnel
+      Écoute sur 127.0.0.1 seulement
+      Modifier bind-addr en 0.0.0.0:40407 dans la config du serveur VSCode.
+    
+    
+      Timeout du tunnel SSH
+      GatewayPorts no
+      Mettre GatewayPorts yes dans sshd_config.
+    
+    
+      Connexion SSH instable
+      Firewall ou permissions SSH incorrectes
+      Vérifier ufw et chmod 600 ~/.ssh/authorized_keys.
+    
+  
+
+
+
+
+
+💡 Observation supplémentaire
+
+Double saut SSH :
+Les logs montrent que VSCode se connecte d’abord à 10.20.67.106 (un proxy ?) avant d’atteindre 10.0.1.2.
+
+Si 10.20.67.106 est un bastion ou un proxy SSH, assure-toi que :
+
+Le forwarding est aussi activé sur ce serveur.
+La clé SSH utilisée (id_ed25519) est autorisée sur les deux serveurs.
+
+
+
+Question :
+Est-ce que 10.20.67.106 est un serveur intermédiaire (ex : bastion) ? Si oui, as-tu accès à sa configuration SSH pour y activer AllowTcpForwarding ?
+
+
+-------------------------------------
+
+suite update ssh_config et restart ssh.service --> HS
+
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo systemctl restart ssh
+Job for ssh.service failed because the control process exited with error code.
+See "systemctl status ssh.service" and "journalctl -xeu ssh.service" for details.
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo systemctl status  ssh.service
+× ssh.service - OpenBSD Secure Shell server
+     Loaded: loaded (/usr/lib/systemd/system/ssh.service; enabled; preset: enabled)
+     Active: failed (Result: exit-code) since Sun 2026-07-26 15:59:59 UTC; 39s ago
+   Duration: 19h 54min 35.255s
+TriggeredBy: × ssh.socket
+       Docs: man:sshd(8)
+             man:sshd_config(5)
+    Process: 300741 ExecStartPre=/usr/sbin/sshd -t (code=exited, status=255/EXCEPTION)
+        CPU: 23ms
+
+Jul 26 15:59:59 k3s-lyon-01 systemd[1]: ssh.service: Scheduled restart job, restart counter is at 5.
+Jul 26 15:59:59 k3s-lyon-01 systemd[1]: ssh.service: Start request repeated too quickly.
+Jul 26 15:59:59 k3s-lyon-01 systemd[1]: ssh.service: Failed with result 'exit-code'.
+Jul 26 15:59:59 k3s-lyon-01 systemd[1]: Failed to start ssh.service - OpenBSD Secure Shell server.
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo /usr/sbin/sshd -t
+/etc/ssh/sshd_config: line 105: Bad configuration option: :#TCPKeepAlive
+/etc/ssh/sshd_config: terminating, 1 bad configuration options
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo journalctl -xeu ssh.service | tail -30
+Jul 26 15:59:59 k3s-lyon-01 systemd[1]: Failed to start ssh.service - OpenBSD Secure Shell server.
+░░ Subject: A start job for unit ssh.service has failed
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ A start job for unit ssh.service has finished with a failure.
+░░ 
+░░ The job identifier is 18317 and the job result is failed.
+Jul 26 15:59:59 k3s-lyon-01 systemd[1]: ssh.service: Scheduled restart job, restart counter is at 5.
+░░ Subject: Automatic restarting of a unit has been scheduled
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ Automatic restarting of the unit ssh.service has been scheduled, as the result for
+░░ the configured Restart= setting for the unit.
+Jul 26 15:59:59 k3s-lyon-01 systemd[1]: ssh.service: Start request repeated too quickly.
+Jul 26 15:59:59 k3s-lyon-01 systemd[1]: ssh.service: Failed with result 'exit-code'.
+░░ Subject: Unit failed
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ The unit ssh.service has entered the 'failed' state with result 'exit-code'.
+Jul 26 15:59:59 k3s-lyon-01 systemd[1]: Failed to start ssh.service - OpenBSD Secure Shell server.
+░░ Subject: A start job for unit ssh.service has failed
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░ 
+░░ A start job for unit ssh.service has finished with a failure.
+░░ 
+░░ The job identifier is 18422 and the job result is failed.
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo sed -n '100,110p' /etc/ssh/sshd_config
+#X11DisplayOffset 10
+#X11UseLocalhost yes
+#PermitTTY yes
+PrintMotd no
+#PrintLastLog yes
+:#TCPKeepAlive yes
+#PermitUserEnvironment no
+#Compression delayed
+#ClientAliveInterval 0
+#ClientAliveCountMax 3
+#UseDNS no
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo vim /etc/ssh/sshd_config
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo systemctl restart ssh
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo systemctl status  ssh.service
+● ssh.service - OpenBSD Secure Shell server
+     Loaded: loaded (/usr/lib/systemd/system/ssh.service; enabled; preset: enabled)
+     Active: active (running) since Sun 2026-07-26 16:06:27 UTC; 1min 29s ago
+TriggeredBy: ● ssh.socket
+       Docs: man:sshd(8)
+             man:sshd_config(5)
+    Process: 302729 ExecStartPre=/usr/sbin/sshd -t (code=exited, status=0/SUCCESS)
+   Main PID: 302730 (sshd)
+      Tasks: 1 (limit: 9431)
+     Memory: 1.2M (peak: 1.4M)
+        CPU: 113ms
+     CGroup: /system.slice/ssh.service
+             └─302730 "sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups"
+
+Jul 26 16:06:27 k3s-lyon-01 systemd[1]: Starting ssh.service - OpenBSD Secure Shell server...
+Jul 26 16:06:27 k3s-lyon-01 sshd[302730]: Server listening on 0.0.0.0 port 22.
+Jul 26 16:06:27 k3s-lyon-01 sshd[302730]: Server listening on :: port 22.
+Jul 26 16:06:27 k3s-lyon-01 systemd[1]: Started ssh.service - OpenBSD Secure Shell server.
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+
+---------------------------------------------
+
+ERREUR IDENTIFIÉE !
+
+text
+/etc/ssh/sshd_config: line 105: Bad configuration option: :#TCPKeepAlive
+Le problème : Vous avez une ligne avec :#TCPKeepAlive (avec deux points ou un caractère invalide) à la ligne 105.
+
+🔧 SOLUTION IMMÉDIATE
+
+1. Voir la ligne 105
+
+bash
+# Afficher la ligne 105 et les lignes autour
+sudo sed -n '100,110p' /etc/ssh/sshd_config
+2. Corriger le fichier
+
+bash
+# Éditer le fichier
+sudo nano /etc/ssh/sshd_config
+
+# Allez à la ligne 105 (Ctrl+_ puis 105)
+# Corrigez la ligne qui doit être :
+TCPKeepAlive yes
+# OU si elle est commentée :
+# TCPKeepAlive yes
+
+# Supprimez le ":" en trop au début
+3. Alternative rapide : supprimer la ligne problématique
+
+bash
+# Faire un backup
+sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
+
+# Supprimer la ligne 105
+sudo sed -i '105d' /etc/ssh/sshd_config
+
+# OU supprimer toutes les lignes avec ":#TCPKeepAlive"
+sudo sed -i '/^:#TCPKeepAlive/d' /etc/ssh/sshd_config
+4. Tester et redémarrer
+
+bash
+# Tester la configuration
+sudo /usr/sbin/sshd -t
+
+# Si OK (pas de sortie), redémarrer
+sudo systemctl restart ssh
+
+# Vérifier le statut
+sudo systemctl status ssh
+📝 Configuration CORRECTE pour votre cas
+
+Version minimale fonctionnelle :
+
+bash
+# Créer une nouvelle config propre
+sudo tee /etc/ssh/sshd_config << 'EOF'
+# SSH Server Configuration - Minimal Functional
+Port 22
+Protocol 2
+
+HostKey /etc/ssh/ssh_host_rsa_key
+HostKey /etc/ssh/ssh_host_ecdsa_key
+HostKey /etc/ssh/ssh_host_ed25519_key
+
+# Authentication
+PubkeyAuthentication yes
+PasswordAuthentication no
+PermitRootLogin prohibit-password
+
+# Forwarding (CE QUE VOUS VOULEZ)
+AllowTcpForwarding yes
+PermitTunnel yes
+GatewayPorts yes
+
+# Keep connections alive
+TCPKeepAlive yes
+ClientAliveInterval 60
+ClientAliveCountMax 3
+
+# SFTP
+Subsystem sftp /usr/lib/openssh/sftp-server
+EOF
+
+# Tester
+sudo /usr/sbin/sshd -t
+
+# Redémarrer
+sudo systemctl restart ssh
+🔍 Si l'erreur persiste
+
+Voir la ligne exacte :
+
+bash
+# Afficher la ligne 105
+sudo cat -n /etc/ssh/sshd_config | sed -n '100,110p'
+Correction manuelle avec nano/vim :
+
+bash
+sudo nano /etc/ssh/sshd_config
+
+# À la ligne 105, soit :
+# - Supprimer le ":" au début
+# - OU commenter la ligne avec #
+# - OU supprimer complètement la ligne
+
+# Remplacer :
+:#TCPKeepAlive
+# Par :
+TCPKeepAlive yes
+# OU
+# TCPKeepAlive yes
+🚨 Si vous êtes toujours bloqué
+
+Restaurer la configuration par défaut :
+
+bash
+# Backup de la config actuelle
+sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.casse
+
+# Restaurer la config par défaut
+sudo cp /usr/share/ssh/sshd_config /etc/ssh/sshd_config
+
+# AJOUTER UNIQUEMENT ce dont vous avez besoin
+echo "AllowTcpForwarding yes" | sudo tee -a /etc/ssh/sshd_config
+echo "TCPKeepAlive yes" | sudo tee -a /etc/ssh/sshd_config
+
+# Tester
+sudo /usr/sbin/sshd -t
+
+# Redémarrer
+sudo systemctl restart ssh
+✅ Vérification finale
+
+bash
+# 1. Statut du service
+sudo systemctl status ssh --no-pager
+
+# 2. Test de la config
+sudo /usr/sbin/sshd -t && echo "✅ Configuration valide"
+
+# 3. Vérification du port
+sudo ss -tlnp | grep :22
+
+# 4. Test de connexion
+ssh -v k3s-lyon-01 "echo '✅ SSH fonctionne'"
+
+# 5. Vérification du forwarding
+ssh -o "ExitOnForwardFailure=yes" -L 9999:localhost:22 k3s-lyon-01 "echo '✅ Forwarding OK'"
+📋 Résumé des commandes
+
+Étape	Commande
+Identifier l'erreur	sudo /usr/sbin/sshd -t
+Voir la ligne 105	sudo cat -n /etc/ssh/sshd_config | sed -n '100,110p'
+Supprimer la ligne	sudo sed -i '105d' /etc/ssh/sshd_config
+Tester	sudo /usr/sbin/sshd -t
+Redémarrer	sudo systemctl restart ssh
+Vérifier	sudo systemctl status ssh
+Important : La ligne :#TCPKeepAlive est invalide car :
+
+: n'est pas un caractère autorisé en début de ligne
+Le bon format est TCPKeepAlive yes ou # TCPKeepAlive yes (commenté)
+
+------------------------------

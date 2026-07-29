@@ -1,0 +1,157 @@
+]633;E;echo "========================================";d68c65b2-8e2f-4bb1-bf81-bad15ac0629e]633;C========================================
+ANALYSE ARGOCD - Tue Jul 14 04:34:43 PM UTC 2026
+========================================
+
+=== VALEURS ===
+USER-SUPPLIED VALUES:
+global:
+  nodeSelector:
+    kubernetes.io/hostname: k3s-lyon-01
+installCRDs: false
+server:
+  extraArgs:
+  - --insecure
+
+=== METADATA ===
+NAME: argocd
+CHART: argo-cd
+VERSION: 7.7.0
+APP_VERSION: v2.13.0
+ANNOTATIONS: artifacthub.io/changes=- kind: changed
+  description: Bump argo-cd to v2.13.0
+,artifacthub.io/signKey=fingerprint: 2B8F22F57260EFA67BE1C5824B11F800CD9D2252
+url: https://argoproj.github.io/argo-helm/pgp_keys.asc
+
+DEPENDENCIES: 
+NAMESPACE: argocd
+REVISION: 2
+STATUS: deployed
+DEPLOYED_AT: 2026-07-13T19:09:49Z
+
+=== HISTORY ===
+REVISION	UPDATED                 	STATUS    	CHART        	APP VERSION	DESCRIPTION     
+1       	Sat Jul 11 19:20:03 2026	superseded	argo-cd-7.7.0	v2.13.0    	Install complete
+2       	Mon Jul 13 19:09:49 2026	deployed  	argo-cd-7.7.0	v2.13.0    	Upgrade complete
+
+=== NOTES ===
+NOTES:
+In order to access the server UI you have the following options:
+
+1. kubectl port-forward service/argocd-server -n argocd 8080:443
+
+    and then open the browser on http://localhost:8080 and accept the certificate
+
+2. enable ingress in the values file `server.ingress.enabled` and either
+      - Add the annotation for ssl passthrough: https://argo-cd.readthedocs.io/en/stable/operator-manual/ingress/#option-1-ssl-passthrough
+      - Set the `configs.params."server.insecure"` in the values file and terminate SSL at your ingress: https://argo-cd.readthedocs.io/en/stable/operator-manual/ingress/#option-2-multiple-ingress-objects-and-hosts
+
+
+After reaching the UI the first time you can login with username: admin and the random password generated during the installation. You can find the password by running:
+
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+
+(You should delete the initial secret afterwards as suggested by the Getting Started Guide: https://argo-cd.readthedocs.io/en/stable/getting_started/#4-login-using-the-cli)
+
+
+=== MANIFEST (début) ===
+---
+# Source: argo-cd/templates/argocd-application-controller/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+automountServiceAccountToken: true
+metadata:
+  name: argocd-application-controller
+  namespace: argocd
+  labels:
+    helm.sh/chart: argo-cd-7.7.0
+    app.kubernetes.io/name: argocd-application-controller
+    app.kubernetes.io/instance: argocd
+    app.kubernetes.io/component: application-controller
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/version: "v2.13.0"
+---
+# Source: argo-cd/templates/argocd-applicationset/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+automountServiceAccountToken: true
+metadata:
+  name: argocd-applicationset-controller
+  namespace: argocd
+  labels:
+    helm.sh/chart: argo-cd-7.7.0
+    app.kubernetes.io/name: argocd-applicationset-controller
+    app.kubernetes.io/instance: argocd
+    app.kubernetes.io/component: applicationset-controller
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/version: "v2.13.0"
+---
+# Source: argo-cd/templates/argocd-notifications/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+automountServiceAccountToken: true
+metadata:
+  name: argocd-notifications-controller
+  namespace: argocd
+  labels:
+    helm.sh/chart: argo-cd-7.7.0
+    app.kubernetes.io/name: argocd-notifications-controller
+    app.kubernetes.io/instance: argocd
+    app.kubernetes.io/component: notifications-controller
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/version: "v2.13.0"
+---
+# Source: argo-cd/templates/argocd-repo-server/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+automountServiceAccountToken: true
+metadata:
+  name: argocd-repo-server
+  namespace: argocd
+  labels:
+    helm.sh/chart: argo-cd-7.7.0
+    app.kubernetes.io/name: argocd-repo-server
+    app.kubernetes.io/instance: argocd
+    app.kubernetes.io/component: repo-server
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/version: "v2.13.0"
+---
+# Source: argo-cd/templates/argocd-server/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+automountServiceAccountToken: true
+metadata:
+  name: argocd-server
+  namespace: argocd
+  labels:
+    helm.sh/chart: argo-cd-7.7.0
+    app.kubernetes.io/name: argocd-server
+    app.kubernetes.io/instance: argocd
+    app.kubernetes.io/component: server
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/version: "v2.13.0"
+---
+# Source: argo-cd/templates/dex/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+automountServiceAccountToken: true
+metadata:
+  name: argocd-dex-server
+  namespace: argocd
+  labels:
+    helm.sh/chart: argo-cd-7.7.0
+    app.kubernetes.io/name: argocd-dex-server
+    app.kubernetes.io/instance: argocd
+    app.kubernetes.io/component: dex-server
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/version: "v2.13.0"
+---
+# Source: argo-cd/templates/argocd-configs/argocd-notifications-secret.yaml
+apiVersion: v1
+kind: Secret
+... (manifest complet dans argocd-manifest-complete.yaml)
