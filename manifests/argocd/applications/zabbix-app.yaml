@@ -39,13 +39,13 @@ spec:
           enabled: true
           persistence:
             storageClass: "longhorn"
-            size: 5Gi
+            size: 3Gi
 
         # Configuration pour le stockage persistant
         persistence:
           enabled: true
           storageClass: "longhorn"
-          size: 5Gi
+          size: 3Gi
   destination:
     server: https://kubernetes.default.svc
     namespace: zabbix
