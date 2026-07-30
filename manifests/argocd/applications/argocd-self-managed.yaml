@@ -46,6 +46,14 @@ spec:
               effect: NoSchedule
           extraArgs:
             - --insecure
+          ingress:
+            enabled: true
+            ingressClassName: nginx
+            hosts:
+              - argocd.local
+            paths:
+              - /
+            pathType: Prefix  
           service:
             selector:
               app.kubernetes.io/instance: argocd
