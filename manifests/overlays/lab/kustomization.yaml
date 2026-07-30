@@ -8,9 +8,6 @@ resources:
   - ../../base/ingress
   - nginx-website/configmap.yaml
   - ingress/nova-syndicate-ingress.yaml
-  - ingress/argocd-ingress.yaml
-  - ingress/longhorn-ingress.yaml
-  - ingress/zabbix-ingress.yaml
 patches:
   - patch: |-
       - op: add
