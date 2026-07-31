@@ -1,0 +1,20 @@
+dn: cn=admins,ou=groups,dc=assurance,dc=local
+changetype: modify
+add: member
+member: uid=ops-user,ou=users,dc=assurance,dc=local
+
+dn: cn=devops,ou=groups,dc=assurance,dc=local
+changetype: modify
+add: member
+member: uid=dev-user,ou=users,dc=assurance,dc=local
+member: uid=ops-user,ou=users,dc=assurance,dc=local
+
+dn: cn=auditors,ou=groups,dc=assurance,dc=local
+changetype: modify
+add: member
+member: uid=auditor,ou=users,dc=assurance,dc=local
+
+dn: cn=business,ou=groups,dc=assurance,dc=local
+changetype: modify
+add: member
+member: uid=business-user,ou=users,dc=assurance,dc=local

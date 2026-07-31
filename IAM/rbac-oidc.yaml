@@ -1,0 +1,72 @@
+# Namespace de test pour les développeurs
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dev
+---
+# ClusterRole pour les Auditeurs (lecture seule)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: oidc-auditor
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services", "namespaces", "nodes"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["apps"]
+  resources: ["deployments", "replicasets"]
+  verbs: ["get", "list", "watch"]
+---
+# Role pour l'équipe DevOps (namespace dev)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: oidc-devops
+  namespace: dev
+rules:
+- apiGroups: ["", "apps"]
+  resources: ["*"]
+  verbs: ["*"]
+---
+# Binding Auditeurs
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: oidc-auditors
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: oidc-auditor
+subjects:
+- kind: Group
+  name: oidc:auditors
+  apiGroup: rbac.authorization.k8s.io
+---
+# Binding DevOps
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: oidc-devops
+  namespace: dev
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: oidc-devops
+subjects:
+- kind: Group
+  name: oidc:devops
+  apiGroup: rbac.authorization.k8s.io
+---
+# Binding Admins (lab – à restreindre en production)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: oidc-admins
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: Group
+  name: oidc:admins
+  apiGroup: rbac.authorization.k8s.io

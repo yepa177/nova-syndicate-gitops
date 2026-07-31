@@ -1,0 +1,82 @@
+# Organizational Units
+dn: ou=users,dc=assurance,dc=local
+objectClass: organizationalUnit
+ou: users
+
+dn: ou=groups,dc=assurance,dc=local
+objectClass: organizationalUnit
+ou: groups
+
+# Groupes
+dn: cn=admins,ou=groups,dc=assurance,dc=local
+objectClass: groupOfNames
+cn: admins
+member: cn=admin,dc=assurance,dc=local
+
+dn: cn=devops,ou=groups,dc=assurance,dc=local
+objectClass: groupOfNames
+cn: devops
+member: cn=admin,dc=assurance,dc=local
+
+dn: cn=auditors,ou=groups,dc=assurance,dc=local
+objectClass: groupOfNames
+cn: auditors
+member: cn=admin,dc=assurance,dc=local
+
+dn: cn=business,ou=groups,dc=assurance,dc=local
+objectClass: groupOfNames
+cn: business
+member: cn=admin,dc=assurance,dc=local
+
+# Utilisateurs de test
+dn: uid=dev-user,ou=users,dc=assurance,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: dev-user
+sn: Developer
+cn: Dev User
+uidNumber: 10001
+gidNumber: 10001
+homeDirectory: /home/dev-user
+loginShell: /bin/bash
+userPassword: {SSHA}DevP@ssw0rd2026!
+
+dn: uid=ops-user,ou=users,dc=assurance,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: ops-user
+sn: Operator
+cn: Ops User
+uidNumber: 10002
+gidNumber: 10002
+homeDirectory: /home/ops-user
+loginShell: /bin/bash
+userPassword: {SSHA}OpsP@ssw0rd2026!
+
+dn: uid=auditor,ou=users,dc=assurance,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: auditor
+sn: Auditor
+cn: Security Auditor
+uidNumber: 10003
+gidNumber: 10003
+homeDirectory: /home/auditor
+loginShell: /bin/bash
+userPassword: {SSHA}AuditP@ssw0rd2026!
+
+dn: uid=business-user,ou=users,dc=assurance,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: business-user
+sn: Business
+cn: Business User
+uidNumber: 10004
+gidNumber: 10004
+homeDirectory: /home/business-user
+loginShell: /bin/bash
+userPassword: {SSHA}BizP@ssw0rd2026!
