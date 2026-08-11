@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openldap
+  namespace: identity
+  labels:
+    app: openldap
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openldap
+  template:
+    metadata:
+      labels:
+        app: openldap
+    spec:
+      containers:
+      - name: openldap
+        image: osixia/openldap:1.5.0
+        ports:
+        - containerPort: 389
+          name: ldap
+        - containerPort: 636
+          name: ldaps
+        env:
+        - name: LDAP_ORGANISATION
+          value: "Assurance Demo"
+        - name: LDAP_DOMAIN
+          value: "assurance.local"
+        - name: LDAP_ADMIN_PASSWORD
+          value: "ComplexP@ssw0rd2026!"
+        - name: LDAP_CONFIG_PASSWORD
+          value: "ComplexP@ssw0rd2026!"
+        - name: LDAP_TLS
+          value: "false"
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/ldap
+        - name: config
+          mountPath: /etc/ldap/slapd.d
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: openldap-pvc
+      - name: config
+        emptyDir: {}

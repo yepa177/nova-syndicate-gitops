@@ -1,0 +1,1457 @@
+Parcours d’initiation progressif : IAM → LDAP → PAM → DAC → RBAC → SSO
+Contexte : entreprise d’assurance (RGPD + Solvabilité II).
+Infrastructure : cluster Kubernetes 1 control-plane + 2 workers.
+Objectif : vous faire passer de « je découvre » à « je sais sécuriser et auditer » en 5 labs modulaires, chacun avec exercices concrets, commandes et points de contrôle.
+Nous travaillons comme une petite équipe DevOps/Sécurité. Chaque lab s’appuie sur le précédent.
+
+Architecture de base (à garder tout au long du parcours)
+#mermaid-diagram-mermaid-ktb0jba{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;fill:#ccc;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#mermaid-diagram-mermaid-ktb0jba .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#mermaid-diagram-mermaid-ktb0jba .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#mermaid-diagram-mermaid-ktb0jba .error-icon{fill:#a44141;}#mermaid-diagram-mermaid-ktb0jba .error-text{fill:#ddd;stroke:#ddd;}#mermaid-diagram-mermaid-ktb0jba .edge-thickness-normal{stroke-width:1px;}#mermaid-diagram-mermaid-ktb0jba .edge-thickness-thick{stroke-width:3.5px;}#mermaid-diagram-mermaid-ktb0jba .edge-pattern-solid{stroke-dasharray:0;}#mermaid-diagram-mermaid-ktb0jba .edge-thickness-invisible{stroke-width:0;fill:none;}#mermaid-diagram-mermaid-ktb0jba .edge-pattern-dashed{stroke-dasharray:3;}#mermaid-diagram-mermaid-ktb0jba .edge-pattern-dotted{stroke-dasharray:2;}#mermaid-diagram-mermaid-ktb0jba .marker{fill:lightgrey;stroke:lightgrey;}#mermaid-diagram-mermaid-ktb0jba .marker.cross{stroke:lightgrey;}#mermaid-diagram-mermaid-ktb0jba svg{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;}#mermaid-diagram-mermaid-ktb0jba p{margin:0;}#mermaid-diagram-mermaid-ktb0jba .label{font-family:"trebuchet ms",verdana,arial,sans-serif;color:#ccc;}#mermaid-diagram-mermaid-ktb0jba .cluster-label text{fill:#F9FFFE;}#mermaid-diagram-mermaid-ktb0jba .cluster-label span{color:#F9FFFE;}#mermaid-diagram-mermaid-ktb0jba .cluster-label span p{background-color:transparent;}#mermaid-diagram-mermaid-ktb0jba .label text,#mermaid-diagram-mermaid-ktb0jba span{fill:#ccc;color:#ccc;}#mermaid-diagram-mermaid-ktb0jba .node rect,#mermaid-diagram-mermaid-ktb0jba .node circle,#mermaid-diagram-mermaid-ktb0jba .node ellipse,#mermaid-diagram-mermaid-ktb0jba .node polygon,#mermaid-diagram-mermaid-ktb0jba .node path{fill:#1f2020;stroke:#ccc;stroke-width:1px;}#mermaid-diagram-mermaid-ktb0jba .rough-node .label text,#mermaid-diagram-mermaid-ktb0jba .node .label text,#mermaid-diagram-mermaid-ktb0jba .image-shape .label,#mermaid-diagram-mermaid-ktb0jba .icon-shape .label{text-anchor:middle;}#mermaid-diagram-mermaid-ktb0jba .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#mermaid-diagram-mermaid-ktb0jba .rough-node .label,#mermaid-diagram-mermaid-ktb0jba .node .label,#mermaid-diagram-mermaid-ktb0jba .image-shape .label,#mermaid-diagram-mermaid-ktb0jba .icon-shape .label{text-align:center;}#mermaid-diagram-mermaid-ktb0jba .node.clickable{cursor:pointer;}#mermaid-diagram-mermaid-ktb0jba .root .anchor path{fill:lightgrey!important;stroke-width:0;stroke:lightgrey;}#mermaid-diagram-mermaid-ktb0jba .arrowheadPath{fill:lightgrey;}#mermaid-diagram-mermaid-ktb0jba .edgePath .path{stroke:lightgrey;stroke-width:2.0px;}#mermaid-diagram-mermaid-ktb0jba .flowchart-link{stroke:lightgrey;fill:none;}#mermaid-diagram-mermaid-ktb0jba .edgeLabel{background-color:hsl(0, 0%, 34.4117647059%);text-align:center;}#mermaid-diagram-mermaid-ktb0jba .edgeLabel p{background-color:hsl(0, 0%, 34.4117647059%);}#mermaid-diagram-mermaid-ktb0jba .edgeLabel rect{opacity:0.5;background-color:hsl(0, 0%, 34.4117647059%);fill:hsl(0, 0%, 34.4117647059%);}#mermaid-diagram-mermaid-ktb0jba .labelBkg{background-color:rgba(87.75, 87.75, 87.75, 0.5);}#mermaid-diagram-mermaid-ktb0jba .cluster rect{fill:hsl(180, 1.5873015873%, 28.3529411765%);stroke:rgba(255, 255, 255, 0.25);stroke-width:1px;}#mermaid-diagram-mermaid-ktb0jba .cluster text{fill:#F9FFFE;}#mermaid-diagram-mermaid-ktb0jba .cluster span{color:#F9FFFE;}#mermaid-diagram-mermaid-ktb0jba div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:12px;background:hsl(20, 1.5873015873%, 12.3529411765%);border:1px solid rgba(255, 255, 255, 0.25);border-radius:2px;pointer-events:none;z-index:100;}#mermaid-diagram-mermaid-ktb0jba .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#ccc;}#mermaid-diagram-mermaid-ktb0jba rect.text{fill:none;stroke-width:0;}#mermaid-diagram-mermaid-ktb0jba .icon-shape,#mermaid-diagram-mermaid-ktb0jba .image-shape{background-color:hsl(0, 0%, 34.4117647059%);text-align:center;}#mermaid-diagram-mermaid-ktb0jba .icon-shape p,#mermaid-diagram-mermaid-ktb0jba .image-shape p{background-color:hsl(0, 0%, 34.4117647059%);padding:2px;}#mermaid-diagram-mermaid-ktb0jba .icon-shape rect,#mermaid-diagram-mermaid-ktb0jba .image-shape rect{opacity:0.5;background-color:hsl(0, 0%, 34.4117647059%);fill:hsl(0, 0%, 34.4117647059%);}#mermaid-diagram-mermaid-ktb0jba :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}SSOOIDC TokenAuthnAuthzAdmissionDAC + PAMEmployé AssuranceKeycloakAPI ServerOpenLDAPRBAC + RolesOPA/GatekeeperWorker 1Worker 2Pods applicatifs + secretsNodes LinuxWazuh AgentWazuh Manager
+Les deux workers reçoivent les mêmes politiques (PAM, DAC, agents Wazuh). On ne touche jamais au control-plane en production réelle ; ici c’est un lab.
+
+
+
+Lab 1 – IAM + LDAP (Centralisation des identités)
+Persona : Administrateur Système (niveau intermédiaire)
+Objectif : plus aucun compte local Kubernetes. Tout passe par LDAP.
+Exercices
+
+Déployer OpenLDAP en pod (ou utiliser un serveur externe).
+Créer le secret LDAP :Bashkubectl create secret generic ldap-secret \
+  --from-literal=bind-dn="cn=admin,dc=assurance,dc=local" \
+  --from-literal=password='ComplexP@ssw0rd2026!'
+Configurer dex (ou le webhook token authentication) pour interroger LDAP.
+Créer un utilisateur LDAP dev-user et un groupe ops-team.
+Tester :Bashkubectl --user=dev-user get pods -n default   # doit échouer sans RBAC encore
+
+Résultat attendu
+L’utilisateur s’authentifie via LDAP. Une mauvaise saisie de mot de passe est rejetée immédiatement par LDAP (bonus : montrer les logs).
+Point de vigilance RGPD : le bind DN ne doit jamais être un compte privilégié LDAP.
+
+
+Étape 0 – Préparation de l’espace de travail
+
+# Namespace dédié (bonne pratique isolation)
+kubectl create namespace identity
+
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get namespace | grep identity
+identity          Active   6d16h
+
+# Label pour les NetworkPolicies futures
+kubectl label namespace identity purpose=identity-management
+
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get namespaces -l purpose
+NAME       STATUS   AGE
+identity   Active   6d16h
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get namespaces -l purpose=identity-management
+NAME       STATUS   AGE
+identity   Active   6d16h
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl describe namespace identity
+Name:         identity
+Labels:       kubernetes.io/metadata.name=identity
+              purpose=identity-management
+Annotations:  <none>
+Status:       Active
+
+No resource quota.
+
+No LimitRange resource.
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get namespaces --show-labels
+NAME              STATUS   AGE     LABELS
+argocd            Active   256d    kubernetes.io/metadata.name=argocd
+calico-system     Active   260d    kubernetes.io/metadata.name=calico-system,name=calico-system,pod-security.kubernetes.io/enforce-version=latest,pod-security.kubernetes.io/enforce=privileged
+default           Active   260d    kubernetes.io/metadata.name=default
+dev               Active   5d11h   kubernetes.io/metadata.name=dev
+exo-first         Active   20d     kubernetes.io/metadata.name=exo-first
+identity          Active   6d16h   kubernetes.io/metadata.name=identity,purpose=identity-management
+ingress-nginx     Active   252d    kubernetes.io/metadata.name=ingress-nginx,name=ingress-nginx
+kube-node-lease   Active   260d    kubernetes.io/metadata.name=kube-node-lease
+kube-public       Active   260d    kubernetes.io/metadata.name=kube-public
+kube-system       Active   260d    kubernetes.io/metadata.name=kube-system
+linux-lab         Active   11d     kubernetes.io/metadata.name=linux-lab
+longhorn-system   Active   248d    kubernetes.io/metadata.name=longhorn-system
+monitoring        Active   34d     kubernetes.io/metadata.name=monitoring,name=monitoring
+nova-syndicate    Active   255d    argocd.argoproj.io/instance=nova-namespace,environment=lab,kubernetes.io/metadata.name=nova-syndicate,project=nova
+tigera-operator   Active   260d    kubernetes.io/metadata.name=tigera-operator,name=tigera-operator,pod-security.kubernetes.io/enforce=privileged
+zabbix            Active   24d     kubernetes.io/metadata.name=zabbix
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get -n identity pod
+NAME                        READY   STATUS    RESTARTS   AGE
+dex-7b65484f58-gq4p8        1/1     Running   0          6d14h
+openldap-5b5d4cfff9-cf4d6   1/1     Running   0          7d2h
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl describe pod openldap-5b5d4cfff9-cf4d6 -n identity
+Name:             openldap-5b5d4cfff9-cf4d6
+Namespace:        identity
+Priority:         0
+Service Account:  default
+Node:             zabbix-monitoring/10.0.4.2
+Start Time:       Thu, 30 Jul 2026 07:04:34 +0000
+Labels:           app=openldap
+                  pod-template-hash=5b5d4cfff9
+Annotations:      cni.projectcalico.org/containerID: 35edd74329435c44afee8794ef8daef20628339ea70e594033b74ff7918e6acc
+                  cni.projectcalico.org/podIP: 192.168.155.165/32
+                  cni.projectcalico.org/podIPs: 192.168.155.165/32
+Status:           Running
+IP:               192.168.155.165
+IPs:
+  IP:           192.168.155.165
+Controlled By:  ReplicaSet/openldap-5b5d4cfff9
+Containers:
+  openldap:
+    Container ID:   containerd://0c6865d4503489111e4a313c082ab6b0a6972ceb9e4254539b1a8bf859fd7eef
+    Image:          osixia/openldap:1.5.0
+    Image ID:       docker.io/osixia/openldap@sha256:18742e9c449c9c1afe129d3f2f3ee15fb34cc43e5f940a20f3399728f41d7c28
+    Ports:          389/TCP, 636/TCP
+    Host Ports:     0/TCP, 0/TCP
+    State:          Running
+      Started:      Thu, 30 Jul 2026 08:18:42 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:
+      LDAP_ORGANISATION:     Assurance Demo
+      LDAP_DOMAIN:           assurance.local
+      LDAP_ADMIN_PASSWORD:   <set to the key 'LDAP_ADMIN_PASSWORD' in secret 'openldap-secret'>   Optional: false
+      LDAP_CONFIG_PASSWORD:  <set to the key 'LDAP_CONFIG_PASSWORD' in secret 'openldap-secret'>  Optional: false
+      LDAP_TLS:              false
+    Mounts:
+      /etc/ldap/slapd.d from config (rw)
+      /var/lib/ldap from data (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-clvvg (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  data:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  openldap-pvc
+    ReadOnly:   false
+  config:
+    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)
+    Medium:     
+    SizeLimit:  <unset>
+  kube-api-access-clvvg:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:                      <none>
+user@k3s-lyon-01:~/nova-syndicate-gitops$
+
+
+user@k3s-lyon-01:~/nova-syndicate-gitops/IAM$ cat openldap.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: openldap-secret
+  namespace: identity
+type: Opaque
+stringData:
+  LDAP_ADMIN_PASSWORD: "ComplexP@ssw0rd2026!"   # À changer immédiatement
+  LDAP_CONFIG_PASSWORD: "ConfigP@ssw0rd2026!"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: openldap-pvc
+  namespace: identity
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openldap
+  namespace: identity
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openldap
+  template:
+    metadata:
+      labels:
+        app: openldap
+    spec:
+      containers:
+      - name: openldap
+        image: osixia/openldap:1.5.0
+        ports:
+        - containerPort: 389
+          name: ldap
+        - containerPort: 636
+          name: ldaps
+        env:
+        - name: LDAP_ORGANISATION
+          value: "Assurance Demo"
+        - name: LDAP_DOMAIN
+          value: "assurance.local"
+        - name: LDAP_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: openldap-secret
+              key: LDAP_ADMIN_PASSWORD
+        - name: LDAP_CONFIG_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: openldap-secret
+              key: LDAP_CONFIG_PASSWORD
+        - name: LDAP_TLS
+          value: "false"          # Lab uniquement – activer TLS en prod
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/ldap
+        - name: config
+          mountPath: /etc/ldap/slapd.d
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: openldap-pvc
+      - name: config
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: openldap
+  namespace: identity
+spec:
+  selector:
+    app: openldap
+  ports:
+  - name: ldap
+    port: 389
+    targetPort: 389
+  - name: ldaps
+    port: 636
+    targetPort: 636user@k3s-lyon-01:~/nova-syndicate-gitops/IAM$
+
+
+    user@k3s-lyon-01:~/nova-syndicate-gitops/IAM$ kubectl get svc openldap -n identity
+NAME       TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)           AGE
+openldap   ClusterIP   10.96.253.34   <none>        389/TCP,636/TCP   7d18h
+user@k3s-lyon-01:~/nova-syndicate-gitops/IAM$
+
+Prochaine étape : créer la structure organisationnelle
+Voici un LDIF complet adapté aux personas du lab (Administrateur Système, Développeur DevOps, Auditeur Sécurité, Utilisateur Métier).
+Créez le fichier :
+Bashcat > structure-assurance.ldif << 'EOF'
+# Organizational Units
+dn: ou=users,dc=assurance,dc=local
+objectClass: organizationalUnit
+ou: users
+
+dn: ou=groups,dc=assurance,dc=local
+objectClass: organizationalUnit
+ou: groups
+
+# Groupes
+dn: cn=admins,ou=groups,dc=assurance,dc=local
+objectClass: groupOfNames
+cn: admins
+member: cn=admin,dc=assurance,dc=local
+
+dn: cn=devops,ou=groups,dc=assurance,dc=local
+objectClass: groupOfNames
+cn: devops
+member: cn=admin,dc=assurance,dc=local
+
+dn: cn=auditors,ou=groups,dc=assurance,dc=local
+objectClass: groupOfNames
+cn: auditors
+member: cn=admin,dc=assurance,dc=local
+
+dn: cn=business,ou=groups,dc=assurance,dc=local
+objectClass: groupOfNames
+cn: business
+member: cn=admin,dc=assurance,dc=local
+
+# Utilisateurs de test
+dn: uid=dev-user,ou=users,dc=assurance,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: dev-user
+sn: Developer
+cn: Dev User
+uidNumber: 10001
+gidNumber: 10001
+homeDirectory: /home/dev-user
+loginShell: /bin/bash
+userPassword: {SSHA}DevP@ssw0rd2026!
+
+dn: uid=ops-user,ou=users,dc=assurance,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: ops-user
+sn: Operator
+cn: Ops User
+uidNumber: 10002
+gidNumber: 10002
+homeDirectory: /home/ops-user
+loginShell: /bin/bash
+userPassword: {SSHA}OpsP@ssw0rd2026!
+
+dn: uid=auditor,ou=users,dc=assurance,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: auditor
+sn: Auditor
+cn: Security Auditor
+uidNumber: 10003
+gidNumber: 10003
+homeDirectory: /home/auditor
+loginShell: /bin/bash
+userPassword: {SSHA}AuditP@ssw0rd2026!
+
+dn: uid=business-user,ou=users,dc=assurance,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: business-user
+sn: Business
+cn: Business User
+uidNumber: 10004
+gidNumber: 10004
+homeDirectory: /home/business-user
+loginShell: /bin/bash
+userPassword: {SSHA}BizP@ssw0rd2026!
+EOF
+Injection dans l’annuaire
+Bash# Copier le LDIF dans le pod
+kubectl cp structure-assurance.ldif identity/openldap-5b5d4cfff9-cf4d6:/tmp/structure-assurance.ldif
+
+# Appliquer
+kubectl exec -it openldap-5b5d4cfff9-cf4d6 -n identity -- \
+  ldapadd -x -H ldap://localhost:389 \
+  -D "cn=admin,dc=assurance,dc=local" \
+  -w 'ComplexP@ssw0rd2026!' \
+  -f /tmp/structure-assurance.ldif
+
+  Vérification :
+
+  Une fois la structure créée, on pourra :
+
+tester l’authentification de chaque persona,
+préparer l’intégration avec Kubernetes (RBAC + OIDC/dex).
+
+Explication de SSHA (Salted SHA)
+SSHA est l’un des formats de hachage de mots de passe les plus utilisés dans OpenLDAP (et dans beaucoup d’annuaires LDAP).
+Composition d’un hash SSHA
+Un mot de passe stocké en SSHA ressemble à ceci :
+text{SSHA}xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Il se décompose en 3 parties :
+
+Préfixe {SSHA}
+Indique clairement le schéma de hachage utilisé (Salted SHA-1).
+Hash SHA-1 (20 octets)
+Résultat de SHA-1(password + salt).
+Salt (généralement 4 ou 8 octets)
+Valeur aléatoire unique générée pour chaque mot de passe.
+
+Le tout (hash + salt) est ensuite encodé en Base64.
+Pourquoi on utilise un salt ?
+Sans salt (hash simple SHA-1), deux utilisateurs ayant le même mot de passe auraient exactement le même hash → très vulnérable aux tables arc-en-ciel (rainbow tables).
+Avec un salt :
+
+Même mot de passe → hash différent pour chaque utilisateur
+Force un attaquant à recalculer le hash pour chaque entrée (beaucoup plus coûteux)
+
+Exemple concret
+Mot de passe : DevP@ssw0rd2026!
+OpenLDAP génère un salt aléatoire (ex. : aB3x), puis calcule :
+textSHA-1("DevP@ssw0rd2026!" + "aB3x") → 20 octets
++ salt "aB3x"
+→ Base64 → {SSHA}5f4dcc3b5aa765d61d8327deb882cf99aB3x...
+Commandes utiles dans le lab
+Générer un hash SSHA manuellement (depuis le pod OpenLDAP ou une machine avec slappasswd) :
+Bash# Depuis le pod OpenLDAP
+kubectl exec -it openldap-5b5d4cfff9-cf4d6 -n identity -- slappasswd -h {SSHA} -s 'DevP@ssw0rd2026!'
+Vérifier un mot de passe :
+Bashldapwhoami -x -H ldap://localhost:389 \
+  -D "uid=dev-user,ou=users,dc=assurance,dc=local" \
+  -w 'DevP@ssw0rd2026!'
+Points de sécurité (contexte Assurance / RGPD)
+
+kubectl run ldap-test --rm -it --restart=Never \
+  --image=alpine:3.20 -n identity -- \
+  sh -c "apk add --no-cache openldap-clientapk add --no-cache openldap-clientss && \
+  ldapsearch -x -H ldap://openldap.identity.svc.cluster.local:389 \
+  -b 'dc=assurance,dc=local' \
+  -D 'cn=admin,dc=assurance,dc=local' \
+  -w 'ComplexP@ssw0rd2026!'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+AspectSSHARecommandation moderneAlgorithmeSHA-1 (cassé)SHA-256 / SHA-512 ou bcrypt/Argon2SaltOuiOui (obligatoire)Résistance brute-forceMoyenneForte (coût configurable)Support OpenLDAPNatif et très courant{CRYPT}, {PBKDF2}, etc.
+Dans un lab c’est parfaitement acceptable.
+En production (surtout assurance), on préfère aujourd’hui :
+
+{CRYPT} avec yescrypt ou bcrypt
+ou {PBKDF2-SHA256} / {ARGON2}
+
+user@k3s-lyon-01:~/nova-syndicate-gitops/IAM$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops/IAM$ kubectl exec -it openldap-5b5d4cfff9-cf4d6 -n identity -- /bin/bash
+root@openldap-5b5d4cfff9-cf4d6:/# 
+root@openldap-5b5d4cfff9-cf4d6:/# 
+root@openldap-5b5d4cfff9-cf4d6:/# ldapsearch -x H ldap://localhost:389 \-b "dc=assurance,dc=local" \-D "cn=admin,dc=assurance,dc=local"\ -w 'ComplexP@sswOrd2026!
+'
+ldap_bind: Server is unwilling to perform (53)
+        additional info: unauthenticated bind (DN with no password) disallowed
+root@openldap-5b5d4cfff9-cf4d6:/# 
+root@openldap-5b5d4cfff9-cf4d6:/# 
+root@openldap-5b5d4cfff9-cf4d6:/# ldapsearch -x -H ldap://localhost:389 \ -b "dc=assurance,dc=local" \ -D "cn=admin,dc=assurance,dc=local" \ -w 'ComplexP@ssw0rd2026!'
+# extended LDIF
+#
+# LDAPv3
+# base <> (default) with scope subtree
+# filter: (objectclass=*)
+# requesting:  -b dc=assurance,dc=local  -D cn=admin,dc=assurance,dc=local  -w ComplexP@ssw0rd2026! 
+#
+
+# search result
+search: 2
+result: 32 No such object
+
+# numResponses: 1
+root@openldap-5b5d4cfff9-cf4d6:/# 
+root@openldap-5b5d4cfff9-cf4d6:/# 
+root@openldap-5b5d4cfff9-cf4d6:/# 
+root@openldap-5b5d4cfff9-cf4d6:/# ldapwhoami -x -H ldap://localhost:389 \
+>   -D "uid=dev-user,ou=users,dc=assurance,dc=local" \
+>   -w 'DevP@ssw0rd2026!'
+dn:uid=dev-user,ou=users,dc=assurance,dc=local
+root@openldap-5b5d4cfff9-cf4d6:/# 
+root@openldap-5b5d4cfff9-cf4d6:/# 
+root@openldap-5b5d4cfff9-cf4d6:/# ldapwhoami -x -H ldap://localhost:389 \-D "uid=dev-user,ou=users,dc=assurance,dc=local"\ -w 'DevP@ssw0rd2026!'
+Issue LDAP Who am I? operation to request user's authzid
+
+usage: ldapwhoami [options]
+Common options:
+  -d level   set LDAP debugging level to `level'
+  -D binddn  bind DN
+  -e [!]<ext>[=<extparam>] general extensions (! indicates criticality)
+             [!]assert=<filter>     (RFC 4528; a RFC 4515 Filter string)
+             [!]authzid=<authzid>   (RFC 4370; "dn:<dn>" or "u:<user>")
+             [!]chaining[=<resolveBehavior>[/<continuationBehavior>]]
+                     one of "chainingPreferred", "chainingRequired",
+                     "referralsPreferred", "referralsRequired"
+             [!]manageDSAit         (RFC 3296)
+             [!]noop
+             ppolicy
+             [!]postread[=<attrs>]  (RFC 4527; comma-separated attr list)
+             [!]preread[=<attrs>]   (RFC 4527; comma-separated attr list)
+             [!]relax
+             [!]sessiontracking
+             abandon, cancel, ignore (SIGINT sends abandon/cancel,
+             or ignores response; if critical, doesn't wait for SIGINT.
+             not really controls)
+  -h host    LDAP server
+  -H URI     LDAP Uniform Resource Identifier(s)
+  -I         use SASL Interactive mode
+  -n         show what would be done but don't actually do it
+  -N         do not use reverse DNS to canonicalize SASL host name
+  -O props   SASL security properties
+  -o <opt>[=<optparam>] general options
+             nettimeout=<timeout> (in seconds, or "none" or "max")
+             ldif-wrap=<width> (in columns, or "no" for no wrapping)
+  -p port    port on LDAP server
+  -Q         use SASL Quiet mode
+  -R realm   SASL realm
+  -U authcid SASL authentication identity
+  -v         run in verbose mode (diagnostics to standard output)
+  -V         print version info (-VV only)
+  -w passwd  bind password (for simple authentication)
+  -W         prompt for bind password
+  -x         Simple authentication
+  -X authzid SASL authorization identity ("dn:<dn>" or "u:<user>")
+  -y file    Read password from file
+  -Y mech    SASL mechanism
+  -Z         Start TLS request (-ZZ to require successful response)
+root@openldap-5b5d4cfff9-cf4d6:/# ldapwhoami -x -H ldap://localhost:389 \ -D "uid=dev-user,ou=users,dc=assurance,dc=local" \ -w 'DevP@ssw0rd2026!'
+Issue LDAP Who am I? operation to request user's authzid
+
+usage: ldapwhoami [options]
+Common options:
+  -d level   set LDAP debugging level to `level'
+  -D binddn  bind DN
+  -e [!]<ext>[=<extparam>] general extensions (! indicates criticality)
+             [!]assert=<filter>     (RFC 4528; a RFC 4515 Filter string)
+             [!]authzid=<authzid>   (RFC 4370; "dn:<dn>" or "u:<user>")
+             [!]chaining[=<resolveBehavior>[/<continuationBehavior>]]
+                     one of "chainingPreferred", "chainingRequired",
+                     "referralsPreferred", "referralsRequired"
+             [!]manageDSAit         (RFC 3296)
+             [!]noop
+             ppolicy
+             [!]postread[=<attrs>]  (RFC 4527; comma-separated attr list)
+             [!]preread[=<attrs>]   (RFC 4527; comma-separated attr list)
+             [!]relax
+             [!]sessiontracking
+             abandon, cancel, ignore (SIGINT sends abandon/cancel,
+             or ignores response; if critical, doesn't wait for SIGINT.
+             not really controls)
+  -h host    LDAP server
+  -H URI     LDAP Uniform Resource Identifier(s)
+  -I         use SASL Interactive mode
+  -n         show what would be done but don't actually do it
+  -N         do not use reverse DNS to canonicalize SASL host name
+  -O props   SASL security properties
+  -o <opt>[=<optparam>] general options
+             nettimeout=<timeout> (in seconds, or "none" or "max")
+             ldif-wrap=<width> (in columns, or "no" for no wrapping)
+  -p port    port on LDAP server
+  -Q         use SASL Quiet mode
+  -R realm   SASL realm
+  -U authcid SASL authentication identity
+  -v         run in verbose mode (diagnostics to standard output)
+  -V         print version info (-VV only)
+  -w passwd  bind password (for simple authentication)
+  -W         prompt for bind password
+  -x         Simple authentication
+  -X authzid SASL authorization identity ("dn:<dn>" or "u:<user>")
+  -y file    Read password from file
+  -Y mech    SASL mechanism
+  -Z         Start TLS request (-ZZ to require successful response)
+root@openldap-5b5d4cfff9-cf4d6:/# 
+root@openldap-5b5d4cfff9-cf4d6:/# 
+root@openldap-5b5d4cfff9-cf4d6:/# 
+root@openldap-5b5d4cfff9-cf4d6:/# 
+root@openldap-5b5d4cfff9-cf4d6:/# ldapsearch -x -H ldap://localhost:389 \ -b "" -s base \ -D "cn=admin,dc=assurance,dc=local" \ -w 'ComplexP@ssw0rd2026!'
+# extended LDIF
+#
+# LDAPv3
+# base <> (default) with scope baseObject
+# filter: (objectclass=*)
+# requesting:  -b   -D cn=admin,dc=assurance,dc=local  -w ComplexP@ssw0rd2026! 
+#
+
+#
+dn:
+
+# search result
+search: 2
+result: 0 Success
+
+# numResponses: 2
+# numEntries: 1
+root@openldap-5b5d4cfff9-cf4d6:/# 
+root@openldap-5b5d4cfff9-cf4d6:/# ldapsearch -x -H ldap://localhost:389 -s base -b "" "objectclass=*"
+# extended LDIF
+#
+# LDAPv3
+# base <> with scope baseObject
+# filter: objectclass=*
+# requesting: ALL
+#
+
+#
+dn:
+objectClass: top
+objectClass: OpenLDAProotDSE
+
+# search result
+search: 2
+result: 0 Success
+
+# numResponses: 2
+# numEntries: 1
+root@openldap-5b5d4cfff9-cf4d6:/# 
+root@openldap-5b5d4cfff9-cf4d6:/# ldapsearch -x -H ldap://localhost:389 \  -D "cn=admin,dc=assurance,dc=local" \  -w 'ComplexP@ssw0rd2026!' \  -b "" -s one
+# extended LDIF
+#
+# LDAPv3
+# base <> with scope oneLevel
+# filter: (objectclass=*)
+# requesting:       
+#
+
+# search result
+search: 2
+result: 32 No such object
+
+# numResponses: 1
+root@openldap-5b5d4cfff9-cf4d6:/# ldapsearch -x -H ldaps://openldap.identity.svc.cluster.local:636 \  -b "dc=assurance,dc=local" \  -D "cn=admin,dc=assurance,dc=local" \  -w 'ComplexP@ssw0rd2026!' \  "(uid=*)"
+ldap_sasl_bind(SIMPLE): Can't contact LDAP server (-1)
+root@openldap-5b5d4cfff9-cf4d6:/# 
+root@openldap-5b5d4cfff9-cf4d6:/# 
+root@openldap-5b5d4cfff9-cf4d6:/# 
+root@openldap-5b5d4cfff9-cf4d6:/# ldapwhoami -x -H ldap://localhost:389 -D "uid=dev-user,ou=users,dc=assurance,dc=local" -w 'DevP@ssw0rd2026!'
+dn:uid=dev-user,ou=users,dc=assurance,dc=local
+root@openldap-5b5d4cfff9-cf4d6:/# 
+root@openldap-5b5d4cfff9-cf4d6:/# 
+root@openldap-5b5d4cfff9-cf4d6:/# ldapsearch -x -H ldap://localhost:389 -s base -b "" "objectclass=*" namingContexts
+# extended LDIF
+#
+# LDAPv3
+# base <> with scope baseObject
+# filter: objectclass=*
+# requesting: namingContexts 
+#
+
+#
+dn:
+namingContexts: dc=assurance,dc=local
+
+# search result
+search: 2
+result: 0 Success
+
+# numResponses: 2
+# numEntries: 1
+root@openldap-5b5d4cfff9-cf4d6:/# 
+root@openldap-5b5d4cfff9-cf4d6:/# 
+root@openldap-5b5d4cfff9-cf4d6:/# ldapsearch -x -H ldap://localhost:389 \  -D "cn=admin,dc=assurance,dc=local" \  -w 'ComplexP@ssw0rd2026!' \  -b "dc=assurance,dc=local" \  -s sub
+# extended LDIF
+#
+# LDAPv3
+# base <dc=assurance,dc=local> with scope subtree
+# filter: (objectclass=*)
+# requesting:         
+#
+
+# assurance.local
+dn: dc=assurance,dc=local
+
+# users, assurance.local
+dn: ou=users,dc=assurance,dc=local
+
+# groups, assurance.local
+dn: ou=groups,dc=assurance,dc=local
+
+# admins, groups, assurance.local
+dn: cn=admins,ou=groups,dc=assurance,dc=local
+
+# devops, groups, assurance.local
+dn: cn=devops,ou=groups,dc=assurance,dc=local
+
+# auditors, groups, assurance.local
+dn: cn=auditors,ou=groups,dc=assurance,dc=local
+
+# business, groups, assurance.local
+dn: cn=business,ou=groups,dc=assurance,dc=local
+
+# dev-user, users, assurance.local
+dn: uid=dev-user,ou=users,dc=assurance,dc=local
+
+# ops-user, users, assurance.local
+dn: uid=ops-user,ou=users,dc=assurance,dc=local
+
+# auditor, users, assurance.local
+dn: uid=auditor,ou=users,dc=assurance,dc=local
+
+# business-user, users, assurance.local
+dn: uid=business-user,ou=users,dc=assurance,dc=local
+
+# search result
+search: 2
+result: 0 Success
+
+# numResponses: 12
+# numEntries: 11
+root@openldap-5b5d4cfff9-cf4d6:/# 
+root@openldap-5b5d4cfff9-cf4d6:/# ldapsearch -x -H ldap://localhost:389 \  -D "cn=admin,dc=assurance,dc=local" \  -w 'ComplexP@ssw0rd2026!' \  -b "ou=users,dc=assurance,dc=local" \  -s one
+# extended LDIF
+#
+# LDAPv3
+# base <ou=users,dc=assurance,dc=local> with scope oneLevel
+# filter: (objectclass=*)
+# requesting:         
+#
+
+# auditor, users, assurance.local
+dn: uid=auditor,ou=users,dc=assurance,dc=local
+
+# dev-user, users, assurance.local
+dn: uid=dev-user,ou=users,dc=assurance,dc=local
+
+# ops-user, users, assurance.local
+dn: uid=ops-user,ou=users,dc=assurance,dc=local
+
+# business-user, users, assurance.local
+dn: uid=business-user,ou=users,dc=assurance,dc=local
+
+# search result
+search: 2
+result: 0 Success
+
+# numResponses: 5
+# numEntries: 4
+root@openldap-5b5d4cfff9-cf4d6:/# 
+root@openldap-5b5d4cfff9-cf4d6:/# ldapsearch -x -H ldap://localhost:389 \  -D "cn=admin,dc=assurance,dc=local" \  -w 'ComplexP@ssw0rd2026!' \  -b "ou=groups,dc=assurance,dc=local" \  -s one
+# extended LDIF
+#
+# LDAPv3
+# base <ou=groups,dc=assurance,dc=local> with scope oneLevel
+# filter: (objectclass=*)
+# requesting:         
+#
+
+# admins, groups, assurance.local
+dn: cn=admins,ou=groups,dc=assurance,dc=local
+
+# devops, groups, assurance.local
+dn: cn=devops,ou=groups,dc=assurance,dc=local
+
+# auditors, groups, assurance.local
+dn: cn=auditors,ou=groups,dc=assurance,dc=local
+
+# business, groups, assurance.local
+dn: cn=business,ou=groups,dc=assurance,dc=local
+
+# search result
+search: 2
+result: 0 Success
+
+# numResponses: 5
+# numEntries: 4
+root@openldap-5b5d4cfff9-cf4d6:/# 
+root@openldap-5b5d4cfff9-cf4d6:/# ldapsearch -x -H ldap://localhost:389 \  -D "cn=admin,dc=assurance,dc=local" \  -w 'ComplexP@ssw0rd2026!' \  -b "dc=assurance,dc=local" \  -s sub \  "(uid=business-user)"
+# extended LDIF
+#
+# LDAPv3
+# base <dc=assurance,dc=local> with scope subtree
+# filter: (objectclass=*)
+# requesting:           (uid=business-user) 
+#
+
+# assurance.local
+dn: dc=assurance,dc=local
+
+# users, assurance.local
+dn: ou=users,dc=assurance,dc=local
+
+# groups, assurance.local
+dn: ou=groups,dc=assurance,dc=local
+
+# admins, groups, assurance.local
+dn: cn=admins,ou=groups,dc=assurance,dc=local
+
+# devops, groups, assurance.local
+dn: cn=devops,ou=groups,dc=assurance,dc=local
+
+# auditors, groups, assurance.local
+dn: cn=auditors,ou=groups,dc=assurance,dc=local
+
+# business, groups, assurance.local
+dn: cn=business,ou=groups,dc=assurance,dc=local
+
+# dev-user, users, assurance.local
+dn: uid=dev-user,ou=users,dc=assurance,dc=local
+
+# ops-user, users, assurance.local
+dn: uid=ops-user,ou=users,dc=assurance,dc=local
+
+# auditor, users, assurance.local
+dn: uid=auditor,ou=users,dc=assurance,dc=local
+
+# business-user, users, assurance.local
+dn: uid=business-user,ou=users,dc=assurance,dc=local
+
+# search result
+search: 2
+result: 0 Success
+
+# numResponses: 12
+# numEntries: 11
+root@openldap-5b5d4cfff9-cf4d6:/# ldapsearch -x -H ldap://localhost:389 \  -D "cn=admin,dc=assurance,dc=local" \  -w 'ComplexP@ssw0rd2026!' \  -b "dc=assurance,dc=local" \  -s sub \  "(uid=dev-user)"
+# extended LDIF
+#
+# LDAPv3
+# base <dc=assurance,dc=local> with scope subtree
+# filter: (objectclass=*)
+# requesting:           (uid=dev-user) 
+#
+
+# assurance.local
+dn: dc=assurance,dc=local
+
+# users, assurance.local
+dn: ou=users,dc=assurance,dc=local
+
+# groups, assurance.local
+dn: ou=groups,dc=assurance,dc=local
+
+# admins, groups, assurance.local
+dn: cn=admins,ou=groups,dc=assurance,dc=local
+
+# devops, groups, assurance.local
+dn: cn=devops,ou=groups,dc=assurance,dc=local
+
+# auditors, groups, assurance.local
+dn: cn=auditors,ou=groups,dc=assurance,dc=local
+
+# business, groups, assurance.local
+dn: cn=business,ou=groups,dc=assurance,dc=local
+
+# dev-user, users, assurance.local
+dn: uid=dev-user,ou=users,dc=assurance,dc=local
+
+# ops-user, users, assurance.local
+dn: uid=ops-user,ou=users,dc=assurance,dc=local
+
+# auditor, users, assurance.local
+dn: uid=auditor,ou=users,dc=assurance,dc=local
+
+# business-user, users, assurance.local
+dn: uid=business-user,ou=users,dc=assurance,dc=local
+
+# search result
+search: 2
+result: 0 Success
+
+# numResponses: 12
+# numEntries: 11
+root@openldap-5b5d4cfff9-cf4d6:/# 
+root@openldap-5b5d4cfff9-cf4d6:/# 
+root@openldap-5b5d4cfff9-cf4d6:/# 
+root@openldap-5b5d4cfff9-cf4d6:/# 
+root@openldap-5b5d4cfff9-cf4d6:/# ldapsearch -x -H ldap://localhost:389 \  -D "cn=admin,dc=assurance,dc=local" \  -w 'ComplexP@ssw0rd2026!' \  -b "dc=assurance,dc=local" \  -s sub \  "(uid=business-user)"
+# extended LDIF
+#
+# LDAPv3
+# base <dc=assurance,dc=local> with scope subtree
+# filter: (objectclass=*)
+# requesting:           (uid=business-user) 
+#
+
+# assurance.local
+dn: dc=assurance,dc=local
+
+# users, assurance.local
+dn: ou=users,dc=assurance,dc=local
+
+# groups, assurance.local
+dn: ou=groups,dc=assurance,dc=local
+
+# admins, groups, assurance.local
+dn: cn=admins,ou=groups,dc=assurance,dc=local
+
+# devops, groups, assurance.local
+dn: cn=devops,ou=groups,dc=assurance,dc=local
+
+# auditors, groups, assurance.local
+dn: cn=auditors,ou=groups,dc=assurance,dc=local
+
+# business, groups, assurance.local
+dn: cn=business,ou=groups,dc=assurance,dc=local
+
+# dev-user, users, assurance.local
+dn: uid=dev-user,ou=users,dc=assurance,dc=local
+
+# ops-user, users, assurance.local
+dn: uid=ops-user,ou=users,dc=assurance,dc=local
+
+# auditor, users, assurance.local
+dn: uid=auditor,ou=users,dc=assurance,dc=local
+
+# business-user, users, assurance.local
+dn: uid=business-user,ou=users,dc=assurance,dc=local
+
+# search result
+search: 2
+result: 0 Success
+
+# numResponses: 12
+# numEntries: 11
+root@openldap-5b5d4cfff9-cf4d6:/# ldapsearch -x -H ldap://localhost:389 -D "cn=admin,dc=assurance,dc=local" -w 'ComplexP@ssw0rd2026!' -b "dc=assurance,dc=local" -s sub "(uid=business-user)"
+# extended LDIF
+#
+# LDAPv3
+# base <dc=assurance,dc=local> with scope subtree
+# filter: (uid=business-user)
+# requesting: ALL
+#
+
+# business-user, users, assurance.local
+dn: uid=business-user,ou=users,dc=assurance,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: business-user
+sn: Business
+cn: Business User
+uidNumber: 10004
+gidNumber: 10004
+homeDirectory: /home/business-user
+loginShell: /bin/bash
+userPassword:: e1NTSEF9QmJVNmpLSVk2WGVqd1kvdU9xY3ZnZ0NrSkEzYmZ1aHU=
+
+# search result
+search: 2
+result: 0 Success
+
+# numResponses: 2
+# numEntries: 1
+root@openldap-5b5d4cfff9-cf4d6:/# 
+root@openldap-5b5d4cfff9-cf4d6:/# ldapsearch -x -H ldap://localhost:389 -D "cn=admin,dc=assurance,dc=local" -w 'ComplexP@ssw0rd2026!' -b "dc=assurance,dc=local" -s sub "(uid=dev-user)"
+# extended LDIF
+#
+# LDAPv3
+# base <dc=assurance,dc=local> with scope subtree
+# filter: (uid=dev-user)
+# requesting: ALL
+#
+
+# dev-user, users, assurance.local
+dn: uid=dev-user,ou=users,dc=assurance,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: dev-user
+sn: Developer
+cn: Dev User
+uidNumber: 10001
+gidNumber: 10001
+homeDirectory: /home/dev-user
+loginShell: /bin/bash
+userPassword:: e1NTSEF9VVcya1dqWmZadlQrTDVhRWxVWXIvM0Z2TExNNnpZblc=
+
+# search result
+search: 2
+result: 0 Success
+
+# numResponses: 2
+# numEntries: 1
+root@openldap-5b5d4cfff9-cf4d6:/# ldapsearch -x -H ldap://10.96.253.34:389 \  -D "cn=admin,dc=assurance,dc=local" \  -w 'ComplexP@ssw0rd2026!' \  -b "dc=assurance,dc=local" \  -s sub \  "(uid=dev-user)" \  userPassword
+# extended LDIF
+#
+# LDAPv3
+# base <dc=assurance,dc=local> with scope subtree
+# filter: (objectclass=*)
+# requesting:           (uid=dev-user)   userPassword 
+#
+
+# assurance.local
+dn: dc=assurance,dc=local
+
+# users, assurance.local
+dn: ou=users,dc=assurance,dc=local
+
+# groups, assurance.local
+dn: ou=groups,dc=assurance,dc=local
+
+# admins, groups, assurance.local
+dn: cn=admins,ou=groups,dc=assurance,dc=local
+
+# devops, groups, assurance.local
+dn: cn=devops,ou=groups,dc=assurance,dc=local
+
+# auditors, groups, assurance.local
+dn: cn=auditors,ou=groups,dc=assurance,dc=local
+
+# business, groups, assurance.local
+dn: cn=business,ou=groups,dc=assurance,dc=local
+
+# dev-user, users, assurance.local
+dn: uid=dev-user,ou=users,dc=assurance,dc=local
+userPassword:: e1NTSEF9VVcya1dqWmZadlQrTDVhRWxVWXIvM0Z2TExNNnpZblc=
+
+# ops-user, users, assurance.local
+dn: uid=ops-user,ou=users,dc=assurance,dc=local
+userPassword:: e1NTSEF9eFp5Y2tWZmJodlozRDM3SkloZWg4Wk9oN2pweE1SeE4=
+
+# auditor, users, assurance.local
+dn: uid=auditor,ou=users,dc=assurance,dc=local
+userPassword:: e1NTSEF9UlBaWlJNRTBnNU84RG12RXNISHdTczlXb2dKUmQ4alg=
+
+# business-user, users, assurance.local
+dn: uid=business-user,ou=users,dc=assurance,dc=local
+userPassword:: e1NTSEF9QmJVNmpLSVk2WGVqd1kvdU9xY3ZnZ0NrSkEzYmZ1aHU=
+
+# search result
+search: 2
+result: 0 Success
+
+# numResponses: 12
+# numEntries: 11
+root@openldap-5b5d4cfff9-cf4d6:/# ldapsearch -x -H ldap://10.96.253.34:389 -D "cn=admin,dc=assurance,dc=local" -w 'ComplexP@ssw0rd2026!' -b "dc=assurance,dc=local" -s sub "(uid=dev-user)" user
+Password
+# extended LDIF
+#
+# LDAPv3
+# base <dc=assurance,dc=local> with scope subtree
+# filter: (uid=dev-user)
+# requesting: userPassword 
+#
+
+# dev-user, users, assurance.local
+dn: uid=dev-user,ou=users,dc=assurance,dc=local
+userPassword:: e1NTSEF9VVcya1dqWmZadlQrTDVhRWxVWXIvM0Z2TExNNnpZblc=
+
+# search result
+search: 2
+result: 0 Success
+
+# numResponses: 2
+# numEntries: 1
+root@openldap-5b5d4cfff9-cf4d6:/# 
+
+
+Utilisation de l’image alpine + installation rapide de openldap-clients :
+
+user@k3s-lyon-01:~/nova-syndicate-gitops/IAM$ kubectl run ldap-test --rm -it --restart=Never \
+  --image=alpine:3.20 \
+  -n identity \
+  -- sh -c "apk add --no-cache openldap-clients && \
+  ldapsearch -x \
+  -H ldap://openldap.identity.svc.cluster.local:389 \
+  -b 'dc=assurance,dc=local' \
+  -D 'cn=admin,dc=assurance,dc=local' \
+  -w 'ComplexP@ssw0rd2026!'"
+If you don't see a command prompt, try pressing enter.
+fetch https://dl-cdn.alpinelinux.org/alpine/v3.20/community/x86_64/APKINDEX.tar.gz
+(1/5) Installing gdbm (1.23-r1)
+(2/5) Installing libsasl (2.1.28-r6)
+(3/5) Installing libldap (2.6.8-r0)
+(4/5) Installing libuuid (2.40.1-r1)
+(5/5) Installing openldap-clients (2.6.8-r0)
+Executing busybox-1.36.1-r31.trigger
+OK: 9 MiB in 19 packages
+# extended LDIF
+#
+# LDAPv3
+# base <dc=assurance,dc=local> with scope subtree
+# filter: (objectclass=*)
+# requesting: ALL
+#
+
+# assurance.local
+dn: dc=assurance,dc=local
+objectClass: top
+objectClass: dcObject
+objectClass: organization
+o: Assurance Demo
+dc: assurance
+
+# users, assurance.local
+dn: ou=users,dc=assurance,dc=local
+objectClass: organizationalUnit
+ou: users
+
+# groups, assurance.local
+dn: ou=groups,dc=assurance,dc=local
+objectClass: organizationalUnit
+ou: groups
+
+# admins, groups, assurance.local
+dn: cn=admins,ou=groups,dc=assurance,dc=local
+objectClass: groupOfNames
+cn: admins
+member: cn=admin,dc=assurance,dc=local
+member: uid=ops-user,ou=users,dc=assurance,dc=local
+
+# devops, groups, assurance.local
+dn: cn=devops,ou=groups,dc=assurance,dc=local
+objectClass: groupOfNames
+cn: devops
+member: cn=admin,dc=assurance,dc=local
+member: uid=dev-user,ou=users,dc=assurance,dc=local
+member: uid=ops-user,ou=users,dc=assurance,dc=local
+
+# auditors, groups, assurance.local
+dn: cn=auditors,ou=groups,dc=assurance,dc=local
+objectClass: groupOfNames
+cn: auditors
+member: cn=admin,dc=assurance,dc=local
+member: uid=auditor,ou=users,dc=assurance,dc=local
+
+# business, groups, assurance.local
+dn: cn=business,ou=groups,dc=assurance,dc=local
+objectClass: groupOfNames
+cn: business
+member: cn=admin,dc=assurance,dc=local
+member: uid=business-user,ou=users,dc=assurance,dc=local
+
+# dev-user, users, assurance.local
+dn: uid=dev-user,ou=users,dc=assurance,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: dev-user
+sn: Developer
+cn: Dev User
+uidNumber: 10001
+gidNumber: 10001
+homeDirectory: /home/dev-user
+loginShell: /bin/bash
+userPassword:: e1NTSEF9VVcya1dqWmZadlQrTDVhRWxVWXIvM0Z2TExNNnpZblc=
+
+# ops-user, users, assurance.local
+dn: uid=ops-user,ou=users,dc=assurance,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: ops-user
+sn: Operator
+cn: Ops User
+uidNumber: 10002
+gidNumber: 10002
+homeDirectory: /home/ops-user
+loginShell: /bin/bash
+userPassword:: e1NTSEF9eFp5Y2tWZmJodlozRDM3SkloZWg4Wk9oN2pweE1SeE4=
+
+# auditor, users, assurance.local
+dn: uid=auditor,ou=users,dc=assurance,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: auditor
+sn: Auditor
+cn: Security Auditor
+uidNumber: 10003
+gidNumber: 10003
+homeDirectory: /home/auditor
+loginShell: /bin/bash
+userPassword:: e1NTSEF9UlBaWlJNRTBnNU84RG12RXNISHdTczlXb2dKUmQ4alg=
+
+# business-user, users, assurance.local
+dn: uid=business-user,ou=users,dc=assurance,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: business-user
+sn: Business
+cn: Business User
+uidNumber: 10004
+gidNumber: 10004
+homeDirectory: /home/business-user
+loginShell: /bin/bash
+userPassword:: e1NTSEF9QmJVNmpLSVk2WGVqd1kvdU9xY3ZnZ0NrSkEzYmZ1aHU=
+
+# search result
+search: 2
+result: 0 Success
+
+# numResponses: 12
+# numEntries: 11
+pod "ldap-test" deleted
+user@k3s-lyon-01:~/nova-syndicate-gitops/IAM$ 
+
+user@k3s-lyon-01:~/nova-syndicate-gitops/IAM$ kubectl run ldap-test --rm -it --restart=Never \
+  --image=alpine:3.20 -n identity -- \
+  sh -c "apk add --no-cache openldap-clients && \
+  ldapsearch -x -H ldap://openldap.identity.svc.cluster.local:389 \
+  -b 'dc=assurance,dc=local' \
+  -D 'cn=admin,dc=assurance,dc=local' \
+  -w 'ComplexP@ssw0rd2026!' \
+  '(uid=dev-user)'"
+If you don't see a command prompt, try pressing enter.
+(1/5) Installing gdbm (1.23-r1)
+(2/5) Installing libsasl (2.1.28-r6)
+(3/5) Installing libldap (2.6.8-r0)
+(4/5) Installing libuuid (2.40.1-r1)
+(5/5) Installing openldap-clients (2.6.8-r0)
+Executing busybox-1.36.1-r31.trigger
+OK: 9 MiB in 19 packages
+# extended LDIF
+#
+# LDAPv3
+# base <dc=assurance,dc=local> with scope subtree
+# filter: (uid=dev-user)
+# requesting: ALL
+#
+
+# dev-user, users, assurance.local
+dn: uid=dev-user,ou=users,dc=assurance,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: dev-user
+sn: Developer
+cn: Dev User
+uidNumber: 10001
+gidNumber: 10001
+homeDirectory: /home/dev-user
+loginShell: /bin/bash
+userPassword:: e1NTSEF9VVcya1dqWmZadlQrTDVhRWxVWXIvM0Z2TExNNnpZblc=
+
+# search result
+search: 2
+result: 0 Success
+
+# numResponses: 2
+# numEntries: 1
+pod "ldap-test" deleted
+user@k3s-lyon-01:~/nova-syndicate-gitops/IAM$ kubectl run ldap-test --rm -it --restart=Never \
+  --image=alpine:3.20 -n identity -- \
+  sh -c "apk add --no-cache openldap-clients && \
+  ldapsearch -x -H ldap://openldap.identity.svc.cluster.local:389 \
+  -b 'dc=assurance,dc=local' \
+  -D 'cn=admin,dc=assurance,dc=local' \
+  -w 'ComplexP@ssw0rd2026!' \
+  '(uid=dev-user)' uid cn mail"
+If you don't see a command prompt, try pressing enter.
+(1/5) Installing gdbm (1.23-r1)
+(2/5) Installing libsasl (2.1.28-r6)
+(3/5) Installing libldap (2.6.8-r0)
+(4/5) Installing libuuid (2.40.1-r1)
+(5/5) Installing openldap-clients (2.6.8-r0)
+Executing busybox-1.36.1-r31.trigger
+OK: 9 MiB in 19 packages
+# extended LDIF
+#
+# LDAPv3
+# base <dc=assurance,dc=local> with scope subtree
+# filter: (uid=dev-user)
+# requesting: uid cn mail 
+#
+
+# dev-user, users, assurance.local
+dn: uid=dev-user,ou=users,dc=assurance,dc=local
+uid: dev-user
+cn: Dev User
+
+# search result
+search: 2
+result: 0 Success
+
+# numResponses: 2
+# numEntries: 1
+pod "ldap-test" deleted
+user@k3s-lyon-01:~/nova-syndicate-gitops/IAM$ kubectl run ldap-test --rm -it --restart=Never \
+  --image=alpine:3.20 -n identity -- \
+  sh -c "apk add --no-cache openldap-clients && \
+  ldapsearch -x -H ldap://openldap.identity.svc.cluster.local:389 \
+  -b 'dc=assurance,dc=local' \
+  -D 'cn=admin,dc=assurance,dc=local' \
+  -w 'ComplexP@ssw0rd2026!' \
+  '(&(objectClass=posixAccount)(gidNumber=10001))'"
+If you don't see a command prompt, try pressing enter.
+fetch https://dl-cdn.alpinelinux.org/alpine/v3.20/community/x86_64/APKINDEX.tar.gz
+(1/5) Installing gdbm (1.23-r1)
+(2/5) Installing libsasl (2.1.28-r6)
+(3/5) Installing libldap (2.6.8-r0)
+(4/5) Installing libuuid (2.40.1-r1)
+(5/5) Installing openldap-clients (2.6.8-r0)
+Executing busybox-1.36.1-r31.trigger
+OK: 9 MiB in 19 packages
+# extended LDIF
+#
+# LDAPv3
+# base <dc=assurance,dc=local> with scope subtree
+# filter: (&(objectClass=posixAccount)(gidNumber=10001))
+# requesting: ALL
+#
+
+# dev-user, users, assurance.local
+dn: uid=dev-user,ou=users,dc=assurance,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: dev-user
+sn: Developer
+cn: Dev User
+uidNumber: 10001
+gidNumber: 10001
+homeDirectory: /home/dev-user
+loginShell: /bin/bash
+userPassword:: e1NTSEF9VVcya1dqWmZadlQrTDVhRWxVWXIvM0Z2TExNNnpZblc=
+
+# search result
+search: 2
+result: 0 Success
+
+# numResponses: 2
+# numEntries: 1
+pod "ldap-test" deleted
+
+Parfait ! 🎉 La commande a fonctionné et vous avez obtenu tous les résultats. Analysons en détail cette commande qui est très élégante et efficace.
+
+Détail de la commande complète
+
+bash
+kubectl run ldap-test --rm -it --restart=Never \
+  --image=alpine:3.20 \
+  -n identity \
+  -- sh -c "apk add --no-cache openldap-clients && \
+  ldapsearch -x \
+  -H ldap://openldap.identity.svc.cluster.local:389 \
+  -b 'dc=assurance,dc=local' \
+  -D 'cn=admin,dc=assurance,dc=local' \
+  -w 'ComplexP@ssw0rd2026!'"
+Explication détaillée
+
+1. Partie Kubernetes (kubectl)
+
+Argument	Explication
+kubectl run	Crée et exécute un Pod Kubernetes
+ldap-test	Nom du Pod (temporaire)
+--rm	Supprime automatiquement le Pod à la fin de l'exécution
+-it	Mode interactif avec terminal (permet de voir la sortie)
+--restart=Never	Ne redémarre pas le Pod s'il échoue (exécution unique)
+--image=alpine:3.20	Utilise l'image Alpine Linux version 3.20 (très légère ~5MB)
+-n identity	Exécute dans le namespace Kubernetes identity
+-- sh -c "..."	Exécute les commandes dans un shell /bin/sh
+2. Partie Alpine Linux (apk add)
+
+Argument	Explication
+apk add	Gestionnaire de paquets Alpine (comme apt sur Debian)
+--no-cache	Ne pas garder de cache des paquets (réduit la taille)
+openldap-clients	Paquet contenant les outils LDAP (ldapsearch, ldapadd, etc.)
+3. Partie LDAP (ldapsearch)
+
+Argument	Explication
+-x	Authentification simple (non-SASL)
+-H ldap://openldap.identity.svc.cluster.local:389	URL du serveur LDAP dans le cluster
+-b 'dc=assurance,dc=local'	Base DN où rechercher
+-D 'cn=admin,dc=assurance,dc=local'	DN pour l'authentification
+-w 'ComplexP@ssw0rd2026!'	Mot de passe (dans la commande)
+Ce que fait la commande étape par étape
+
+text
+1. Kubernetes crée un Pod temporaire avec Alpine Linux
+                    ↓
+2. Alpine installe les clients LDAP (openldap-clients)
+                    ↓
+3. ldapsearch se connecte au serveur LDAP
+                    ↓
+4. Authentification avec admin
+                    ↓
+5. Recherche récursive dans dc=assurance,dc=local
+                    ↓
+6. Affiche les 11 entrées trouvées
+                    ↓
+7. Le Pod est automatiquement supprimé (--rm)
+Analyse des résultats obtenus
+
+Structure de l'annuaire
+
+text
+dc=assurance,dc=local                    ← Racine
+├── ou=users                              ← Utilisateurs
+│   ├── uid=dev-user                      ← Développeur
+│   ├── uid=ops-user                      ← Opérateur
+│   ├── uid=auditor                       ← Auditeur
+│   └── uid=business-user                 ← Business
+└── ou=groups                             ← Groupes
+    ├── cn=admins                         ← Admin
+    ├── cn=devops                         ← DevOps
+    ├── cn=auditors                       ← Auditeurs
+    └── cn=business                       ← Business
+Détail des utilisateurs
+
+Utilisateur	UID	Attributs particuliers
+dev-user	10001	membre de devops
+ops-user	10002	membre de admins et devops
+auditor	10003	membre de auditors
+business-user	10004	membre de business
+Détail des groupes
+
+Groupe	Membres
+admins	admin (superadmin) + ops-user
+devops	admin + dev-user + ops-user
+auditors	admin + auditor
+business	admin + business-user
+Avantages de cette approche
+
+Avantage	Explication
+🚀 Rapide	Alpine est très léger (5MB), démarrage en quelques secondes
+🧹 Propre	Le Pod est supprimé automatiquement après exécution
+🔒 Isolé	L'environnement de test n'affecte pas votre système
+📦 Auto-contenu	Tout est installé à la volée, pas de dépendances persistantes
+🎯 Ciblé	Idéal pour des tests ponctuels et des scripts CI/CD
+Variantes de la commande
+
+1. Recherche d'un utilisateur spécifique
+
+bash
+kubectl run ldap-test --rm -it --restart=Never \
+  --image=alpine:3.20 -n identity -- \
+  sh -c "apk add --no-cache openldap-clients && \
+  ldapsearch -x -H ldap://openldap.identity.svc.cluster.local:389 \
+  -b 'dc=assurance,dc=local' \
+  -D 'cn=admin,dc=assurance,dc=local' \
+  -w 'ComplexP@ssw0rd2026!' \
+  '(uid=dev-user)'"
+2. Recherche avec attributs spécifiques
+
+bash
+kubectl run ldap-test --rm -it --restart=Never \
+  --image=alpine:3.20 -n identity -- \
+  sh -c "apk add --no-cache openldap-clients && \
+  ldapsearch -x -H ldap://openldap.identity.svc.cluster.local:389 \
+  -b 'dc=assurance,dc=local' \
+  -D 'cn=admin,dc=assurance,dc=local' \
+  -w 'ComplexP@ssw0rd2026!' \
+  '(uid=dev-user)' uid cn mail"
+3. Avec filtre de groupe (si attribut memberOf)
+
+bash
+kubectl run ldap-test --rm -it --restart=Never \
+  --image=alpine:3.20 -n identity -- \
+  sh -c "apk add --no-cache openldap-clients && \
+  ldapsearch -x -H ldap://openldap.identity.svc.cluster.local:389 \
+  -b 'dc=assurance,dc=local' \
+  -D 'cn=admin,dc=assurance,dc=local' \
+  -w 'ComplexP@ssw0rd2026!' \
+  '(&(objectClass=posixAccount)(gidNumber=10001))'"
+Résumé
+
+Cette commande est un "one-liner" puissant qui :
+
+Lance un conteneur Alpine éphémère
+Installe les outils LDAP à la volée
+Interroge votre annuaire LDAP
+Se nettoie automatiquement
+C'est idéal pour :
+
+Des tests rapides
+Des scripts d'automatisation
+Des pipelines CI/CD
+Des investigations ponctuelles
+Vous avez maintenant une méthode propre et reproductible pour interagir avec votre LDAP depuis l'extérieur du cluster ! 🚀
+
+Validation réussie.
+L’annuaire OpenLDAP répond correctement :
+
+Bind admin OK
+Base DN dc=assurance,dc=local accessible
+Service ClusterIP fonctionnel
+
+Le Lab 1 (IAM + LDAP) est opérationnel.
+

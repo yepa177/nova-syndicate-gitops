@@ -5,7 +5,7 @@ metadata:
   namespace: identity
 type: Opaque
 stringData:
-  LDAP_ADMIN_PASSWORD: "ComplexP@ssw0rd2026!"   # À changer immédiatement
+  LDAP_ADMIN_PASSWORD: "ComplexP@ssw0rd2026!"
   LDAP_CONFIG_PASSWORD: "ConfigP@ssw0rd2026!"
 ---
 apiVersion: v1
@@ -19,6 +19,18 @@ spec:
   resources:
     requests:
       storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: openldap-config-pvc
+  namespace: identity
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -59,7 +71,7 @@ spec:
               name: openldap-secret
               key: LDAP_CONFIG_PASSWORD
         - name: LDAP_TLS
-          value: "false"          # Lab uniquement – activer TLS en prod
+          value: "false"
         volumeMounts:
         - name: data
           mountPath: /var/lib/ldap
@@ -70,7 +82,8 @@ spec:
         persistentVolumeClaim:
           claimName: openldap-pvc
       - name: config
-        emptyDir: {}
+        persistentVolumeClaim:
+          claimName: openldap-config-pvc
 ---
 apiVersion: v1
 kind: Service

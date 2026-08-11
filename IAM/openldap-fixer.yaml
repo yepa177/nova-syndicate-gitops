@@ -1,0 +1,81 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: openldap-fixer
+  namespace: identity
+spec:
+  containers:
+  - name: fixer
+    image: osixia/openldap:1.5.0
+    command:
+    - /bin/sh
+    - -c
+    args:
+    - |
+      echo "🔧 Configuration OpenLDAP..."
+      sleep 5
+      rm -rf /etc/ldap/slapd.d/*
+      mkdir -p /etc/ldap/slapd.d
+
+      cat > /tmp/config.ldif << "EOF"
+      dn: cn=config
+      objectClass: olcGlobal
+      cn: config
+      olcArgsFile: /var/run/slapd/slapd.args
+      olcPidFile: /var/run/slapd/slapd.pid
+      olcLogLevel: stats
+      EOF
+      slapadd -n 0 -F /etc/ldap/slapd.d -l /tmp/config.ldif 2>/dev/null
+
+      cat > /tmp/module.ldif << "EOF"
+      dn: cn=module{0},cn=config
+      objectClass: olcModuleList
+      cn: module{0}
+      olcModulePath: /usr/lib/ldap
+      olcModuleLoad: back_mdb
+      EOF
+      slapadd -n 0 -F /etc/ldap/slapd.d -l /tmp/module.ldif 2>/dev/null
+
+      cat > /tmp/backend.ldif << "EOF"
+      dn: olcDatabase=mdb,cn=config
+      objectClass: olcDatabaseConfig
+      objectClass: olcMdbConfig
+      olcDatabase: mdb
+      olcSuffix: dc=assurance,dc=local
+      olcDbDirectory: /var/lib/ldap
+      olcRootDN: cn=admin,dc=assurance,dc=local
+      olcRootPW: ComplexP@ssw0rd2026!
+      olcLastMod: TRUE
+      olcDbIndex: objectClass eq
+      olcDbIndex: uid eq
+      olcDbIndex: cn eq
+      olcDbIndex: mail eq
+      olcDbIndex: member eq
+      EOF
+      slapadd -n 0 -F /etc/ldap/slapd.d -l /tmp/backend.ldif 2>/dev/null
+
+      chown -R openldap:openldap /etc/ldap/slapd.d
+      chown -R openldap:openldap /var/lib/ldap
+
+      /usr/sbin/slapd -h "ldap:/// ldapi:///" -F /etc/ldap/slapd.d -u openldap -g openldap -d 0 &
+      sleep 5
+
+      echo "🔍 Test de connexion :"
+      ldapsearch -x -H ldap://localhost:389 -D "cn=admin,dc=assurance,dc=local" -w "ComplexP@ssw0rd2026!" -b "dc=assurance,dc=local" "(objectClass=*)" 2>&1 | head -20
+
+      sleep 3600
+    volumeMounts:
+    - name: data
+      mountPath: /var/lib/ldap
+    - name: config
+      mountPath: /etc/ldap/slapd.d
+    securityContext:
+      runAsUser: 0
+      runAsGroup: 0
+  volumes:
+  - name: data
+    persistentVolumeClaim:
+      claimName: openldap-pvc
+  - name: config
+    persistentVolumeClaim:
+      claimName: openldap-config-pvc

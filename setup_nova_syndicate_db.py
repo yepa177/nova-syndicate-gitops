@@ -10,7 +10,7 @@ DB_USER = "yepa177"
 DB_PASSWORD = "qwerty123"  # Remplace par ton mot de passe
 DB_HOST = "localhost"
 DB_PORT = "5432"
-CSV_DIR = "/tmp"  # Répertoire où se trouvent les fichiers CSV dans le pod (ou localement)
+CSV_DIR = "/home/user/nova-syndicate-gitops/nova-syndicate-csv"  # Répertoire où se trouvent les fichiers CSV dans le pod (ou localement)
 
 # Tables et leurs schémas
 TABLES = {
