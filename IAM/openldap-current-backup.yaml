@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "2"
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"openldap","namespace":"identity"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"openldap"}},"template":{"metadata":{"labels":{"app":"openldap"}},"spec":{"containers":[{"env":[{"name":"LDAP_ORGANISATION","value":"Assurance Demo"},{"name":"LDAP_DOMAIN","value":"assurance.local"},{"name":"LDAP_ADMIN_PASSWORD","valueFrom":{"secretKeyRef":{"key":"LDAP_ADMIN_PASSWORD","name":"openldap-secret"}}},{"name":"LDAP_CONFIG_PASSWORD","valueFrom":{"secretKeyRef":{"key":"LDAP_CONFIG_PASSWORD","name":"openldap-secret"}}},{"name":"LDAP_TLS","value":"false"}],"image":"osixia/openldap:1.5.0","name":"openldap","ports":[{"containerPort":389,"name":"ldap"},{"containerPort":636,"name":"ldaps"}],"volumeMounts":[{"mountPath":"/var/lib/ldap","name":"data"},{"mountPath":"/etc/ldap/slapd.d","name":"config"}]}],"volumes":[{"name":"data","persistentVolumeClaim":{"claimName":"openldap-pvc"}},{"name":"config","persistentVolumeClaim":{"claimName":"openldap-config-pvc"}}]}}}}
+  creationTimestamp: "2026-08-11T10:21:56Z"
+  generation: 7
+  name: openldap
+  namespace: identity
+  resourceVersion: "64239524"
+  uid: 63a8cb30-9146-4d36-a6d8-9a3ce77608c1
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: openldap
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: openldap
+    spec:
+      containers:
+      - env:
+        - name: LDAP_ORGANISATION
+          value: Assurance Demo
+        - name: LDAP_DOMAIN
+          value: assurance.local
+        - name: LDAP_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: LDAP_ADMIN_PASSWORD
+              name: openldap-secret
+        - name: LDAP_CONFIG_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: LDAP_CONFIG_PASSWORD
+              name: openldap-secret
+        - name: LDAP_TLS
+          value: "false"
+        image: osixia/openldap:1.5.0
+        imagePullPolicy: IfNotPresent
+        name: openldap
+        ports:
+        - containerPort: 389
+          name: ldap
+          protocol: TCP
+        - containerPort: 636
+          name: ldaps
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /var/lib/ldap
+          name: data
+        - mountPath: /etc/ldap/slapd.d
+          name: config
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: openldap-pvc
+      - name: config
+        persistentVolumeClaim:
+          claimName: openldap-config-pvc
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: "2026-08-11T10:21:56Z"
+    lastUpdateTime: "2026-08-11T11:07:39Z"
+    message: ReplicaSet "openldap-7fc848d8cd" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  - lastTransitionTime: "2026-08-11T11:11:41Z"
+    lastUpdateTime: "2026-08-11T11:11:41Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  observedGeneration: 7
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1
