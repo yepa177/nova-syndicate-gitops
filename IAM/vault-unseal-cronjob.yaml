@@ -1,0 +1,66 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: vault-unseal
+  namespace: vault
+  labels:
+    app: vault-unseal
+spec:
+  schedule: "*/2 * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  startingDeadlineSeconds: 60
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      template:
+        metadata:
+          labels:
+            app: vault-unseal
+        spec:
+          serviceAccountName: vault-unseal          # ← ajouté
+          restartPolicy: OnFailure
+          containers:
+          - name: unseal
+            image: hashicorp/vault:2.0.3
+            command:
+            - /bin/sh
+            - -c
+            - |
+              set -e
+              export VAULT_ADDR=http://vault.vault.svc:8200
+
+              echo "[$(date)] Attente que Vault soit joignable..."
+              until vault status 2>&1 | grep -q "Initialized"; do
+                sleep 2
+              done
+
+              if vault status 2>&1 | grep -q "Sealed.*false"; then
+                echo "[$(date)] Vault est déjà unsealed → rien à faire"
+                exit 0
+              fi
+
+              echo "[$(date)] Vault est sealed → unseal en cours..."
+              vault operator unseal "$KEY1"
+              vault operator unseal "$KEY2"
+              vault operator unseal "$KEY3"
+
+              echo "[$(date)] Unseal terminé avec succès"
+              vault status
+            env:
+            - name: KEY1
+              valueFrom:
+                secretKeyRef:
+                  name: vault-unseal-keys
+                  key: key1
+            - name: KEY2
+              valueFrom:
+                secretKeyRef:
+                  name: vault-unseal-keys
+                  key: key2
+            - name: KEY3
+              valueFrom:
+                secretKeyRef:
+                  name: vault-unseal-keys
+                  key: key3
