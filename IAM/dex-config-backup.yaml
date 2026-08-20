@@ -1,14 +1,11 @@
 apiVersion: v1
 data:
-  config.yaml: |
+  config.yaml: |-
     issuer: http://dex.identity.svc.cluster.local:5556/dex
-
     storage:
       type: memory
-
     web:
       http: 0.0.0.0:5556
-
     connectors:
     - type: ldap
       id: ldap
@@ -18,7 +15,7 @@ data:
         insecureNoSSL: true
         insecureSkipVerify: true
         bindDN: cn=admin,dc=assurance,dc=local
-        bindPW: ComplexP@ssw0rd2026!
+        bindPW: __VAULT_LDAP_BIND_PASSWORD__
         userSearch:
           baseDN: ou=users,dc=assurance,dc=local
           filter: "(objectClass=inetOrgPerson)"
@@ -33,7 +30,6 @@ data:
           - userAttr: DN
             groupAttr: member
           nameAttr: cn
-
     staticClients:
     - id: kubernetes
       redirectURIs:
@@ -41,16 +37,15 @@ data:
       - http://localhost:8000
       name: Kubernetes
       secret: kubernetes-secret-lab-2026
-
     oauth2:
       skipApprovalScreen: true
 kind: ConfigMap
 metadata:
   annotations:
     kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"v1","data":{"config.yaml":"issuer: https://dex.identity.svc.cluster.local:5556/dex\n\nstorage:\n  type: memory\n\nweb:\n  http: 0.0.0.0:5556\n\nconnectors:\n- type: ldap\n  id: ldap\n  name: OpenLDAP Assurance\n  config:\n    host: openldap.identity.svc.cluster.local:389\n    insecureNoSSL: true\n    insecureSkipVerify: true\n    bindDN: cn=admin,dc=assurance,dc=local\n    bindPW: ComplexP@ssw0rd2026!\n    userSearch:\n      baseDN: ou=users,dc=assurance,dc=local\n      filter: \"(objectClass=inetOrgPerson)\"\n      username: uid\n      idAttr: uid\n      emailAttr: uid\n      nameAttr: cn\n    groupSearch:\n      baseDN: ou=groups,dc=assurance,dc=local\n      filter: \"(objectClass=groupOfNames)\"\n      userMatchers:\n      - userAttr: DN\n        groupAttr: member\n      nameAttr: cn\n\nstaticClients:\n- id: kubernetes\n  redirectURIs:\n  - http://127.0.0.1:8000\n  - http://localhost:8000\n  name: Kubernetes\n  secret: kubernetes-secret-lab-2026\n\noauth2:\n  skipApprovalScreen: true\n"},"kind":"ConfigMap","metadata":{"annotations":{},"name":"dex-config","namespace":"identity"}}
+      {"apiVersion":"v1","data":{"config.yaml":"issuer: http://dex.identity.svc.cluster.local:5556/dex\nstorage:\n  type: memory\nweb:\n  http: 0.0.0.0:5556\nconnectors:\n- type: ldap\n  id: ldap\n  name: OpenLDAP Assurance\n  config:\n    host: openldap.identity.svc.cluster.local:389\n    insecureNoSSL: true\n    insecureSkipVerify: true\n    bindDN: cn=admin,dc=assurance,dc=local\n    bindPW: __VAULT_LDAP_BIND_PASSWORD__\n    userSearch:\n      baseDN: ou=users,dc=assurance,dc=local\n      filter: \"(objectClass=inetOrgPerson)\"\n      username: uid\n      idAttr: uid\n      emailAttr: uid\n      nameAttr: cn\n    groupSearch:\n      baseDN: ou=groups,dc=assurance,dc=local\n      filter: \"(objectClass=groupOfNames)\"\n      userMatchers:\n      - userAttr: DN\n        groupAttr: member\n      nameAttr: cn\nstaticClients:\n- id: kubernetes\n  redirectURIs:\n  - http://127.0.0.1:8000\n  - http://localhost:8000\n  name: Kubernetes\n  secret: kubernetes-secret-lab-2026\noauth2:\n  skipApprovalScreen: true"},"kind":"ConfigMap","metadata":{"annotations":{},"creationTimestamp":null,"name":"dex-config","namespace":"identity"}}
   creationTimestamp: "2026-07-30T18:08:19Z"
   name: dex-config
   namespace: identity
-  resourceVersion: "61238430"
+  resourceVersion: "64558287"
   uid: 8e991f90-47aa-42af-bb36-ec51a0d78c78

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dex-nodeport
+  namespace: identity
+  labels:
+    app: dex
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 5556
+    targetPort: 5556
+    nodePort: 32000          # port fixe pour le lab
+  selector:
+    app: dex
