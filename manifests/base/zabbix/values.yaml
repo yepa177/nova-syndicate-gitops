@@ -21,9 +21,9 @@ postgresql:
   enabled: true
   persistence:
     storageClass: "longhorn"
-    size: 5Gi
+    size: 1Gi
 
 persistence:
   enabled: true
   storageClass: "longhorn"
-  size: 5Gi
+  size: 1Gi

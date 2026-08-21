@@ -59,8 +59,7 @@ spec:
               app.kubernetes.io/instance: argocd
               app.kubernetes.io/name: argocd-server
         repoServer:
-          nodeSelector:
-            kubernetes.io/hostname: k3s-lyon-01
+          # nodeSelector supprimé → peut aller sur n’importe quel nœud  
           tolerations:
             - key: dedicated
               operator: Equal
@@ -69,9 +68,29 @@ spec:
             - key: node-role.kubernetes.io/control-plane
               operator: Exists
               effect: NoSchedule
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+              ephemeral-storage: 1Gi
+            limits:
+              cpu: 500m
+              memory: 1Gi
+              ephemeral-storage: 3Gi
+          volumes:
+            - name: tmp
+              emptyDir:
+                sizeLimit: 2Gi
+            - name: helm-working-dir
+              emptyDir:
+                sizeLimit: 2Gi
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: helm-working-dir
+              mountPath: /helm-working-dir
         dex:
-          nodeSelector:
-            kubernetes.io/hostname: k3s-lyon-01
+          # nodeSelector supprimé
           tolerations:
             - key: dedicated
               operator: Equal

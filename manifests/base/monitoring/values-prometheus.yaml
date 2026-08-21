@@ -2,7 +2,7 @@ grafana:
   persistence:
     enabled: true
     storageClass: "longhorn"
-    size: 3Gi
+    size: 1Gi
   ingress:
     enabled: true
     ingressClassName: nginx
@@ -25,7 +25,7 @@ prometheus:
           storageClassName: longhorn
           resources:
             requests:
-              storage: 5Gi
+              storage: 1Gi
     resources:
       requests:
         cpu: 400m
