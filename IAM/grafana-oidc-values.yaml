@@ -1,0 +1,28 @@
+grafana:
+  grafana.ini:
+    server:
+      root_url: http://grafana.local
+    auth:
+      disable_login_form: false
+    auth.generic_oauth:
+      enabled: true
+      name: Keycloak
+      allow_sign_up: true
+      auto_login: false
+      client_id: grafana
+      #  NE PAS mettre client_secret ici -> Sensitive key 'auth.generic_oauth.client_secret' should not be defined explicitly in values.
+      scopes: openid profile email groups
+      auth_url: https://keycloak.local:31128/realms/assurance/protocol/openid-connect/auth
+      token_url: https://keycloak.local:31128/realms/assurance/protocol/openid-connect/token
+      api_url: https://keycloak.local:31128/realms/assurance/protocol/openid-connect/userinfo
+      use_pkce: true
+      role_attribute_path: contains(groups[*], 'admins') && 'Admin' || contains(groups[*], 'editors') && 'Editor' || 'Viewer'
+      role_attribute_strict: false
+
+  # Injecter le client_secret depuis le secret Kubernetes
+  extraEnv:
+    - name: GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET  # Grafana cherche automatiquement GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: grafana-oidc-secret
+          key: client-secret
