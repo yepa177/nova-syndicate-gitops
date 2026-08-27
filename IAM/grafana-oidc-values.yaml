@@ -1,7 +1,8 @@
 grafana:
   grafana.ini:
     server:
-      root_url: http://grafana.local
+      root_url: http://grafana.local:31128
+      domain: grafana.local
     auth:
       disable_login_form: false
     auth.generic_oauth:
@@ -21,7 +22,7 @@ grafana:
 
   # Injecter le client_secret depuis le secret Kubernetes
   extraEnv:
-    - name: GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET  # Grafana cherche automatiquement GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET
+    - name: GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET # Grafana cherche automatiquement GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET
       valueFrom:
         secretKeyRef:
           name: grafana-oidc-secret
