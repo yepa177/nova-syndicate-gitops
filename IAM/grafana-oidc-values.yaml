@@ -27,3 +27,5 @@ grafana:
         secretKeyRef:
           name: grafana-oidc-secret
           key: client-secret
+    - name: GF_SERVER_ROOT_URL
+      value: http://grafana.local:31128
