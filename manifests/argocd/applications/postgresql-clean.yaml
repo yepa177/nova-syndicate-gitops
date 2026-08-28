@@ -21,7 +21,11 @@ spec:
         
         # Authentification
         auth:
-          postgresPassword: "postgres-password-123"
+          existingSecret: postgresql-clean-auth
+          secretKeys:
+            adminpasswordKey: "postgres-password"
+            userPasswordKey: "password"
+            replicationPasswordKey: "replication-password"
         
         # Stockage avec Longhorn
         primary:
