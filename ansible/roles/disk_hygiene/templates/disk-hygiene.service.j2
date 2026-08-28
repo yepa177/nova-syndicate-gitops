@@ -1,0 +1,15 @@
+[Unit]
+Description=Hygiene disque NIVEAU {{ disk_hygiene_timer_niveau }} (IAM L)
+After=local-fs.target
+ConditionPathExists={{ disk_hygiene_sbin }}/cleanup-safe.sh
+
+[Service]
+Type=oneshot
+EnvironmentFile=-{{ disk_hygiene_env_file }}
+Environment=DRY_RUN={{ disk_hygiene_timer_dry_run }}
+Environment=NIVEAU={{ disk_hygiene_timer_niveau }}
+Environment=LOG={{ disk_hygiene_log_dir }}/cleanup-timer.log
+ExecStart={{ disk_hygiene_sbin }}/cleanup-safe.sh
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7

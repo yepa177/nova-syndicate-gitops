@@ -1,0 +1,5 @@
+---
+# LV racine 24G (les deux autres : 28G). 77 % constaté le 2026-08-28.
+# Consommateur n°1 : /var/lib/containerd ~8.4G
+disk_hygiene_warn_pct: 70
+disk_hygiene_force: false

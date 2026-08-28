@@ -1,0 +1,105 @@
+---
+- name: Repertoires d'exploitation
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0750"
+  loop:
+    - "{{ disk_hygiene_log_dir }}"
+    - "{{ disk_hygiene_sbin }}"
+
+- name: Scripts hygiene
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ disk_hygiene_sbin }}/{{ item }}"
+    owner: root
+    group: root
+    mode: "0750"
+  loop: "{{ disk_hygiene_scripts }}"
+
+- name: Fichier d'environnement
+  ansible.builtin.template:
+    src: disk-hygiene.env.j2
+    dest: "{{ disk_hygiene_env_file }}"
+    owner: root
+    group: root
+    mode: "0640"
+
+- name: Unite systemd service
+  ansible.builtin.template:
+    src: disk-hygiene.service.j2
+    dest: "/etc/systemd/system/{{ disk_hygiene_timer_name }}.service"
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Reload systemd
+    - Restart disk-hygiene timer
+
+- name: Unite systemd timer prune
+  ansible.builtin.template:
+    src: disk-hygiene.timer.j2
+    dest: "/etc/systemd/system/{{ disk_hygiene_timer_name }}.timer"
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Reload systemd
+    - Restart disk-hygiene timer
+
+- name: Unite disk-watch service
+  ansible.builtin.template:
+    src: disk-watch.service.j2
+    dest: /etc/systemd/system/disk-watch.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Reload systemd
+    - Restart disk-watch timer
+
+- name: Unite disk-watch timer
+  ansible.builtin.template:
+    src: disk-watch.timer.j2
+    dest: /etc/systemd/system/disk-watch.timer
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Reload systemd
+    - Restart disk-watch timer
+
+- name: Exclusions VS Code (reference)
+  ansible.builtin.copy:
+    src: vscode-watcher-exclude.json
+    dest: /etc/disk-hygiene-vscode-exclude.json
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Timer prune actif
+  ansible.builtin.systemd:
+    name: "{{ disk_hygiene_timer_name }}.timer"
+    state: "{{ 'started' if disk_hygiene_timer_enabled | bool else 'stopped' }}"
+    enabled: "{{ disk_hygiene_timer_enabled | bool }}"
+    daemon_reload: true
+
+- name: Timer watch actif
+  ansible.builtin.systemd:
+    name: disk-watch.timer
+    state: "{{ 'started' if disk_hygiene_watch_enabled | bool else 'stopped' }}"
+    enabled: "{{ disk_hygiene_watch_enabled | bool }}"
+    daemon_reload: true
+
+- name: Etat du timer
+  ansible.builtin.command: systemctl list-timers {{ disk_hygiene_timer_name }}.timer --no-pager
+  register: disk_hygiene_timer_status
+  changed_when: false
+  when: disk_hygiene_timer_enabled | bool
+
+- name: Afficher prochain declenchement
+  ansible.builtin.debug:
+    var: disk_hygiene_timer_status.stdout_lines
+  when: disk_hygiene_timer_status is defined and disk_hygiene_timer_status.stdout_lines is defined

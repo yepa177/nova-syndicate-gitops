@@ -1,0 +1,564 @@
+
+======== AUDIT DISQUE Zabbix-Monitoring 20260828T110641Z ========
+Nœud          : Zabbix-Monitoring
+Kernel        : 6.8.0-137-generic
+OS            : Ubuntu 24.04.4 LTS
+Date UTC      : 20260828T110641Z
+Seuils %      : WARN=70 ALERT=80 CRIT=90
+
+======== FILESYSTEMS (espace) ========
+
+$ df -hT -x tmpfs -x devtmpfs -x overlay -x squashfs
+Filesystem                                             Type  Size  Used Avail Use% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv                      ext4   28G   18G  9.0G  66% /
+/dev/vda2                                              ext4  2.0G  200M  1.6G  11% /boot
+/dev/longhorn/pvc-d81783b0-0921-4edd-aa5e-5887bcc090a5 ext4  2.0G   63M  1.9G   4% /var/lib/kubelet/pods/a69f0fa0-0778-491d-a552-e56f7b01cbed/volumes/kubernetes.io~csi/pvc-d81783b0-0921-4edd-aa5e-5887bcc090a5/mount
+/dev/longhorn/pvc-bd5176c8-e87d-4cb5-ab3d-d1f5d208aa45 ext4  974M   18M  941M   2% /var/lib/kubelet/pods/72862ab7-a7de-48d1-acf4-1d739430b45a/volumes/kubernetes.io~csi/pvc-bd5176c8-e87d-4cb5-ab3d-d1f5d208aa45/mount
+/dev/longhorn/pvc-a72ef063-30eb-40ec-94bb-e4b9df360837 ext4  974M  3.0M  955M   1% /var/lib/kubelet/pods/99c99b36-21b7-493e-9773-db4ae81b6f99/volumes/kubernetes.io~csi/pvc-a72ef063-30eb-40ec-94bb-e4b9df360837/mount
+
+======== FILESYSTEMS (inodes) ========
+
+$ df -hi -x tmpfs -x devtmpfs -x overlay -x squashfs
+Filesystem                                             Inodes IUsed IFree IUse% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv                        1.8M  292K  1.5M   17% /
+/dev/vda2                                                128K   321  128K    1% /boot
+/dev/longhorn/pvc-d81783b0-0921-4edd-aa5e-5887bcc090a5   128K  1.3K  127K    2% /var/lib/kubelet/pods/a69f0fa0-0778-491d-a552-e56f7b01cbed/volumes/kubernetes.io~csi/pvc-d81783b0-0921-4edd-aa5e-5887bcc090a5/mount
+/dev/longhorn/pvc-bd5176c8-e87d-4cb5-ab3d-d1f5d208aa45    64K   129   64K    1% /var/lib/kubelet/pods/72862ab7-a7de-48d1-acf4-1d739430b45a/volumes/kubernetes.io~csi/pvc-bd5176c8-e87d-4cb5-ab3d-d1f5d208aa45/mount
+/dev/longhorn/pvc-a72ef063-30eb-40ec-94bb-e4b9df360837    64K    18   64K    1% /var/lib/kubelet/pods/99c99b36-21b7-493e-9773-db4ae81b6f99/volumes/kubernetes.io~csi/pvc-a72ef063-30eb-40ec-94bb-e4b9df360837/mount
+
+======== SEUILS RACINE ========
+Occupation / = 66%
+STATUT=OK
+
+======== TOP REPERTOIRES / (profondeur 2, peut prendre 1-3 min) ========
+
+$ du -xhd2 / 2>/dev/null | sort -hr | head -n 40
+18G	/
+13G	/var
+12G	/var/lib
+3.0G	/usr
+1.9G	/usr/lib
+1.7G	/var/log
+1.1G	/home/user
+1.1G	/home
+462M	/usr/bin
+311M	/usr/src
+277M	/usr/share
+242M	/opt/cni
+242M	/opt
+148M	/var/cache
+91M	/usr/local
+46M	/usr/sbin
+13M	/usr/include
+7.5M	/usr/libexec
+6.4M	/etc
+2.4M	/tmp
+2.2M	/tmp/node-compile-cache
+2.1M	/var/backups
+1.2M	/etc/apparmor.d
+656K	/etc/ssh
+564K	/etc/ssl
+284K	/etc/cloud
+280K	/etc/vmware-tools
+200K	/etc/console-setup
+172K	/etc/lvm
+168K	/etc/systemd
+152K	/etc/apt
+144K	/etc/iscsi
+144K	/etc/grub.d
+124K	/tmp/ansible_ansible.legacy.command_payload_j2gohqv5
+108K	/etc/init.d
+100K	/etc/pam.d
+92K	/etc/default
+84K	/etc/needrestart
+72K	/etc/libibverbs.d
+72K	/etc/fonts
+
+======== VAR LIB (runtime) ========
+9.4G	/var/lib/containerd
+3.3M	/var/lib/kubelet
+1.5G	/var/lib/longhorn
+352K	/var/lib/snapd
+8.0K	/snap
+1.7G	/var/log
+40K	/var/tmp
+2.4M	/tmp
+148M	/var/cache
+1.1G	/home
+
+======== JOURNALD ========
+
+$ journalctl --disk-usage
+Archived and active journals take up 908.9M in the file system.
+
+======== GROS FICHIERS > 100M (hors /proc /sys /dev overlay) ========
+
+$ find / -xdev -type f -size +100M -printf '%s\t%p\n' 2>/dev/null | sort -nr | head -n 30 | awk '{printf "%12.1f MiB  %s\n", $1/1024/1024, $2}'
+      2048.0 MiB  /var/lib/longhorn/replicas/pvc-d81783b0-0921-4edd-aa5e-5887bcc090a5-b4871c2c/volume-snap-e4b9343d-4e03-4293-bdde-d1c2d3d0dd9a.img
+      2048.0 MiB  /var/lib/longhorn/replicas/pvc-d81783b0-0921-4edd-aa5e-5887bcc090a5-b4871c2c/volume-head-008.img
+      1024.0 MiB  /var/lib/longhorn/replicas/pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966-660f6f68/volume-head-000.img
+      1024.0 MiB  /var/lib/longhorn/replicas/pvc-a72ef063-30eb-40ec-94bb-e4b9df360837-436b976d/volume-head-000.img
+      1024.0 MiB  /var/lib/longhorn/replicas/pvc-7112abd4-0cd1-442b-9e4f-1340ab0e6813-90f9904b/volume-snap-9d216fd6-af95-41f9-b7d5-b24905eddcd1.img
+      1024.0 MiB  /var/lib/longhorn/replicas/pvc-7112abd4-0cd1-442b-9e4f-1340ab0e6813-90f9904b/volume-head-008.img
+      1024.0 MiB  /var/lib/longhorn/replicas/pvc-071cca8e-5d9e-4958-a090-d74bee864c62-a65b33d4/volume-head-000.img
+       512.0 MiB  /var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/12260/fs/bin/vault
+       262.3 MiB  /home/user/.vscode-server/data/agent-host/sdk-cache/claude/0.3.220/linux-x64/node_modules/@anthropic-ai/claude-agent-sdk-linux-x64/claude
+       260.2 MiB  /var/log/syslog
+       214.0 MiB  /var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/10623/fs/usr/lib/chromium/chromium
+       194.8 MiB  /var/log/syslog.1
+       176.1 MiB  /var/lib/containerd/io.containerd.content.v1.content/blobs/sha256/a20f5b7311214d887c012aba5adefc09d73cbe45a0833a64b99d96f4f65d5a22
+       168.1 MiB  /var/lib/containerd/io.containerd.content.v1.content/blobs/sha256/2986f54f052bd484b55f4258d6c11db0b5c2d7776bdef79dfd1456444abe1dfb
+       157.5 MiB  /var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/10349/fs/usr/bin/calico-node
+       148.4 MiB  /var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/12644/fs/usr/lib/jvm/java-21-openjdk-21.0.12.1.1-1.2.el9.x86_64/lib/modules
+       135.5 MiB  /var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/16901/fs/usr/bin/prometheus
+       132.5 MiB  /home/user/.vscode-server/cli/servers/Stable-110a328ea54b42367b803ec53ee0bf52ef26b419/server/node_modules/@github/copilot-linux-x64/prebuilds/linux-x64/runtime.node
+       131.7 MiB  /var/lib/containerd/io.containerd.content.v1.content/blobs/sha256/fe519894e9d4bb4522049a0a48ac6c6a6d39899b99d336a2d32f242914ed9264
+       123.7 MiB  /var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/13137/fs/usr/lib/x86_64-linux-gnu/libLLVM.so.19.1
+       123.0 MiB  /var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/10623/fs/usr/lib/x86_64-linux-gnu/libLLVM.so.19.1
+       117.9 MiB  /home/user/.vscode-server/cli/servers/Stable-110a328ea54b42367b803ec53ee0bf52ef26b419/server/node
+       117.5 MiB  /usr/lib/llvm-18/lib/libLLVM.so.1
+       112.1 MiB  /var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/11964/fs/code/apiserver
+       111.3 MiB  /var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/16904/fs/usr/bin/promtool
+       108.0 MiB  /var/lib/containerd/io.containerd.content.v1.content/blobs/sha256/eff308662b50d584606786cc1f1c542cf8ca376abd8ffda82fd8a3ccc4229bb7
+       107.1 MiB  /home/user/.vscode-server/cli/servers/Stable-110a328ea54b42367b803ec53ee0bf52ef26b419/server/extensions/copilot/node_modules/@github/copilot/sdk/prebuilds/linux-x64/runtime.node
+
+======== LOGS > 50M ========
+
+$ find /var/log /var/lib/docker /var/lib/containerd /var/log/pods /var/lib/kubelet -type f \( -name '*.log' -o -name '*.log.*' \) -size +50M -printf '%s\t%p\n' 2>/dev/null | sort -nr | head -n 30 | awk '{printf "%12.1f MiB  %s\n", $1/1024/1024, $2}'
+        94.4 MiB  /var/log/calico/cni/cni.log
+[WARN] commande en échec (code 1)
+
+======== CACHE PAQUETS ========
+
+$ du -sh /var/cache/apt /var/cache/apt/archives 2>/dev/null || true
+110M	/var/cache/apt
+
+======== NOYAUX INSTALLES ========
+
+$ ls -1 /boot/vmlinuz-* 2>/dev/null || true
+/boot/vmlinuz-6.8.0-137-generic
+/boot/vmlinuz-6.8.0-138-generic
+
+======== KUBERNETES / CRI ========
+CRI endpoint=unix:///run/containerd/containerd.sock
+
+$ crictl info 2>/dev/null | head -n 20 || true
+{
+  "cniconfig": {
+    "Networks": [
+      {
+        "Config": {
+          "CNIVersion": "0.3.1",
+          "Name": "cni-loopback",
+          "Plugins": [
+            {
+              "Network": {
+                "ipam": {},
+                "type": "loopback"
+              },
+              "Source": "{\"type\":\"loopback\"}"
+            }
+          ],
+          "Source": "{\n\"cniVersion\": \"0.3.1\",\n\"name\": \"cni-loopback\",\n\"plugins\": [{\n  \"type\": \"loopback\"\n}]\n}"
+        },
+        "IFName": "lo"
+      },
+
+$ crictl images 2>/dev/null || true
+IMAGE                                                    TAG                  IMAGE ID            SIZE
+docker.io/hashicorp/vault                                2.0.3                1747a4ab1e1be       192MB
+docker.io/library/alpine                                 latest               d529dd0c6e559       3.86MB
+docker.io/library/busybox                                latest               c6348fa86ba0f       2.24MB
+docker.io/library/postgres                               16                   19d88319bea99       160MB
+docker.io/longhornio/csi-attacher                        v4.4.2               6bc8bdd63e408       26.7MB
+docker.io/longhornio/csi-provisioner                     v3.6.2               ec9b939801797       28.7MB
+docker.io/longhornio/csi-resizer                         v1.9.2               d11bd1f0b3e57       27MB
+docker.io/longhornio/csi-snapshotter                     v6.3.2               118137d698bbd       26.8MB
+docker.io/longhornio/longhorn-manager                    v1.6.0               9f4c1b666bd8c       111MB
+docker.io/nicolaka/netshoot                              latest               2298d942ce5f8       219MB
+docker.io/zabbix/zabbix-web-nginx-pgsql                  ubuntu-7.0.16        af7008fa1eaef       150MB
+ghcr.io/jkroepke/kube-webhook-certgen                    1.8.4                d6ee22d99acf2       9.07MB
+ghcr.io/jkroepke/kube-webhook-certgen                    1.8.5                5687c22ad6d73       9.08MB
+quay.io/keycloak/keycloak                                26.7.2               93ea80b4686a1       268MB
+quay.io/prometheus-operator/prometheus-config-reloader   v0.92.0              f341a485992cc       14.6MB
+quay.io/prometheus-operator/prometheus-config-reloader   v0.93.1              cb2f197322b2a       14.6MB
+quay.io/prometheus-operator/prometheus-operator          v0.92.0              c3a4f72cb49f5       20.9MB
+quay.io/prometheus-operator/prometheus-operator          v0.93.1              321c536e73beb       20.9MB
+quay.io/prometheus/alertmanager                          v0.34.0              c4e1c067b29ef       40.7MB
+quay.io/prometheus/node-exporter                         v1.11.1-distroless   e74b80806e1da       13MB
+quay.io/prometheus/node-exporter                         v1.12.1-distroless   6ce127b25a483       13.1MB
+quay.io/prometheus/prometheus                            v3.14.0-distroless   b7256d9c7ab77       109MB
+registry.k8s.io/kube-state-metrics/kube-state-metrics    v2.19.1              f98b74d053919       18.9MB
+registry.k8s.io/kube-state-metrics/kube-state-metrics    v2.20.0              a635e3d8e1a4f       19.3MB
+registry.k8s.io/pause                                    3.10.1               cd073f4c5f6a8       320kB
+
+$ crictl ps -a 2>/dev/null | head -n 50 || true
+CONTAINER           IMAGE               CREATED              STATE               NAME                        ATTEMPT             POD ID              POD
+04092463cb7a1       1747a4ab1e1be       About a minute ago   Exited              unseal                      0                   c2c1bc3310a24       vault-unseal-29798588-2pg69
+84ef758187c4f       f98b74d053919       4 hours ago          Running             kube-state-metrics          5                   ca3b32a9c9eac       prometheus-kube-state-metrics-686cbd6bf6-fj4mr
+6004f744bad9e       6bc8bdd63e408       4 hours ago          Running             csi-attacher                8                   faeb02db6270b       csi-attacher-66b7b4b4d4-qk4vq
+25450b4e9c5fc       d11bd1f0b3e57       4 hours ago          Running             csi-resizer                 5                   84f5e4d43ef2a       csi-resizer-66cc556f5-k56r7
+1fdd200c32fb4       118137d698bbd       4 hours ago          Running             csi-snapshotter             3                   471aab72e782b       csi-snapshotter-7565995789-sdhtq
+2d5af10773c13       ec9b939801797       4 hours ago          Running             csi-provisioner             10                  49f310e34ca76       csi-provisioner-bc67cbb54-4jts9
+90549060c2ddb       6bc8bdd63e408       4 hours ago          Exited              csi-attacher                7                   faeb02db6270b       csi-attacher-66b7b4b4d4-qk4vq
+8a7e08852e65d       19d88319bea99       10 hours ago         Exited              hanodes-autoclean           0                   88e06d87dfb15       zabbix-nodesclean-29797980-5c6fl
+214ddbfe9e66b       93ea80b4686a1       23 hours ago         Running             keycloak                    0                   820ad130c4105       keycloak-f56dd56d7-kxt48
+4d7abd7b01df1       9f4c1b666bd8c       25 hours ago         Running             longhorn-csi-plugin         7                   1a4108793bbb7       longhorn-csi-plugin-znr9t
+5a76f1903af2a       af7008fa1eaef       41 hours ago         Running             zabbix-web                  0                   c229ab1fbe87c       zabbix-zabbix-web-859bcb6965-n2n7c
+01f63f5d46e9e       f98b74d053919       2 days ago           Exited              kube-state-metrics          4                   ca3b32a9c9eac       prometheus-kube-state-metrics-686cbd6bf6-fj4mr
+37d8f1b82ce48       ec9b939801797       2 days ago           Exited              csi-provisioner             9                   49f310e34ca76       csi-provisioner-bc67cbb54-4jts9
+8d38923d34794       d11bd1f0b3e57       2 days ago           Exited              csi-resizer                 4                   84f5e4d43ef2a       csi-resizer-66cc556f5-k56r7
+0773ca829ac2f       118137d698bbd       2 days ago           Exited              csi-snapshotter             2                   471aab72e782b       csi-snapshotter-7565995789-sdhtq
+4064a2fec5853       ec9b939801797       3 days ago           Running             csi-provisioner             11                  c593bd806f120       csi-provisioner-bc67cbb54-tszs5
+46e682c51e08c       d11bd1f0b3e57       3 days ago           Running             csi-resizer                 12                  56d5e7e33c043       csi-resizer-66cc556f5-vxrtk
+62894eadafda5       118137d698bbd       3 days ago           Running             csi-snapshotter             15                  701f5bcc6a14d       csi-snapshotter-7565995789-9lr55
+1e55194253bde       6bc8bdd63e408       3 days ago           Running             csi-attacher                28                  90827f1320ee0       csi-attacher-66b7b4b4d4-sgwcc
+78f0f2804a3e9       ec9b939801797       3 days ago           Running             csi-provisioner             9                   31db79bfc61d1       csi-provisioner-bc67cbb54-l4z5j
+b1e6f767d289b       6bc8bdd63e408       3 days ago           Exited              csi-attacher                27                  90827f1320ee0       csi-attacher-66b7b4b4d4-sgwcc
+66a0cf85a22e9       d11bd1f0b3e57       3 days ago           Exited              csi-resizer                 11                  56d5e7e33c043       csi-resizer-66cc556f5-vxrtk
+891e8bfbc52c0       118137d698bbd       3 days ago           Exited              csi-snapshotter             14                  701f5bcc6a14d       csi-snapshotter-7565995789-9lr55
+aa5965d01bab8       ec9b939801797       3 days ago           Exited              csi-provisioner             10                  c593bd806f120       csi-provisioner-bc67cbb54-tszs5
+666a544a10c64       ec9b939801797       3 days ago           Exited              csi-provisioner             8                   31db79bfc61d1       csi-provisioner-bc67cbb54-l4z5j
+0dc433f7ee212       e74b80806e1da       3 days ago           Running             node-exporter               0                   58a4d13872a45       prometheus-prometheus-node-exporter-4mp6v
+6d8ad0e8e8ba6       f341a485992cc       3 days ago           Running             config-reloader             0                   661b3121a2ed8       alertmanager-prometheus-kube-prometheus-alertmanager-0
+5e596e431ec6b       c4e1c067b29ef       3 days ago           Running             alertmanager                0                   661b3121a2ed8       alertmanager-prometheus-kube-prometheus-alertmanager-0
+d6938053763df       f341a485992cc       3 days ago           Exited              init-config-reloader        0                   661b3121a2ed8       alertmanager-prometheus-kube-prometheus-alertmanager-0
+3e3c31d0b934d       c3a4f72cb49f5       3 days ago           Running             kube-prometheus-stack       0                   921a5439ed315       prometheus-kube-prometheus-operator-64c7669674-5m8bt
+9d4ec54e59289       6bc8bdd63e408       4 days ago           Running             csi-attacher                1                   0fbff6b2dc4c0       csi-attacher-66b7b4b4d4-w65v6
+7dcb57b0d1389       d11bd1f0b3e57       4 days ago           Running             csi-resizer                 3                   dc71ddbc9f70d       csi-resizer-66cc556f5-pk9gh
+043f55b9f1388       118137d698bbd       4 days ago           Running             csi-snapshotter             2                   de4f314527211       csi-snapshotter-7565995789-kzvrf
+dceb0b5c3b48c       118137d698bbd       4 days ago           Exited              csi-snapshotter             1                   de4f314527211       csi-snapshotter-7565995789-kzvrf
+5b79f08f5ca00       d11bd1f0b3e57       4 days ago           Exited              csi-resizer                 2                   dc71ddbc9f70d       csi-resizer-66cc556f5-pk9gh
+f8a0a9e59e8c5       2298d942ce5f8       5 days ago           Running             test-net                    0                   16213480b68b0       test-net
+54c95d11dff0b       9f4c1b666bd8c       5 days ago           Exited              longhorn-csi-plugin         6                   1a4108793bbb7       longhorn-csi-plugin-znr9t
+c5076c67048f0       1747a4ab1e1be       6 days ago           Running             vault                       0                   f7bbc5d8f6cc4       vault-0
+ee1f0f62d493e       16de55b902be5       7 days ago           Running             calico-apiserver            0                   02c76e52f4091       calico-apiserver-d485f9d7d-6r6gh
+8d4a709cec5ae       f772ce9ba10a4       7 days ago           Running             engine-image-ei-acb7590c    7                   b3b58da82f382       engine-image-ei-acb7590c-nxf9n
+c2285d2d61bef       8bc04e5451710       7 days ago           Running             sidecar-injector            1                   17b6b6781a0e2       vault-agent-injector-789bb85969-j5ffr
+2f12a41c6a909       97fe896f8c07b       7 days ago           Running             controller                  0                   a4c003964ae5f       ingress-nginx-controller-748d8795b6-fxcq4
+233e2fa38b76b       16de55b902be5       7 days ago           Running             calico-apiserver            0                   867674f334676       calico-apiserver-d485f9d7d-46ts5
+39e2de1794817       8bc04e5451710       7 days ago           Exited              sidecar-injector            0                   17b6b6781a0e2       vault-agent-injector-789bb85969-j5ffr
+efbf439981283       3002f09d2fbfd       7 days ago           Running             controller                  0                   faba0db629f50       sealed-secrets-controller-9d5c9768c-lvnn2
+bc13d27448849       bba657d3e1951       7 days ago           Running             postgresql                  0                   03632c56149e3       postgresql-clean-0
+00d3470b276dc       2c611b5147115       8 days ago           Running             whisker-backend             0                   ff94a028840a3       whisker-57774795c4-lk258
+3c67f75ad46c7       375e05b3fa359       8 days ago           Running             whisker                     0                   ff94a028840a3       whisker-57774795c4-lk258
+8d44af5947b66       efa6d3d087772       8 days ago           Running             longhorn-ui                 11                  4a5104d564bd2       longhorn-ui-87b4df967-5fcxb
+
+-- compte images / snapshots --
+
+$ crictl images -q 2>/dev/null | wc -l || true
+25
+
+$ ctr -n k8s.io snapshots ls 2>/dev/null | awk 'NR>1 {c[$NF]++} END {for (k in c) print k, c[k]}' || true
+Active 128
+Committed 240
+
+======== SNAP ========
+
+$ snap list 2>/dev/null || true
+
+$ du -sh /snap /var/lib/snapd 2>/dev/null || true
+8.0K	/snap
+348K	/var/lib/snapd
+
+======== LONGHORN ========
+
+$ du -xh -d1 /var/lib/longhorn 2>/dev/null | sort -hr | head -n 15
+1.5G	/var/lib/longhorn/replicas
+1.5G	/var/lib/longhorn
+32M	/var/lib/longhorn/engine-binaries
+4.0K	/var/lib/longhorn/unix-domain-socket
+kubeconfig non lisible depuis ce compte
+
+======== ZABBIX / GRAFANA (si locaux) ========
+40K	/var/log/zabbix
+
+======== RESUME ACTIONNABLE ========
+1. Relire STATUT ci-dessus.
+2. Croiser TOP REPERTOIRES + GROS FICHIERS.
+3. Si containerd/snapshots dominent : NIVEAU 1 puis NIVEAU 3 (crictl rmi --prune + ctr snapshots prune).
+4. Ne jamais rm -rf /var/lib/{containerd,docker,kubelet,etcd}.
+5. Rapport : /var/tmp/audit-disque-k3s-worker-node-2.txt
+FIN_AUDIT
+
+======== AUDIT DISQUE Zabbix-Monitoring 20260828T111848Z ========
+Nœud          : Zabbix-Monitoring
+Kernel        : 6.8.0-137-generic
+OS            : Ubuntu 24.04.4 LTS
+Date UTC      : 20260828T111848Z
+Seuils %      : WARN=70 ALERT=80 CRIT=90
+
+======== FILESYSTEMS (espace) ========
+
+$ df -hT -x tmpfs -x devtmpfs -x overlay -x squashfs
+Filesystem                                             Type  Size  Used Avail Use% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv                      ext4   28G   18G  9.0G  66% /
+/dev/vda2                                              ext4  2.0G  200M  1.6G  11% /boot
+/dev/longhorn/pvc-d81783b0-0921-4edd-aa5e-5887bcc090a5 ext4  2.0G   63M  1.9G   4% /var/lib/kubelet/pods/a69f0fa0-0778-491d-a552-e56f7b01cbed/volumes/kubernetes.io~csi/pvc-d81783b0-0921-4edd-aa5e-5887bcc090a5/mount
+/dev/longhorn/pvc-bd5176c8-e87d-4cb5-ab3d-d1f5d208aa45 ext4  974M   18M  941M   2% /var/lib/kubelet/pods/72862ab7-a7de-48d1-acf4-1d739430b45a/volumes/kubernetes.io~csi/pvc-bd5176c8-e87d-4cb5-ab3d-d1f5d208aa45/mount
+/dev/longhorn/pvc-a72ef063-30eb-40ec-94bb-e4b9df360837 ext4  974M  3.0M  955M   1% /var/lib/kubelet/pods/99c99b36-21b7-493e-9773-db4ae81b6f99/volumes/kubernetes.io~csi/pvc-a72ef063-30eb-40ec-94bb-e4b9df360837/mount
+
+======== FILESYSTEMS (inodes) ========
+
+$ df -hi -x tmpfs -x devtmpfs -x overlay -x squashfs
+Filesystem                                             Inodes IUsed IFree IUse% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv                        1.8M  292K  1.5M   17% /
+/dev/vda2                                                128K   321  128K    1% /boot
+/dev/longhorn/pvc-d81783b0-0921-4edd-aa5e-5887bcc090a5   128K  1.3K  127K    2% /var/lib/kubelet/pods/a69f0fa0-0778-491d-a552-e56f7b01cbed/volumes/kubernetes.io~csi/pvc-d81783b0-0921-4edd-aa5e-5887bcc090a5/mount
+/dev/longhorn/pvc-bd5176c8-e87d-4cb5-ab3d-d1f5d208aa45    64K   129   64K    1% /var/lib/kubelet/pods/72862ab7-a7de-48d1-acf4-1d739430b45a/volumes/kubernetes.io~csi/pvc-bd5176c8-e87d-4cb5-ab3d-d1f5d208aa45/mount
+/dev/longhorn/pvc-a72ef063-30eb-40ec-94bb-e4b9df360837    64K    18   64K    1% /var/lib/kubelet/pods/99c99b36-21b7-493e-9773-db4ae81b6f99/volumes/kubernetes.io~csi/pvc-a72ef063-30eb-40ec-94bb-e4b9df360837/mount
+
+======== SEUILS RACINE ========
+Occupation / = 66%
+STATUT=OK
+
+======== TOP REPERTOIRES / (profondeur 2, peut prendre 1-3 min) ========
+
+$ du -xhd2 / 2>/dev/null | sort -hr | head -n 40
+18G	/
+13G	/var
+12G	/var/lib
+3.0G	/usr
+1.9G	/usr/lib
+1.7G	/var/log
+1.1G	/home/user
+1.1G	/home
+462M	/usr/bin
+311M	/usr/src
+277M	/usr/share
+242M	/opt/cni
+242M	/opt
+148M	/var/cache
+91M	/usr/local
+46M	/usr/sbin
+13M	/usr/include
+7.5M	/usr/libexec
+6.4M	/etc
+2.4M	/tmp
+2.2M	/tmp/node-compile-cache
+2.1M	/var/backups
+1.2M	/etc/apparmor.d
+656K	/etc/ssh
+564K	/etc/ssl
+284K	/etc/cloud
+280K	/etc/vmware-tools
+200K	/etc/console-setup
+172K	/etc/lvm
+168K	/etc/systemd
+152K	/etc/apt
+144K	/etc/iscsi
+144K	/etc/grub.d
+124K	/tmp/ansible_ansible.legacy.command_payload_nl4g6ufg
+108K	/etc/init.d
+100K	/etc/pam.d
+92K	/etc/default
+84K	/etc/needrestart
+72K	/etc/libibverbs.d
+72K	/etc/fonts
+
+======== VAR LIB (runtime) ========
+9.4G	/var/lib/containerd
+3.3M	/var/lib/kubelet
+1.5G	/var/lib/longhorn
+352K	/var/lib/snapd
+8.0K	/snap
+1.7G	/var/log
+60K	/var/tmp
+2.4M	/tmp
+148M	/var/cache
+1.1G	/home
+
+======== JOURNALD ========
+
+$ journalctl --disk-usage
+Archived and active journals take up 908.9M in the file system.
+
+======== GROS FICHIERS > 100M (hors /proc /sys /dev overlay) ========
+
+$ find / -xdev -type f -size +100M -printf '%s\t%p\n' 2>/dev/null | sort -nr | head -n 30 | awk '{printf "%12.1f MiB  %s\n", $1/1024/1024, $2}'
+      2048.0 MiB  /var/lib/longhorn/replicas/pvc-d81783b0-0921-4edd-aa5e-5887bcc090a5-b4871c2c/volume-snap-e4b9343d-4e03-4293-bdde-d1c2d3d0dd9a.img
+      2048.0 MiB  /var/lib/longhorn/replicas/pvc-d81783b0-0921-4edd-aa5e-5887bcc090a5-b4871c2c/volume-head-008.img
+      1024.0 MiB  /var/lib/longhorn/replicas/pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966-660f6f68/volume-head-000.img
+      1024.0 MiB  /var/lib/longhorn/replicas/pvc-a72ef063-30eb-40ec-94bb-e4b9df360837-436b976d/volume-head-000.img
+      1024.0 MiB  /var/lib/longhorn/replicas/pvc-7112abd4-0cd1-442b-9e4f-1340ab0e6813-90f9904b/volume-snap-9d216fd6-af95-41f9-b7d5-b24905eddcd1.img
+      1024.0 MiB  /var/lib/longhorn/replicas/pvc-7112abd4-0cd1-442b-9e4f-1340ab0e6813-90f9904b/volume-head-008.img
+      1024.0 MiB  /var/lib/longhorn/replicas/pvc-071cca8e-5d9e-4958-a090-d74bee864c62-a65b33d4/volume-head-000.img
+       512.0 MiB  /var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/12260/fs/bin/vault
+       262.3 MiB  /home/user/.vscode-server/data/agent-host/sdk-cache/claude/0.3.220/linux-x64/node_modules/@anthropic-ai/claude-agent-sdk-linux-x64/claude
+       260.5 MiB  /var/log/syslog
+       214.0 MiB  /var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/10623/fs/usr/lib/chromium/chromium
+       194.8 MiB  /var/log/syslog.1
+       176.1 MiB  /var/lib/containerd/io.containerd.content.v1.content/blobs/sha256/a20f5b7311214d887c012aba5adefc09d73cbe45a0833a64b99d96f4f65d5a22
+       168.1 MiB  /var/lib/containerd/io.containerd.content.v1.content/blobs/sha256/2986f54f052bd484b55f4258d6c11db0b5c2d7776bdef79dfd1456444abe1dfb
+       157.5 MiB  /var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/10349/fs/usr/bin/calico-node
+       148.4 MiB  /var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/12644/fs/usr/lib/jvm/java-21-openjdk-21.0.12.1.1-1.2.el9.x86_64/lib/modules
+       135.5 MiB  /var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/16901/fs/usr/bin/prometheus
+       132.5 MiB  /home/user/.vscode-server/cli/servers/Stable-110a328ea54b42367b803ec53ee0bf52ef26b419/server/node_modules/@github/copilot-linux-x64/prebuilds/linux-x64/runtime.node
+       131.7 MiB  /var/lib/containerd/io.containerd.content.v1.content/blobs/sha256/fe519894e9d4bb4522049a0a48ac6c6a6d39899b99d336a2d32f242914ed9264
+       123.7 MiB  /var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/13137/fs/usr/lib/x86_64-linux-gnu/libLLVM.so.19.1
+       123.0 MiB  /var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/10623/fs/usr/lib/x86_64-linux-gnu/libLLVM.so.19.1
+       117.9 MiB  /home/user/.vscode-server/cli/servers/Stable-110a328ea54b42367b803ec53ee0bf52ef26b419/server/node
+       117.5 MiB  /usr/lib/llvm-18/lib/libLLVM.so.1
+       112.1 MiB  /var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/11964/fs/code/apiserver
+       111.3 MiB  /var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/16904/fs/usr/bin/promtool
+       108.0 MiB  /var/lib/containerd/io.containerd.content.v1.content/blobs/sha256/eff308662b50d584606786cc1f1c542cf8ca376abd8ffda82fd8a3ccc4229bb7
+       107.1 MiB  /home/user/.vscode-server/cli/servers/Stable-110a328ea54b42367b803ec53ee0bf52ef26b419/server/extensions/copilot/node_modules/@github/copilot/sdk/prebuilds/linux-x64/runtime.node
+
+======== LOGS > 50M ========
+
+$ find /var/log /var/lib/docker /var/lib/containerd /var/log/pods /var/lib/kubelet -type f \( -name '*.log' -o -name '*.log.*' \) -size +50M -printf '%s\t%p\n' 2>/dev/null | sort -nr | head -n 30 | awk '{printf "%12.1f MiB  %s\n", $1/1024/1024, $2}'
+        94.5 MiB  /var/log/calico/cni/cni.log
+[WARN] commande en échec (code 1)
+
+======== CACHE PAQUETS ========
+
+$ du -sh /var/cache/apt /var/cache/apt/archives 2>/dev/null || true
+110M	/var/cache/apt
+
+======== NOYAUX INSTALLES ========
+
+$ ls -1 /boot/vmlinuz-* 2>/dev/null || true
+/boot/vmlinuz-6.8.0-137-generic
+/boot/vmlinuz-6.8.0-138-generic
+
+======== KUBERNETES / CRI ========
+CRI endpoint=unix:///run/containerd/containerd.sock
+
+$ crictl info 2>/dev/null | head -n 20 || true
+{
+  "cniconfig": {
+    "Networks": [
+      {
+        "Config": {
+          "CNIVersion": "0.3.1",
+          "Name": "cni-loopback",
+          "Plugins": [
+            {
+              "Network": {
+                "ipam": {},
+                "type": "loopback"
+              },
+              "Source": "{\"type\":\"loopback\"}"
+            }
+          ],
+          "Source": "{\n\"cniVersion\": \"0.3.1\",\n\"name\": \"cni-loopback\",\n\"plugins\": [{\n  \"type\": \"loopback\"\n}]\n}"
+        },
+        "IFName": "lo"
+      },
+
+$ crictl images 2>/dev/null || true
+IMAGE                                                    TAG                  IMAGE ID            SIZE
+docker.io/hashicorp/vault                                2.0.3                1747a4ab1e1be       192MB
+docker.io/library/alpine                                 latest               d529dd0c6e559       3.86MB
+docker.io/library/busybox                                latest               c6348fa86ba0f       2.24MB
+docker.io/library/postgres                               16                   19d88319bea99       160MB
+docker.io/longhornio/csi-attacher                        v4.4.2               6bc8bdd63e408       26.7MB
+docker.io/longhornio/csi-provisioner                     v3.6.2               ec9b939801797       28.7MB
+docker.io/longhornio/csi-resizer                         v1.9.2               d11bd1f0b3e57       27MB
+docker.io/longhornio/csi-snapshotter                     v6.3.2               118137d698bbd       26.8MB
+docker.io/longhornio/longhorn-manager                    v1.6.0               9f4c1b666bd8c       111MB
+docker.io/nicolaka/netshoot                              latest               2298d942ce5f8       219MB
+docker.io/zabbix/zabbix-web-nginx-pgsql                  ubuntu-7.0.16        af7008fa1eaef       150MB
+ghcr.io/jkroepke/kube-webhook-certgen                    1.8.4                d6ee22d99acf2       9.07MB
+ghcr.io/jkroepke/kube-webhook-certgen                    1.8.5                5687c22ad6d73       9.08MB
+quay.io/keycloak/keycloak                                26.7.2               93ea80b4686a1       268MB
+quay.io/prometheus-operator/prometheus-config-reloader   v0.92.0              f341a485992cc       14.6MB
+quay.io/prometheus-operator/prometheus-config-reloader   v0.93.1              cb2f197322b2a       14.6MB
+quay.io/prometheus-operator/prometheus-operator          v0.92.0              c3a4f72cb49f5       20.9MB
+quay.io/prometheus-operator/prometheus-operator          v0.93.1              321c536e73beb       20.9MB
+quay.io/prometheus/alertmanager                          v0.34.0              c4e1c067b29ef       40.7MB
+quay.io/prometheus/node-exporter                         v1.11.1-distroless   e74b80806e1da       13MB
+quay.io/prometheus/node-exporter                         v1.12.1-distroless   6ce127b25a483       13.1MB
+quay.io/prometheus/prometheus                            v3.14.0-distroless   b7256d9c7ab77       109MB
+registry.k8s.io/kube-state-metrics/kube-state-metrics    v2.19.1              f98b74d053919       18.9MB
+registry.k8s.io/kube-state-metrics/kube-state-metrics    v2.20.0              a635e3d8e1a4f       19.3MB
+registry.k8s.io/pause                                    3.10.1               cd073f4c5f6a8       320kB
+
+$ crictl ps -a 2>/dev/null | head -n 50 || true
+CONTAINER           IMAGE               CREATED              STATE               NAME                        ATTEMPT             POD ID              POD
+8fd4970ac9efe       1747a4ab1e1be       About a minute ago   Exited              unseal                      0                   bd2ad1098afc6       vault-unseal-29798600-v77dq
+84ef758187c4f       f98b74d053919       5 hours ago          Running             kube-state-metrics          5                   ca3b32a9c9eac       prometheus-kube-state-metrics-686cbd6bf6-fj4mr
+6004f744bad9e       6bc8bdd63e408       5 hours ago          Running             csi-attacher                8                   faeb02db6270b       csi-attacher-66b7b4b4d4-qk4vq
+25450b4e9c5fc       d11bd1f0b3e57       5 hours ago          Running             csi-resizer                 5                   84f5e4d43ef2a       csi-resizer-66cc556f5-k56r7
+1fdd200c32fb4       118137d698bbd       5 hours ago          Running             csi-snapshotter             3                   471aab72e782b       csi-snapshotter-7565995789-sdhtq
+2d5af10773c13       ec9b939801797       5 hours ago          Running             csi-provisioner             10                  49f310e34ca76       csi-provisioner-bc67cbb54-4jts9
+90549060c2ddb       6bc8bdd63e408       5 hours ago          Exited              csi-attacher                7                   faeb02db6270b       csi-attacher-66b7b4b4d4-qk4vq
+8a7e08852e65d       19d88319bea99       10 hours ago         Exited              hanodes-autoclean           0                   88e06d87dfb15       zabbix-nodesclean-29797980-5c6fl
+214ddbfe9e66b       93ea80b4686a1       23 hours ago         Running             keycloak                    0                   820ad130c4105       keycloak-f56dd56d7-kxt48
+4d7abd7b01df1       9f4c1b666bd8c       25 hours ago         Running             longhorn-csi-plugin         7                   1a4108793bbb7       longhorn-csi-plugin-znr9t
+5a76f1903af2a       af7008fa1eaef       42 hours ago         Running             zabbix-web                  0                   c229ab1fbe87c       zabbix-zabbix-web-859bcb6965-n2n7c
+01f63f5d46e9e       f98b74d053919       2 days ago           Exited              kube-state-metrics          4                   ca3b32a9c9eac       prometheus-kube-state-metrics-686cbd6bf6-fj4mr
+37d8f1b82ce48       ec9b939801797       2 days ago           Exited              csi-provisioner             9                   49f310e34ca76       csi-provisioner-bc67cbb54-4jts9
+8d38923d34794       d11bd1f0b3e57       2 days ago           Exited              csi-resizer                 4                   84f5e4d43ef2a       csi-resizer-66cc556f5-k56r7
+0773ca829ac2f       118137d698bbd       2 days ago           Exited              csi-snapshotter             2                   471aab72e782b       csi-snapshotter-7565995789-sdhtq
+4064a2fec5853       ec9b939801797       3 days ago           Running             csi-provisioner             11                  c593bd806f120       csi-provisioner-bc67cbb54-tszs5
+46e682c51e08c       d11bd1f0b3e57       3 days ago           Running             csi-resizer                 12                  56d5e7e33c043       csi-resizer-66cc556f5-vxrtk
+62894eadafda5       118137d698bbd       3 days ago           Running             csi-snapshotter             15                  701f5bcc6a14d       csi-snapshotter-7565995789-9lr55
+1e55194253bde       6bc8bdd63e408       3 days ago           Running             csi-attacher                28                  90827f1320ee0       csi-attacher-66b7b4b4d4-sgwcc
+78f0f2804a3e9       ec9b939801797       3 days ago           Running             csi-provisioner             9                   31db79bfc61d1       csi-provisioner-bc67cbb54-l4z5j
+b1e6f767d289b       6bc8bdd63e408       3 days ago           Exited              csi-attacher                27                  90827f1320ee0       csi-attacher-66b7b4b4d4-sgwcc
+66a0cf85a22e9       d11bd1f0b3e57       3 days ago           Exited              csi-resizer                 11                  56d5e7e33c043       csi-resizer-66cc556f5-vxrtk
+891e8bfbc52c0       118137d698bbd       3 days ago           Exited              csi-snapshotter             14                  701f5bcc6a14d       csi-snapshotter-7565995789-9lr55
+aa5965d01bab8       ec9b939801797       3 days ago           Exited              csi-provisioner             10                  c593bd806f120       csi-provisioner-bc67cbb54-tszs5
+666a544a10c64       ec9b939801797       3 days ago           Exited              csi-provisioner             8                   31db79bfc61d1       csi-provisioner-bc67cbb54-l4z5j
+0dc433f7ee212       e74b80806e1da       3 days ago           Running             node-exporter               0                   58a4d13872a45       prometheus-prometheus-node-exporter-4mp6v
+6d8ad0e8e8ba6       f341a485992cc       3 days ago           Running             config-reloader             0                   661b3121a2ed8       alertmanager-prometheus-kube-prometheus-alertmanager-0
+5e596e431ec6b       c4e1c067b29ef       3 days ago           Running             alertmanager                0                   661b3121a2ed8       alertmanager-prometheus-kube-prometheus-alertmanager-0
+d6938053763df       f341a485992cc       3 days ago           Exited              init-config-reloader        0                   661b3121a2ed8       alertmanager-prometheus-kube-prometheus-alertmanager-0
+3e3c31d0b934d       c3a4f72cb49f5       3 days ago           Running             kube-prometheus-stack       0                   921a5439ed315       prometheus-kube-prometheus-operator-64c7669674-5m8bt
+9d4ec54e59289       6bc8bdd63e408       4 days ago           Running             csi-attacher                1                   0fbff6b2dc4c0       csi-attacher-66b7b4b4d4-w65v6
+7dcb57b0d1389       d11bd1f0b3e57       4 days ago           Running             csi-resizer                 3                   dc71ddbc9f70d       csi-resizer-66cc556f5-pk9gh
+043f55b9f1388       118137d698bbd       4 days ago           Running             csi-snapshotter             2                   de4f314527211       csi-snapshotter-7565995789-kzvrf
+dceb0b5c3b48c       118137d698bbd       4 days ago           Exited              csi-snapshotter             1                   de4f314527211       csi-snapshotter-7565995789-kzvrf
+5b79f08f5ca00       d11bd1f0b3e57       4 days ago           Exited              csi-resizer                 2                   dc71ddbc9f70d       csi-resizer-66cc556f5-pk9gh
+f8a0a9e59e8c5       2298d942ce5f8       5 days ago           Running             test-net                    0                   16213480b68b0       test-net
+54c95d11dff0b       9f4c1b666bd8c       5 days ago           Exited              longhorn-csi-plugin         6                   1a4108793bbb7       longhorn-csi-plugin-znr9t
+c5076c67048f0       1747a4ab1e1be       6 days ago           Running             vault                       0                   f7bbc5d8f6cc4       vault-0
+ee1f0f62d493e       16de55b902be5       7 days ago           Running             calico-apiserver            0                   02c76e52f4091       calico-apiserver-d485f9d7d-6r6gh
+8d4a709cec5ae       f772ce9ba10a4       7 days ago           Running             engine-image-ei-acb7590c    7                   b3b58da82f382       engine-image-ei-acb7590c-nxf9n
+c2285d2d61bef       8bc04e5451710       7 days ago           Running             sidecar-injector            1                   17b6b6781a0e2       vault-agent-injector-789bb85969-j5ffr
+2f12a41c6a909       97fe896f8c07b       7 days ago           Running             controller                  0                   a4c003964ae5f       ingress-nginx-controller-748d8795b6-fxcq4
+233e2fa38b76b       16de55b902be5       7 days ago           Running             calico-apiserver            0                   867674f334676       calico-apiserver-d485f9d7d-46ts5
+39e2de1794817       8bc04e5451710       7 days ago           Exited              sidecar-injector            0                   17b6b6781a0e2       vault-agent-injector-789bb85969-j5ffr
+efbf439981283       3002f09d2fbfd       7 days ago           Running             controller                  0                   faba0db629f50       sealed-secrets-controller-9d5c9768c-lvnn2
+bc13d27448849       bba657d3e1951       7 days ago           Running             postgresql                  0                   03632c56149e3       postgresql-clean-0
+00d3470b276dc       2c611b5147115       8 days ago           Running             whisker-backend             0                   ff94a028840a3       whisker-57774795c4-lk258
+3c67f75ad46c7       375e05b3fa359       8 days ago           Running             whisker                     0                   ff94a028840a3       whisker-57774795c4-lk258
+8d44af5947b66       efa6d3d087772       8 days ago           Running             longhorn-ui                 11                  4a5104d564bd2       longhorn-ui-87b4df967-5fcxb
+
+-- compte images / snapshots --
+
+$ crictl images -q 2>/dev/null | wc -l || true
+25
+
+$ ctr -n k8s.io snapshots ls 2>/dev/null | awk 'NR>1 {c[$NF]++} END {for (k in c) print k, c[k]}' || true
+Active 128
+Committed 240
+
+======== SNAP ========
+
+$ snap list 2>/dev/null || true
+
+$ du -sh /snap /var/lib/snapd 2>/dev/null || true
+8.0K	/snap
+348K	/var/lib/snapd
+
+======== LONGHORN ========
+
+$ du -xh -d1 /var/lib/longhorn 2>/dev/null | sort -hr | head -n 15
+1.5G	/var/lib/longhorn/replicas
+1.5G	/var/lib/longhorn
+32M	/var/lib/longhorn/engine-binaries
+4.0K	/var/lib/longhorn/unix-domain-socket
+kubeconfig non lisible depuis ce compte
+
+======== ZABBIX / GRAFANA (si locaux) ========
+40K	/var/log/zabbix
+
+======== RESUME ACTIONNABLE ========
+1. Relire STATUT ci-dessus.
+2. Croiser TOP REPERTOIRES + GROS FICHIERS.
+3. Si containerd/snapshots dominent : NIVEAU 1 puis NIVEAU 3 (crictl rmi --prune + ctr snapshots prune).
+4. Ne jamais rm -rf /var/lib/{containerd,docker,kubelet,etcd}.
+5. Rapport : /var/tmp/audit-disque-k3s-worker-node-2.txt
+FIN_AUDIT

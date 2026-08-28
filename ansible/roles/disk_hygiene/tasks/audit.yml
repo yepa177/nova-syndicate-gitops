@@ -1,0 +1,69 @@
+---
+- name: Repertoire scripts (bootstrap — rien n'est encore pose sur les nœuds)
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0750"
+  loop:
+    - "{{ disk_hygiene_sbin }}"
+    - "{{ disk_hygiene_log_dir }}"
+    - "{{ disk_hygiene_report_dir }}"
+
+- name: Copier les scripts d'audit sur le nœud
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ disk_hygiene_sbin }}/{{ item }}"
+    owner: root
+    group: root
+    mode: "0750"
+  loop:
+    - audit-disque.sh
+    - disk-watch.sh
+
+- name: Pourcentage occupation /
+  ansible.builtin.shell: df -P / | awk 'NR==2 {gsub("%","",$5); print $5}'
+  register: disk_hygiene_root_pct
+  changed_when: false
+  check_mode: false
+
+- name: Inodes occupation /
+  ansible.builtin.shell: df -Pi / | awk 'NR==2 {gsub("%","",$5); print $5}'
+  register: disk_hygiene_root_inodes
+  changed_when: false
+  check_mode: false
+
+- name: Chemin rapport audit
+  ansible.builtin.set_fact:
+    disk_hygiene_audit_path: "{{ disk_hygiene_report_dir }}/audit-disque-{{ inventory_hostname }}.txt"
+
+- name: Lancer audit-disque.sh
+  ansible.builtin.command: "{{ disk_hygiene_sbin }}/audit-disque.sh {{ disk_hygiene_audit_path }}"
+  environment:
+    THRESH_WARN: "{{ disk_hygiene_warn_pct }}"
+    THRESH_ALERT: "{{ disk_hygiene_alert_pct }}"
+    THRESH_CRIT: "{{ disk_hygiene_crit_pct }}"
+    KUBECONFIG: "{{ disk_hygiene_kubeconfig }}"
+    CONTAINER_RUNTIME_ENDPOINT: "{{ disk_hygiene_cri_endpoint }}"
+  register: disk_hygiene_audit
+  changed_when: false
+  check_mode: false
+
+- name: Extraire STATUT
+  ansible.builtin.command: grep -E '^(STATUT=|Occupation)' {{ disk_hygiene_audit_path }}
+  register: disk_hygiene_statut
+  changed_when: false
+  check_mode: false
+
+- name: Synthese nœud
+  ansible.builtin.debug:
+    msg: "{{ inventory_hostname }} /={{ disk_hygiene_root_pct.stdout }}% inodes={{ disk_hygiene_root_inodes.stdout }}% {{ disk_hygiene_statut.stdout_lines | join(' | ') }}"
+
+- name: Marquer CRITIQUE
+  ansible.builtin.fail:
+    msg: "{{ inventory_hostname }} en CRITIQUE ({{ disk_hygiene_root_pct.stdout }}%). Cleanup NIVEAU 3 refuse tant que disk_hygiene_confirm_niveau3=true n'est pas passe. Traiter en NIVEAU 2."
+  when:
+    - disk_hygiene_root_pct.stdout | int >= disk_hygiene_crit_pct
+    - not (disk_hygiene_force | bool)
+    - disk_hygiene_niveau | int >= 3

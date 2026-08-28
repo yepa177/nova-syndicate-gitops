@@ -1,0 +1,18 @@
+---
+# Flotte kubeadm v1.31.14 — Ubuntu 24.04 + containerd 2.2.1
+# Hostnames k3s-* = noms historiques, pas un cluster k3s.
+disk_hygiene_timer_enabled: true
+disk_hygiene_oncalendar: "Mon,Thu 03:30:00"
+disk_hygiene_timer_niveau: 3
+disk_hygiene_watch_enabled: true
+disk_hygiene_dry_run: "1"
+disk_hygiene_niveau: 1
+disk_hygiene_confirm_niveau3: false
+disk_hygiene_longhorn_delete: false
+disk_hygiene_journal_max: 200M
+disk_hygiene_fetch_reports: true
+disk_hygiene_kubeconfig: /etc/kubernetes/admin.conf
+disk_hygiene_cri_endpoint: unix:///run/containerd/containerd.sock
+disk_hygiene_warn_pct: 70
+disk_hygiene_alert_pct: 80
+disk_hygiene_crit_pct: 90

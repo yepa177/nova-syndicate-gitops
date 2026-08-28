@@ -1,0 +1,56 @@
+---
+- name: Refuser NIVEAU 3 sans confirmation
+  ansible.builtin.fail:
+    msg: "NIVEAU 3 exige -e disk_hygiene_confirm_niveau3=true (fenetre de maintenance + registry joignable)."
+  when:
+    - disk_hygiene_niveau | int >= 3
+    - not (disk_hygiene_confirm_niveau3 | bool)
+
+- name: Mesurer / si audit non joue
+  ansible.builtin.shell: df -P / | awk 'NR==2 {gsub("%","",$5); print $5}'
+  register: disk_hygiene_root_pct
+  changed_when: false
+  check_mode: false
+  when: disk_hygiene_root_pct is not defined
+
+- name: Decider si on nettoie
+  ansible.builtin.set_fact:
+    disk_hygiene_should_clean: >-
+      {{
+        (disk_hygiene_force | bool)
+        or (disk_hygiene_dry_run | string == '1')
+        or (disk_hygiene_root_pct.stdout | int >= disk_hygiene_warn_pct)
+        or ((disk_hygiene_niveau | int >= 3) and (disk_hygiene_confirm_niveau3 | bool))
+      }}
+
+- name: Skip sous seuil
+  ansible.builtin.debug:
+    msg: "{{ inventory_hostname }} {{ disk_hygiene_root_pct.stdout }}% < {{ disk_hygiene_warn_pct }}% — skip (force=false, dry_run={{ disk_hygiene_dry_run }})."
+  when: not (disk_hygiene_should_clean | bool)
+
+- name: Chemin log cleanup
+  ansible.builtin.set_fact:
+    disk_hygiene_cleanup_log: "{{ disk_hygiene_log_dir }}/cleanup-{{ inventory_hostname }}.log"
+  when: disk_hygiene_should_clean | bool
+
+- name: Lancer cleanup-safe.sh
+  ansible.builtin.command: "{{ disk_hygiene_sbin }}/cleanup-safe.sh"
+  environment:
+    DRY_RUN: "{{ disk_hygiene_dry_run }}"
+    NIVEAU: "{{ disk_hygiene_niveau }}"
+    LOG: "{{ disk_hygiene_cleanup_log }}"
+    JOURNAL_MAX: "{{ disk_hygiene_journal_max }}"
+    JOURNAL_AGE: "{{ disk_hygiene_journal_age }}"
+    TMP_DAYS: "{{ disk_hygiene_tmp_days }}"
+    CTR_LOG_MAX_MB: "{{ disk_hygiene_ctr_log_max_mb }}"
+    KUBECONFIG: "{{ disk_hygiene_kubeconfig }}"
+    CONTAINER_RUNTIME_ENDPOINT: "{{ disk_hygiene_cri_endpoint }}"
+    ENV_FILE: "{{ disk_hygiene_env_file }}"
+  register: disk_hygiene_cleanup
+  changed_when: disk_hygiene_dry_run | string == '0'
+  when: disk_hygiene_should_clean | bool
+
+- name: Extraire avant/apres
+  ansible.builtin.debug:
+    msg: "{{ disk_hygiene_cleanup.stdout_lines | default([]) | select('match', '^(AVANT|APRES|HOST|FIN|==)') | list }}"
+  when: disk_hygiene_cleanup is defined and disk_hygiene_cleanup.stdout_lines is defined

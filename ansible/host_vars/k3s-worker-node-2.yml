@@ -1,0 +1,4 @@
+---
+# worker obs. containerd ~9.4G + Longhorn ~1.5G.
+# Kernel 6.8.0-137 (les deux autres en -138).
+disk_hygiene_kubeconfig: /etc/kubernetes/admin.conf

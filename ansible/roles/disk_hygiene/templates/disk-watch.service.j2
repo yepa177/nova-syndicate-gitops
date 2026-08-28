@@ -1,0 +1,11 @@
+[Unit]
+Description=Mesure occupation disque (disk-watch)
+After=local-fs.target
+ConditionPathExists={{ disk_hygiene_sbin }}/disk-watch.sh
+
+[Service]
+Type=oneshot
+EnvironmentFile=-{{ disk_hygiene_env_file }}
+ExecStart={{ disk_hygiene_sbin }}/disk-watch.sh
+Nice=10
+SuccessExitStatus=0 2

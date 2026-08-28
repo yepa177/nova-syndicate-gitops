@@ -1,0 +1,11 @@
+[Unit]
+Description=Timer hygiene disque {{ disk_hygiene_oncalendar }}
+
+[Timer]
+OnCalendar={{ disk_hygiene_oncalendar }}
+Persistent=true
+RandomizedDelaySec={{ disk_hygiene_randomized_delay }}
+Unit={{ disk_hygiene_timer_name }}.service
+
+[Install]
+WantedBy=timers.target

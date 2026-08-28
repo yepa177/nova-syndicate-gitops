@@ -1,0 +1,7 @@
+---
+- name: Test de connexion aux nœuds
+  hosts: k8s_nodes
+  tasks:
+    - name: Vérifier le système
+      debug:
+        msg: "Je suis sur {{ ansible_hostname }}"

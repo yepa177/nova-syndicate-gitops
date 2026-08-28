@@ -1,0 +1,514 @@
+
+======== AUDIT DISQUE k3s-lyon-01 20260828T110640Z ========
+Nœud          : k3s-lyon-01
+Kernel        : 6.8.0-138-generic
+OS            : Ubuntu 24.04.4 LTS
+Date UTC      : 20260828T110640Z
+Seuils %      : WARN=70 ALERT=80 CRIT=90
+
+======== FILESYSTEMS (espace) ========
+
+$ df -hT -x tmpfs -x devtmpfs -x overlay -x squashfs
+Filesystem                        Type  Size  Used Avail Use% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv ext4   28G   17G  9.9G  63% /
+/dev/vda2                         ext4  2.0G  200M  1.6G  11% /boot
+
+======== FILESYSTEMS (inodes) ========
+
+$ df -hi -x tmpfs -x devtmpfs -x overlay -x squashfs
+Filesystem                        Inodes IUsed IFree IUse% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv   1.8M  238K  1.6M   14% /
+/dev/vda2                           128K   321  128K    1% /boot
+
+======== SEUILS RACINE ========
+Occupation / = 63%
+STATUT=OK
+
+======== TOP REPERTOIRES / (profondeur 2, peut prendre 1-3 min) ========
+
+$ du -xhd2 / 2>/dev/null | sort -hr | head -n 40
+17G	/
+6.9G	/var
+6.4G	/var/lib
+4.7G	/usr
+2.8G	/usr/lib
+1.6G	/home/user
+1.6G	/home
+681M	/usr/bin
+433M	/usr/share
+411M	/usr/local
+389M	/var/log
+311M	/usr/src
+242M	/opt/cni
+242M	/opt
+149M	/var/cache
+115M	/usr/libexec
+57M	/data/registry
+57M	/data
+50M	/usr/sbin
+29M	/usr/include
+15M	/root
+12M	/root/.kube
+7.6M	/tmp
+7.6M	/etc
+2.6M	/var/backups
+2.4M	/root/.launchpadlib
+2.2M	/tmp/node-compile-cache
+1.2M	/home/yepa177
+1.2M	/etc/apparmor.d
+656K	/etc/ssh
+564K	/etc/ssl
+540K	/etc/ldap
+508K	/root/snap
+284K	/etc/cloud
+280K	/etc/vmware-tools
+216K	/etc/systemd
+200K	/etc/console-setup
+172K	/etc/lvm
+168K	/etc/kubernetes
+164K	/etc/X11
+
+======== VAR LIB (runtime) ========
+2.1G	/var/lib/containerd
+27M	/var/lib/docker
+540M	/var/lib/kubelet
+732M	/var/lib/etcd
+2.8G	/var/lib/snapd
+32K	/snap
+389M	/var/log
+40K	/var/tmp
+7.6M	/tmp
+149M	/var/cache
+1.6G	/home
+
+======== JOURNALD ========
+
+$ journalctl --disk-usage
+Archived and active journals take up 116.6M in the file system.
+
+======== GROS FICHIERS > 100M (hors /proc /sys /dev overlay) ========
+
+$ find / -xdev -type f -size +100M -printf '%s\t%p\n' 2>/dev/null | sort -nr | head -n 30 | awk '{printf "%12.1f MiB  %s\n", $1/1024/1024, $2}'
+      2965.0 MiB  /swap.img
+       523.6 MiB  /var/lib/snapd/cache/25f3f922bf4b282b520c10a259911fd528d0a48ee11318ee03c99b72f2f8ef21ae066999e40a93ad2cb0f5e37a46ff18
+       521.1 MiB  /var/lib/snapd/cache/a163227b4a1098a1fbeee10c4951a4099cd138b3edb00f4db574fda622f813aeea79780df148ddc2c265e81c82f80918
+       519.7 MiB  /var/lib/snapd/snaps/code_259.snap
+       519.7 MiB  /var/lib/snapd/cache/67a96ab5b1a580d74c347d86c839dae2e920ee3300f1966350dd701c1b3530627721fca2c1e145628af2de7b47575cc0
+       519.4 MiB  /var/lib/snapd/snaps/code_258.snap
+       519.4 MiB  /var/lib/snapd/cache/f96a9683df059c91bb6ef4922be2d0d7d9f4c30190ed0a0f9565b379d1ac0e286025922fb669f50a2476091cbf55a6c7
+       470.4 MiB  /var/lib/snapd/cache/b3b2b9ee56654f1f17388c3a7f5c5d1d3d018dbb045ab5c4fc7d30e20f25ca428bcf08d371fc732dedba009bd7fce17f
+       368.0 MiB  /var/lib/etcd/member/snap/db
+       262.3 MiB  /home/user/.vscode-server/data/agent-host/sdk-cache/claude/0.3.220/linux-x64/node_modules/@anthropic-ai/claude-agent-sdk-linux-x64/claude
+       203.6 MiB  /usr/local/bin/argocd
+       176.1 MiB  /var/lib/kubelet/pods/7cd96f92-b2bb-44ea-9972-fa276079b386/volumes/kubernetes.io~empty-dir/static-files/argocd-dex
+       176.1 MiB  /var/lib/kubelet/pods/4832d3fe-d358-4706-ae82-a59083e15c0f/volumes/kubernetes.io~empty-dir/var-files/argocd-cmp-server
+       176.1 MiB  /var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/732/fs/usr/local/bin/argocd
+       157.5 MiB  /var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/931/fs/usr/bin/calico-node
+       136.9 MiB  /usr/lib/x86_64-linux-gnu/libLLVM.so.20.1
+       132.5 MiB  /home/user/.vscode-server/cli/servers/Stable-110a328ea54b42367b803ec53ee0bf52ef26b419/server/node_modules/@github/copilot-linux-x64/prebuilds/linux-x64/runtime.node
+       117.9 MiB  /home/user/.vscode-server/cli/servers/Stable-110a328ea54b42367b803ec53ee0bf52ef26b419/server/node
+       117.5 MiB  /usr/lib/llvm-18/lib/libLLVM.so.1
+       107.1 MiB  /home/user/.vscode-server/cli/servers/Stable-110a328ea54b42367b803ec53ee0bf52ef26b419/server/extensions/copilot/node_modules/@github/copilot/sdk/prebuilds/linux-x64/runtime.node
+       105.2 MiB  /var/lib/snapd/snaps/core_17292.snap
+       105.2 MiB  /var/lib/snapd/cache/13c728f16430310ba467b5768bf3484607a14c45b3a91e47023928a83ea62f4ea04eb64c922b3d33f1d5a42fad686376
+
+======== LOGS > 50M ========
+
+$ find /var/log /var/lib/docker /var/lib/containerd /var/log/pods /var/lib/kubelet -type f \( -name '*.log' -o -name '*.log.*' \) -size +50M -printf '%s\t%p\n' 2>/dev/null | sort -nr | head -n 30 | awk '{printf "%12.1f MiB  %s\n", $1/1024/1024, $2}'
+
+======== CACHE PAQUETS ========
+
+$ du -sh /var/cache/apt /var/cache/apt/archives 2>/dev/null || true
+110M	/var/cache/apt
+
+======== NOYAUX INSTALLES ========
+
+$ ls -1 /boot/vmlinuz-* 2>/dev/null || true
+/boot/vmlinuz-6.8.0-136-generic
+/boot/vmlinuz-6.8.0-138-generic
+
+======== KUBERNETES / CRI ========
+CRI endpoint=unix:///run/containerd/containerd.sock
+
+$ crictl info 2>/dev/null | head -n 20 || true
+{
+  "cniconfig": {
+    "Networks": [
+      {
+        "Config": {
+          "CNIVersion": "0.3.1",
+          "Name": "cni-loopback",
+          "Plugins": [
+            {
+              "Network": {
+                "ipam": {},
+                "type": "loopback"
+              },
+              "Source": "{\"type\":\"loopback\"}"
+            }
+          ],
+          "Source": "{\n\"cniVersion\": \"0.3.1\",\n\"name\": \"cni-loopback\",\n\"plugins\": [{\n  \"type\": \"loopback\"\n}]\n}"
+        },
+        "IFName": "lo"
+      },
+
+$ crictl images 2>/dev/null || true
+IMAGE                                     TAG                  IMAGE ID            SIZE
+quay.io/argoproj/argocd                   v2.13.0              aa2c97554d9cb       180MB
+quay.io/calico/kube-controllers           v3.31.1              204316eeeaf3b       53.9MB
+quay.io/calico/node-driver-registrar      v3.31.1              3ce6fa3216fb1       16.2MB
+quay.io/prometheus/node-exporter          v1.11.1-distroless   e74b80806e1da       13MB
+quay.io/prometheus/node-exporter          v1.12.1-distroless   6ce127b25a483       13.1MB
+quay.io/tigera/operator                   v1.40.1              e424fad7fc2d2       25.4MB
+registry.k8s.io/kube-apiserver            v1.31.14             62c7b4da2fb22       28.3MB
+registry.k8s.io/kube-controller-manager   v1.31.14             62cf38b7ca1cd       26.6MB
+registry.k8s.io/kube-scheduler            v1.31.14             0228a905b92f5       20.7MB
+registry.k8s.io/pause                     3.10.1               cd073f4c5f6a8       320kB
+
+$ crictl ps -a 2>/dev/null | head -n 50 || true
+CONTAINER           IMAGE               CREATED             STATE               NAME                        ATTEMPT             POD ID              POD
+75d3292c93dcd       e424fad7fc2d2       3 days ago          Running             tigera-operator             16                  b5c665dd41e6e       tigera-operator-745674d8-42vvt
+cf21867500e27       0228a905b92f5       3 days ago          Running             kube-scheduler              54                  8a28333bdae11       kube-scheduler-k3s-lyon-01
+5792b3b7df5e5       62cf38b7ca1cd       3 days ago          Running             kube-controller-manager     55                  db4703eb59fd0       kube-controller-manager-k3s-lyon-01
+5a08b3a160839       e424fad7fc2d2       3 days ago          Exited              tigera-operator             15                  b5c665dd41e6e       tigera-operator-745674d8-42vvt
+c1f9ec0b512af       0228a905b92f5       3 days ago          Exited              kube-scheduler              53                  8a28333bdae11       kube-scheduler-k3s-lyon-01
+f71db4942fe2e       62cf38b7ca1cd       3 days ago          Exited              kube-controller-manager     54                  db4703eb59fd0       kube-controller-manager-k3s-lyon-01
+ad9ba05ed6254       e74b80806e1da       3 days ago          Running             node-exporter               0                   2ed76c6abb4b1       prometheus-prometheus-node-exporter-9lf2x
+7552d97ac5941       62c7b4da2fb22       3 days ago          Running             kube-apiserver              0                   d49bda3b980cc       kube-apiserver-k3s-lyon-01
+5aebada05f663       204316eeeaf3b       4 days ago          Running             calico-kube-controllers     19                  162d472efc71a       calico-kube-controllers-7cdd4595df-fjpfd
+8d820c21c2418       3ce6fa3216fb1       4 days ago          Running             csi-node-driver-registrar   18                  61d003977e704       csi-node-driver-n6gct
+138f4c2ad0255       204316eeeaf3b       4 days ago          Exited              calico-kube-controllers     18                  162d472efc71a       calico-kube-controllers-7cdd4595df-fjpfd
+75f0b99ce298d       3ce6fa3216fb1       4 days ago          Exited              csi-node-driver-registrar   17                  61d003977e704       csi-node-driver-n6gct
+b4b884cc188b0       aa2c97554d9cb       7 days ago          Running             repo-server                 0                   ff788865f3297       argocd-repo-server-5b8d46db8d-8p5bf
+26a8d5baadbb8       aa2c97554d9cb       7 days ago          Exited              copyutil                    0                   ff788865f3297       argocd-repo-server-5b8d46db8d-8p5bf
+abc5b74d39815       8ff1b28fdd563       7 days ago          Running             dex-server                  0                   d5f3cfb151ab3       argocd-dex-server-7bc8c476f9-m9x4p
+8feaec92c9277       aa2c97554d9cb       7 days ago          Exited              copyutil                    0                   d5f3cfb151ab3       argocd-dex-server-7bc8c476f9-m9x4p
+f63250e089fa4       aa2c97554d9cb       7 days ago          Running             application-controller      0                   72704e2a84c0c       argocd-application-controller-0
+a1a8f2d279b38       aa2c97554d9cb       7 days ago          Running             notifications-controller    0                   6b570939bc32f       argocd-notifications-controller-5455c7d8b4-92ppf
+5ac0f5497bd8a       aa2c97554d9cb       7 days ago          Running             server                      0                   f52570c20fc5f       argocd-server-68d9885bd5-nzlvx
+57b353d8a37e3       cd3749afc61f5       7 days ago          Running             calico-csi                  14                  61d003977e704       csi-node-driver-n6gct
+6334549b58ca7       aa2c97554d9cb       7 days ago          Running             applicationset-controller   1                   1de3bebddf2af       argocd-applicationset-controller-78894b64c4-qq4n8
+fbf6adeb05a2e       a1811fcf74808       7 days ago          Running             redis                       1                   b7ea7715767fa       argocd-redis-86475465f6-g964z
+ee5c45f2e3ad5       c69fa2e9cbf5f       7 days ago          Running             coredns                     1                   0b6035e54b698       coredns-7c65d6cfc9-txxpr
+4fe2eca0aa9ba       1f066b1c8e0e8       7 days ago          Running             goldmane                    1                   9640e25ea9340       goldmane-78898bc777-q9nqc
+99893a2c42c2c       93d188c5c1d22       7 days ago          Running             calico-node                 1                   7e005a7fe5dc3       calico-node-v74lq
+ea0e81800db76       0a6234f7fdd21       7 days ago          Exited              install-cni                 0                   7e005a7fe5dc3       calico-node-v74lq
+49c2a64ef6c81       93d188c5c1d22       7 days ago          Exited              ebpf-bootstrap              0                   7e005a7fe5dc3       calico-node-v74lq
+ad77863fa1085       426a43f8c3f10       7 days ago          Exited              flexvol-driver              1                   7e005a7fe5dc3       calico-node-v74lq
+4e91dc5f59e19       09bf2a24e0aeb       7 days ago          Running             kube-proxy                  14                  92bdfe579d880       kube-proxy-hst9v
+8ed9ff9c3942e       8cb12dd0c3e42       7 days ago          Running             etcd                        16                  3f582c6b7c8d5       etcd-k3s-lyon-01
+
+-- compte images / snapshots --
+
+$ crictl images -q 2>/dev/null | wc -l || true
+10
+
+$ ctr -n k8s.io snapshots ls 2>/dev/null | awk 'NR>1 {c[$NF]++} END {for (k in c) print k, c[k]}' || true
+Active 49
+Committed 113
+
+======== SNAP ========
+
+$ snap list 2>/dev/null || true
+Name       Version             Rev    Tracking       Publisher    Notes
+code       08d4889f            259    latest/stable  vscode**     classic
+core       16-2.61.4-20260225  17292  latest/stable  canonical**  core
+core20     20260410            2866   latest/stable  canonical**  base
+kustomize  5.3.0               42     latest/stable  abskmj       -
+snapd      2.76.2              27710  latest/stable  canonical**  snapd
+
+$ du -sh /snap /var/lib/snapd 2>/dev/null || true
+4.3G	/snap
+2.8G	/var/lib/snapd
+
+======== DOCKER (legacy) ========
+
+$ docker system df 2>/dev/null || true
+TYPE            TOTAL     ACTIVE    SIZE      RECLAIMABLE
+Images          1         1         25.44MB   25.44MB (100%)
+Containers      1         1         0B        0B
+Local Volumes   0         0         0B        0B
+Build Cache     0         0         0B        0B
+
+$ kubectl get nodes -o wide 2>/dev/null || true
+NAME                STATUS   ROLES           AGE    VERSION    INTERNAL-IP   EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION      CONTAINER-RUNTIME
+k3s-lyon-01         Ready    control-plane   283d   v1.31.14   10.0.1.2      <none>        Ubuntu 24.04.4 LTS   6.8.0-138-generic   containerd://2.2.1
+k3s-worker-mrs      Ready    worker          283d   v1.31.14   10.1.1.2      <none>        Ubuntu 24.04.3 LTS   6.8.0-138-generic   containerd://2.2.1
+zabbix-monitoring   Ready    worker          66d    v1.31.14   10.0.4.2      <none>        Ubuntu 24.04.4 LTS   6.8.0-137-generic   containerd://2.2.1
+
+$ kubectl get pods -A --field-selector=status.phase=Failed 2>/dev/null || true
+
+$ kubectl get pods -A | awk '$4 ~ /Evicted|Error|CrashLoop|Completed/ {print}' 2>/dev/null || true
+monitoring        prometheus-prometheus-kube-prometheus-prometheus-0       1/2     CrashLoopBackOff   1087 (3m13s ago)   3d20h
+vault             vault-unseal-29798586-9qcgc                              0/1     Completed          0                  49s
+zabbix            zabbix-nodesclean-29797980-5c6fl                         0/1     Completed          0                  10h
+
+$ kubectl get --raw /metrics 2>/dev/null | grep -E 'kubelet_volume_stats_used_bytes|node_filesystem' | head || true
+
+======== ZABBIX / GRAFANA (si locaux) ========
+32K	/var/log/zabbix
+
+======== RESUME ACTIONNABLE ========
+1. Relire STATUT ci-dessus.
+2. Croiser TOP REPERTOIRES + GROS FICHIERS.
+3. Si containerd/snapshots dominent : NIVEAU 1 puis NIVEAU 3 (crictl rmi --prune + ctr snapshots prune).
+4. Ne jamais rm -rf /var/lib/{containerd,docker,kubelet,etcd}.
+5. Rapport : /var/tmp/audit-disque-k3s-lyon-01.txt
+FIN_AUDIT
+
+======== AUDIT DISQUE k3s-lyon-01 20260828T111848Z ========
+Nœud          : k3s-lyon-01
+Kernel        : 6.8.0-138-generic
+OS            : Ubuntu 24.04.4 LTS
+Date UTC      : 20260828T111848Z
+Seuils %      : WARN=70 ALERT=80 CRIT=90
+
+======== FILESYSTEMS (espace) ========
+
+$ df -hT -x tmpfs -x devtmpfs -x overlay -x squashfs
+Filesystem                        Type  Size  Used Avail Use% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv ext4   28G   17G  9.9G  63% /
+/dev/vda2                         ext4  2.0G  200M  1.6G  11% /boot
+
+======== FILESYSTEMS (inodes) ========
+
+$ df -hi -x tmpfs -x devtmpfs -x overlay -x squashfs
+Filesystem                        Inodes IUsed IFree IUse% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv   1.8M  238K  1.6M   14% /
+/dev/vda2                           128K   321  128K    1% /boot
+
+======== SEUILS RACINE ========
+Occupation / = 63%
+STATUT=OK
+
+======== TOP REPERTOIRES / (profondeur 2, peut prendre 1-3 min) ========
+
+$ du -xhd2 / 2>/dev/null | sort -hr | head -n 40
+17G	/
+6.9G	/var
+6.4G	/var/lib
+4.7G	/usr
+2.8G	/usr/lib
+1.6G	/home/user
+1.6G	/home
+681M	/usr/bin
+433M	/usr/share
+411M	/usr/local
+390M	/var/log
+311M	/usr/src
+242M	/opt/cni
+242M	/opt
+149M	/var/cache
+115M	/usr/libexec
+57M	/data/registry
+57M	/data
+50M	/usr/sbin
+29M	/usr/include
+15M	/root
+12M	/root/.kube
+7.6M	/tmp
+7.6M	/etc
+2.6M	/var/backups
+2.4M	/root/.launchpadlib
+2.2M	/tmp/node-compile-cache
+1.2M	/home/yepa177
+1.2M	/etc/apparmor.d
+656K	/etc/ssh
+564K	/etc/ssl
+540K	/etc/ldap
+508K	/root/snap
+284K	/etc/cloud
+280K	/etc/vmware-tools
+216K	/etc/systemd
+200K	/etc/console-setup
+172K	/etc/lvm
+168K	/etc/kubernetes
+164K	/etc/X11
+
+======== VAR LIB (runtime) ========
+2.1G	/var/lib/containerd
+27M	/var/lib/docker
+540M	/var/lib/kubelet
+732M	/var/lib/etcd
+2.8G	/var/lib/snapd
+32K	/snap
+390M	/var/log
+56K	/var/tmp
+7.6M	/tmp
+149M	/var/cache
+1.6G	/home
+
+======== JOURNALD ========
+
+$ journalctl --disk-usage
+Archived and active journals take up 116.6M in the file system.
+
+======== GROS FICHIERS > 100M (hors /proc /sys /dev overlay) ========
+
+$ find / -xdev -type f -size +100M -printf '%s\t%p\n' 2>/dev/null | sort -nr | head -n 30 | awk '{printf "%12.1f MiB  %s\n", $1/1024/1024, $2}'
+      2965.0 MiB  /swap.img
+       523.6 MiB  /var/lib/snapd/cache/25f3f922bf4b282b520c10a259911fd528d0a48ee11318ee03c99b72f2f8ef21ae066999e40a93ad2cb0f5e37a46ff18
+       521.1 MiB  /var/lib/snapd/cache/a163227b4a1098a1fbeee10c4951a4099cd138b3edb00f4db574fda622f813aeea79780df148ddc2c265e81c82f80918
+       519.7 MiB  /var/lib/snapd/snaps/code_259.snap
+       519.7 MiB  /var/lib/snapd/cache/67a96ab5b1a580d74c347d86c839dae2e920ee3300f1966350dd701c1b3530627721fca2c1e145628af2de7b47575cc0
+       519.4 MiB  /var/lib/snapd/snaps/code_258.snap
+       519.4 MiB  /var/lib/snapd/cache/f96a9683df059c91bb6ef4922be2d0d7d9f4c30190ed0a0f9565b379d1ac0e286025922fb669f50a2476091cbf55a6c7
+       470.4 MiB  /var/lib/snapd/cache/b3b2b9ee56654f1f17388c3a7f5c5d1d3d018dbb045ab5c4fc7d30e20f25ca428bcf08d371fc732dedba009bd7fce17f
+       368.0 MiB  /var/lib/etcd/member/snap/db
+       262.3 MiB  /home/user/.vscode-server/data/agent-host/sdk-cache/claude/0.3.220/linux-x64/node_modules/@anthropic-ai/claude-agent-sdk-linux-x64/claude
+       203.6 MiB  /usr/local/bin/argocd
+       176.1 MiB  /var/lib/kubelet/pods/7cd96f92-b2bb-44ea-9972-fa276079b386/volumes/kubernetes.io~empty-dir/static-files/argocd-dex
+       176.1 MiB  /var/lib/kubelet/pods/4832d3fe-d358-4706-ae82-a59083e15c0f/volumes/kubernetes.io~empty-dir/var-files/argocd-cmp-server
+       176.1 MiB  /var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/732/fs/usr/local/bin/argocd
+       157.5 MiB  /var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/931/fs/usr/bin/calico-node
+       136.9 MiB  /usr/lib/x86_64-linux-gnu/libLLVM.so.20.1
+       132.5 MiB  /home/user/.vscode-server/cli/servers/Stable-110a328ea54b42367b803ec53ee0bf52ef26b419/server/node_modules/@github/copilot-linux-x64/prebuilds/linux-x64/runtime.node
+       117.9 MiB  /home/user/.vscode-server/cli/servers/Stable-110a328ea54b42367b803ec53ee0bf52ef26b419/server/node
+       117.5 MiB  /usr/lib/llvm-18/lib/libLLVM.so.1
+       107.1 MiB  /home/user/.vscode-server/cli/servers/Stable-110a328ea54b42367b803ec53ee0bf52ef26b419/server/extensions/copilot/node_modules/@github/copilot/sdk/prebuilds/linux-x64/runtime.node
+       105.2 MiB  /var/lib/snapd/snaps/core_17292.snap
+       105.2 MiB  /var/lib/snapd/cache/13c728f16430310ba467b5768bf3484607a14c45b3a91e47023928a83ea62f4ea04eb64c922b3d33f1d5a42fad686376
+
+======== LOGS > 50M ========
+
+$ find /var/log /var/lib/docker /var/lib/containerd /var/log/pods /var/lib/kubelet -type f \( -name '*.log' -o -name '*.log.*' \) -size +50M -printf '%s\t%p\n' 2>/dev/null | sort -nr | head -n 30 | awk '{printf "%12.1f MiB  %s\n", $1/1024/1024, $2}'
+
+======== CACHE PAQUETS ========
+
+$ du -sh /var/cache/apt /var/cache/apt/archives 2>/dev/null || true
+110M	/var/cache/apt
+
+======== NOYAUX INSTALLES ========
+
+$ ls -1 /boot/vmlinuz-* 2>/dev/null || true
+/boot/vmlinuz-6.8.0-136-generic
+/boot/vmlinuz-6.8.0-138-generic
+
+======== KUBERNETES / CRI ========
+CRI endpoint=unix:///run/containerd/containerd.sock
+
+$ crictl info 2>/dev/null | head -n 20 || true
+{
+  "cniconfig": {
+    "Networks": [
+      {
+        "Config": {
+          "CNIVersion": "0.3.1",
+          "Name": "cni-loopback",
+          "Plugins": [
+            {
+              "Network": {
+                "ipam": {},
+                "type": "loopback"
+              },
+              "Source": "{\"type\":\"loopback\"}"
+            }
+          ],
+          "Source": "{\n\"cniVersion\": \"0.3.1\",\n\"name\": \"cni-loopback\",\n\"plugins\": [{\n  \"type\": \"loopback\"\n}]\n}"
+        },
+        "IFName": "lo"
+      },
+
+$ crictl images 2>/dev/null || true
+IMAGE                                     TAG                  IMAGE ID            SIZE
+quay.io/argoproj/argocd                   v2.13.0              aa2c97554d9cb       180MB
+quay.io/calico/kube-controllers           v3.31.1              204316eeeaf3b       53.9MB
+quay.io/calico/node-driver-registrar      v3.31.1              3ce6fa3216fb1       16.2MB
+quay.io/prometheus/node-exporter          v1.11.1-distroless   e74b80806e1da       13MB
+quay.io/prometheus/node-exporter          v1.12.1-distroless   6ce127b25a483       13.1MB
+quay.io/tigera/operator                   v1.40.1              e424fad7fc2d2       25.4MB
+registry.k8s.io/kube-apiserver            v1.31.14             62c7b4da2fb22       28.3MB
+registry.k8s.io/kube-controller-manager   v1.31.14             62cf38b7ca1cd       26.6MB
+registry.k8s.io/kube-scheduler            v1.31.14             0228a905b92f5       20.7MB
+registry.k8s.io/pause                     3.10.1               cd073f4c5f6a8       320kB
+
+$ crictl ps -a 2>/dev/null | head -n 50 || true
+CONTAINER           IMAGE               CREATED             STATE               NAME                        ATTEMPT             POD ID              POD
+75d3292c93dcd       e424fad7fc2d2       3 days ago          Running             tigera-operator             16                  b5c665dd41e6e       tigera-operator-745674d8-42vvt
+cf21867500e27       0228a905b92f5       3 days ago          Running             kube-scheduler              54                  8a28333bdae11       kube-scheduler-k3s-lyon-01
+5792b3b7df5e5       62cf38b7ca1cd       3 days ago          Running             kube-controller-manager     55                  db4703eb59fd0       kube-controller-manager-k3s-lyon-01
+5a08b3a160839       e424fad7fc2d2       3 days ago          Exited              tigera-operator             15                  b5c665dd41e6e       tigera-operator-745674d8-42vvt
+c1f9ec0b512af       0228a905b92f5       3 days ago          Exited              kube-scheduler              53                  8a28333bdae11       kube-scheduler-k3s-lyon-01
+f71db4942fe2e       62cf38b7ca1cd       3 days ago          Exited              kube-controller-manager     54                  db4703eb59fd0       kube-controller-manager-k3s-lyon-01
+ad9ba05ed6254       e74b80806e1da       3 days ago          Running             node-exporter               0                   2ed76c6abb4b1       prometheus-prometheus-node-exporter-9lf2x
+7552d97ac5941       62c7b4da2fb22       3 days ago          Running             kube-apiserver              0                   d49bda3b980cc       kube-apiserver-k3s-lyon-01
+5aebada05f663       204316eeeaf3b       4 days ago          Running             calico-kube-controllers     19                  162d472efc71a       calico-kube-controllers-7cdd4595df-fjpfd
+8d820c21c2418       3ce6fa3216fb1       4 days ago          Running             csi-node-driver-registrar   18                  61d003977e704       csi-node-driver-n6gct
+138f4c2ad0255       204316eeeaf3b       4 days ago          Exited              calico-kube-controllers     18                  162d472efc71a       calico-kube-controllers-7cdd4595df-fjpfd
+75f0b99ce298d       3ce6fa3216fb1       4 days ago          Exited              csi-node-driver-registrar   17                  61d003977e704       csi-node-driver-n6gct
+b4b884cc188b0       aa2c97554d9cb       7 days ago          Running             repo-server                 0                   ff788865f3297       argocd-repo-server-5b8d46db8d-8p5bf
+26a8d5baadbb8       aa2c97554d9cb       7 days ago          Exited              copyutil                    0                   ff788865f3297       argocd-repo-server-5b8d46db8d-8p5bf
+abc5b74d39815       8ff1b28fdd563       7 days ago          Running             dex-server                  0                   d5f3cfb151ab3       argocd-dex-server-7bc8c476f9-m9x4p
+8feaec92c9277       aa2c97554d9cb       7 days ago          Exited              copyutil                    0                   d5f3cfb151ab3       argocd-dex-server-7bc8c476f9-m9x4p
+f63250e089fa4       aa2c97554d9cb       7 days ago          Running             application-controller      0                   72704e2a84c0c       argocd-application-controller-0
+a1a8f2d279b38       aa2c97554d9cb       7 days ago          Running             notifications-controller    0                   6b570939bc32f       argocd-notifications-controller-5455c7d8b4-92ppf
+5ac0f5497bd8a       aa2c97554d9cb       7 days ago          Running             server                      0                   f52570c20fc5f       argocd-server-68d9885bd5-nzlvx
+57b353d8a37e3       cd3749afc61f5       7 days ago          Running             calico-csi                  14                  61d003977e704       csi-node-driver-n6gct
+6334549b58ca7       aa2c97554d9cb       7 days ago          Running             applicationset-controller   1                   1de3bebddf2af       argocd-applicationset-controller-78894b64c4-qq4n8
+fbf6adeb05a2e       a1811fcf74808       7 days ago          Running             redis                       1                   b7ea7715767fa       argocd-redis-86475465f6-g964z
+ee5c45f2e3ad5       c69fa2e9cbf5f       7 days ago          Running             coredns                     1                   0b6035e54b698       coredns-7c65d6cfc9-txxpr
+4fe2eca0aa9ba       1f066b1c8e0e8       7 days ago          Running             goldmane                    1                   9640e25ea9340       goldmane-78898bc777-q9nqc
+99893a2c42c2c       93d188c5c1d22       7 days ago          Running             calico-node                 1                   7e005a7fe5dc3       calico-node-v74lq
+ea0e81800db76       0a6234f7fdd21       7 days ago          Exited              install-cni                 0                   7e005a7fe5dc3       calico-node-v74lq
+49c2a64ef6c81       93d188c5c1d22       7 days ago          Exited              ebpf-bootstrap              0                   7e005a7fe5dc3       calico-node-v74lq
+ad77863fa1085       426a43f8c3f10       7 days ago          Exited              flexvol-driver              1                   7e005a7fe5dc3       calico-node-v74lq
+4e91dc5f59e19       09bf2a24e0aeb       7 days ago          Running             kube-proxy                  14                  92bdfe579d880       kube-proxy-hst9v
+8ed9ff9c3942e       8cb12dd0c3e42       7 days ago          Running             etcd                        16                  3f582c6b7c8d5       etcd-k3s-lyon-01
+
+-- compte images / snapshots --
+
+$ crictl images -q 2>/dev/null | wc -l || true
+10
+
+$ ctr -n k8s.io snapshots ls 2>/dev/null | awk 'NR>1 {c[$NF]++} END {for (k in c) print k, c[k]}' || true
+Active 49
+Committed 113
+
+======== SNAP ========
+
+$ snap list 2>/dev/null || true
+Name       Version             Rev    Tracking       Publisher    Notes
+code       08d4889f            259    latest/stable  vscode**     classic
+core       16-2.61.4-20260225  17292  latest/stable  canonical**  core
+core20     20260410            2866   latest/stable  canonical**  base
+kustomize  5.3.0               42     latest/stable  abskmj       -
+snapd      2.76.2              27710  latest/stable  canonical**  snapd
+
+$ du -sh /snap /var/lib/snapd 2>/dev/null || true
+4.3G	/snap
+2.8G	/var/lib/snapd
+
+======== DOCKER (legacy) ========
+
+$ docker system df 2>/dev/null || true
+TYPE            TOTAL     ACTIVE    SIZE      RECLAIMABLE
+Images          1         1         25.44MB   25.44MB (100%)
+Containers      1         1         0B        0B
+Local Volumes   0         0         0B        0B
+Build Cache     0         0         0B        0B
+
+$ kubectl get nodes -o wide 2>/dev/null || true
+NAME                STATUS   ROLES           AGE    VERSION    INTERNAL-IP   EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION      CONTAINER-RUNTIME
+k3s-lyon-01         Ready    control-plane   283d   v1.31.14   10.0.1.2      <none>        Ubuntu 24.04.4 LTS   6.8.0-138-generic   containerd://2.2.1
+k3s-worker-mrs      Ready    worker          283d   v1.31.14   10.1.1.2      <none>        Ubuntu 24.04.3 LTS   6.8.0-138-generic   containerd://2.2.1
+zabbix-monitoring   Ready    worker          66d    v1.31.14   10.0.4.2      <none>        Ubuntu 24.04.4 LTS   6.8.0-137-generic   containerd://2.2.1
+
+$ kubectl get pods -A --field-selector=status.phase=Failed 2>/dev/null || true
+
+$ kubectl get pods -A | awk '$4 ~ /Evicted|Error|CrashLoop|Completed/ {print}' 2>/dev/null || true
+monitoring        prometheus-prometheus-kube-prometheus-prometheus-0       1/2     CrashLoopBackOff   1090 (6s ago)    3d20h
+vault             vault-unseal-29798598-5ztjm                              0/1     Completed          0                55s
+zabbix            zabbix-nodesclean-29797980-5c6fl                         0/1     Completed          0                10h
+
+$ kubectl get --raw /metrics 2>/dev/null | grep -E 'kubelet_volume_stats_used_bytes|node_filesystem' | head || true
+
+======== ZABBIX / GRAFANA (si locaux) ========
+32K	/var/log/zabbix
+
+======== RESUME ACTIONNABLE ========
+1. Relire STATUT ci-dessus.
+2. Croiser TOP REPERTOIRES + GROS FICHIERS.
+3. Si containerd/snapshots dominent : NIVEAU 1 puis NIVEAU 3 (crictl rmi --prune + ctr snapshots prune).
+4. Ne jamais rm -rf /var/lib/{containerd,docker,kubelet,etcd}.
+5. Rapport : /var/tmp/audit-disque-k3s-lyon-01.txt
+FIN_AUDIT

@@ -1,0 +1,16 @@
+---
+all:
+  children:
+    control_plane:
+      hosts:
+        k3s-lyon-01:
+          ansible_host: 10.0.1.2
+    workers:
+      hosts:
+        k3s-worker-mrs:
+          ansible_host: 10.1.1.2
+        k3s-worker-node-2:
+          ansible_host: 10.0.4.2
+      vars:
+        ansible_user: user
+        ansible_python_interpreter: /usr/bin/python3

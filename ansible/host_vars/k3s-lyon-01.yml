@@ -1,0 +1,4 @@
+---
+# control-plane kubeadm. etcd ~732M — ne jamais vacuum /var/lib/etcd.
+# Snap tax élevée (/snap + snapd ≈ 7G) : revue manuelle, pas le timer.
+disk_hygiene_kubeconfig: /etc/kubernetes/admin.conf

@@ -1,0 +1,30 @@
+---
+# Runbook DiskPressure — kubeadm IAM L
+# À lancer depuis k3s-lyon-01 (ansible 2.21.1 déjà présent).
+#
+# Pose les timers :
+#   ansible-playbook site.yml --tags deploy
+#     - disk-watch.timer     : toutes les heures (mesure)
+#     - disk-hygiene.timer   : lun/jeu 03:30 (~3.5 j) prune images + journal 200M + cache VS Code
+#
+# Première application maintenant (les 3 nœuds) :
+#   ansible-playbook site.yml --tags cleanup \
+#     -e disk_hygiene_dry_run=0 \
+#     -e disk_hygiene_niveau=3 \
+#     -e disk_hygiene_confirm_niveau3=true
+#
+# Mesure seule :
+#   ansible-playbook site.yml --tags watch
+#
+# Lister snapshots Longhorn (pas de delete) :
+#   ansible-playbook site.yml --tags longhorn
+# Delete lab uniquement :
+#   ansible-playbook site.yml --tags longhorn -e disk_hygiene_longhorn_delete=true
+#
+# Longhorn --all et restart kubelet NE sont PAS dans le timer.
+
+- name: Hygiene disque kubeadm
+  hosts: k8s_nodes
+  gather_facts: true
+  roles:
+    - role: disk_hygiene

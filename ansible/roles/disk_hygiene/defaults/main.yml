@@ -1,0 +1,48 @@
+---
+# Scripts dans roles/disk_hygiene/files/ — le rôle est autonome dans nova-syndicate-gitops.
+disk_hygiene_sbin: /usr/local/sbin
+disk_hygiene_env_file: /etc/default/disk-hygiene
+disk_hygiene_log_dir: /var/log/disk-hygiene
+disk_hygiene_report_dir: /var/tmp
+disk_hygiene_fetch_dest: "{{ playbook_dir }}/reports"
+
+disk_hygiene_warn_pct: 70
+disk_hygiene_alert_pct: 80
+disk_hygiene_crit_pct: 90
+
+# Exécution manuelle via --tags cleanup
+disk_hygiene_dry_run: "1"
+disk_hygiene_niveau: 1
+disk_hygiene_force: false
+disk_hygiene_confirm_niveau3: false
+
+# Paramètres consommés par cleanup-safe.sh
+disk_hygiene_journal_max: 200M
+disk_hygiene_journal_age: 7d
+disk_hygiene_tmp_days: 10
+disk_hygiene_ctr_log_max_mb: 100
+disk_hygiene_kubeconfig: /etc/kubernetes/admin.conf
+disk_hygiene_cri_endpoint: unix:///run/containerd/containerd.sock
+
+# Timer prune : lun/jeu 03:30 (~3.5 j) — images + journal + cache VS Code
+disk_hygiene_timer_enabled: true
+disk_hygiene_timer_name: disk-hygiene
+disk_hygiene_oncalendar: "Mon,Thu 03:30:00"
+disk_hygiene_randomized_delay: 600
+disk_hygiene_timer_niveau: 3
+disk_hygiene_timer_dry_run: "0"
+
+# Mesure horaire (pas de purge)
+disk_hygiene_watch_enabled: true
+disk_hygiene_watch_oncalendar: "hourly"
+
+# Snapshots Longhorn : jamais dans le timer
+disk_hygiene_longhorn_delete: false
+disk_hygiene_longhorn_ns: longhorn-system
+
+disk_hygiene_fetch_reports: true
+disk_hygiene_scripts:
+  - audit-disque.sh
+  - cleanup-safe.sh
+  - disk-watch.sh
+  - longhorn-snaps.sh

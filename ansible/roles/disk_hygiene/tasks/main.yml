@@ -1,0 +1,24 @@
+---
+- name: Deploy scripts, env, systemd timer
+  ansible.builtin.import_tasks: deploy.yml
+  tags: [deploy, timer]
+
+- name: Audit lecture seule
+  ansible.builtin.import_tasks: audit.yml
+  tags: [audit]
+
+- name: Cleanup (DRY_RUN par défaut)
+  ansible.builtin.import_tasks: cleanup.yml
+  tags: [cleanup]
+
+- name: Mesure disk-watch
+  ansible.builtin.import_tasks: watch.yml
+  tags: [watch]
+
+- name: Snapshots Longhorn (liste ; delete seulement si disk_hygiene_longhorn_delete=true)
+  ansible.builtin.import_tasks: longhorn.yml
+  tags: [longhorn]
+
+- name: Rapatrier les rapports
+  ansible.builtin.import_tasks: report.yml
+  tags: [audit, cleanup, report]

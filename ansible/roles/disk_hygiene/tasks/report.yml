@@ -1,0 +1,26 @@
+---
+- name: Repertoire rapports sur le controleur
+  ansible.builtin.file:
+    path: "{{ disk_hygiene_fetch_dest }}"
+    state: directory
+    mode: "0750"
+  delegate_to: localhost
+  run_once: true
+  become: false
+  when: disk_hygiene_fetch_reports | bool
+
+- name: Rapatrier audit
+  ansible.builtin.fetch:
+    src: "{{ disk_hygiene_report_dir }}/audit-disque-{{ inventory_hostname }}.txt"
+    dest: "{{ disk_hygiene_fetch_dest }}/"
+    flat: true
+    fail_on_missing: false
+  when: disk_hygiene_fetch_reports | bool
+
+- name: Rapatrier log cleanup si present
+  ansible.builtin.fetch:
+    src: "{{ disk_hygiene_log_dir }}/cleanup-{{ inventory_hostname }}.log"
+    dest: "{{ disk_hygiene_fetch_dest }}/"
+    flat: true
+    fail_on_missing: false
+  when: disk_hygiene_fetch_reports | bool

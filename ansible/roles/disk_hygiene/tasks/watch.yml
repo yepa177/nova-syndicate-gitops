@@ -1,0 +1,11 @@
+---
+- name: Lancer disk-watch.sh
+  ansible.builtin.command: "{{ disk_hygiene_sbin }}/disk-watch.sh"
+  register: disk_hygiene_watch
+  failed_when: disk_hygiene_watch.rc not in [0, 2]
+  changed_when: disk_hygiene_watch.rc == 2
+  check_mode: false
+
+- name: Synthese watch
+  ansible.builtin.debug:
+    msg: "{{ disk_hygiene_watch.stdout_lines | default([]) | select('match', '^(=====|WARN|-- |/dev)') | list }}"

@@ -1,0 +1,19 @@
+---
+# Audit lecture seule. Copie les scripts s'ils n'existent pas encore, mesure, rapatrie.
+# Ne pose pas les timers, ne prune rien.
+#
+#   cd ~/nova-syndicate-gitops/ansible
+#   ansible-playbook lancer-audit.yml
+#   ansible-playbook lancer-audit.yml -K
+- name: Audit disque flotte kubeadm
+  hosts: k8s_nodes
+  gather_facts: true
+  tasks:
+    - name: Audit
+      ansible.builtin.import_role:
+        name: disk_hygiene
+        tasks_from: audit.yml
+    - name: Rapatrier les rapports
+      ansible.builtin.import_role:
+        name: disk_hygiene
+        tasks_from: report.yml
