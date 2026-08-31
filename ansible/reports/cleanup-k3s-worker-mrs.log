@@ -45,3 +45,57 @@ Total reclaimed space: 0B
 NIVEAU 3 ne touche PAS à Longhorn, etcd, PVC, /var/lib/containerd en rm.
 APRES / used=15G avail=8.0G pct=65%
 LOG=/var/log/disk-hygiene/cleanup-k3s-worker-mrs.log FIN_CLEANUP
+HOST=k3s-worker-mrs STAMP=20260831T085514Z DRY_RUN=1 NIVEAU=1
+AVANT / used=15G avail=7.9G pct=65%
+== NIVEAU 1 : journal, caches, tmp ==
+[DRY] journalctl --vacuum-size=200M
+[DRY] journalctl --vacuum-time=7d
+[DRY] apt-get -y clean
+[DRY] apt-get -y autoclean
+[DRY] find /tmp /var/tmp -xdev -type f -mtime +10 -print -delete
+[DRY] find /var/crash /var/spool/abrt -xdev -type f -mtime +14 -print -delete 2>/dev/null || true
+[DRY] find /var/log -xdev -type f \( -name '*.gz' -o -name '*.1' -o -name '*.old' \) -mtime +7 -delete
+== NIVEAU 1b : cache VS Code Remote (workspace + VSIX, pas le serveur) ==
+[DRY] find /home/user/.vscode-server/data/User/workspaceStorage -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+[DRY] rm -rf /home/user/.vscode-server/data/CachedExtensionVSIXs
+APRES / used=15G avail=7.9G pct=65%
+LOG=/var/log/disk-hygiene/cleanup-k3s-worker-mrs.log FIN_CLEANUP
+HOST=k3s-worker-mrs STAMP=20260831T085634Z DRY_RUN=0 NIVEAU=3
+AVANT / used=15G avail=7.9G pct=65%
+== NIVEAU 1 : journal, caches, tmp ==
+[RUN] journalctl --vacuum-size=200M
+Vacuuming done, freed 0B of archived journals from /run/log/journal.
+Vacuuming done, freed 0B of archived journals from /var/log/journal/b66f199105d0429183d4a0ab49edd449.
+Vacuuming done, freed 0B of archived journals from /var/log/journal.
+[RUN] journalctl --vacuum-time=7d
+Vacuuming done, freed 0B of archived journals from /var/log/journal/b66f199105d0429183d4a0ab49edd449.
+Vacuuming done, freed 0B of archived journals from /run/log/journal.
+Vacuuming done, freed 0B of archived journals from /var/log/journal.
+[RUN] apt-get -y clean
+[RUN] apt-get -y autoclean
+Reading package lists...
+Building dependency tree...
+Reading state information...
+[RUN] find /tmp /var/tmp -xdev -type f -mtime +10 -print -delete
+[RUN] find /var/crash /var/spool/abrt -xdev -type f -mtime +14 -print -delete 2>/dev/null || true
+[RUN] find /var/log -xdev -type f \( -name '*.gz' -o -name '*.1' -o -name '*.old' \) -mtime +7 -delete
+== NIVEAU 1b : cache VS Code Remote (workspace + VSIX, pas le serveur) ==
+[RUN] find /home/user/.vscode-server/data/User/workspaceStorage -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+find: ‘/home/user/.vscode-server/data/User/workspaceStorage’: No such file or directory
+[WARN] échec find /home/user/.vscode-server/data/User/workspaceStorage -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+[RUN] rm -rf /home/user/.vscode-server/data/CachedExtensionVSIXs
+== NIVEAU 2 : logs runtime + pods morts ==
+[RUN] logrotate -f /etc/logrotate.conf
+== NIVEAU 3 : prune images non utilisées (fenêtre de maintenance) ==
+[RUN] crictl --runtime-endpoint unix:///run/containerd/containerd.sock rmi --prune
+[RUN] ctr -n k8s.io snapshots prune
+No help topic for 'prune'
+[WARN] échec ctr -n k8s.io snapshots prune
+[RUN] ctr -n k8s.io content prune references || true
+[RUN] docker image prune -f
+Total reclaimed space: 0B
+[RUN] docker container prune -f
+Total reclaimed space: 0B
+NIVEAU 3 ne touche PAS à Longhorn, etcd, PVC, /var/lib/containerd en rm.
+APRES / used=15G avail=8.0G pct=65%
+LOG=/var/log/disk-hygiene/cleanup-k3s-worker-mrs.log FIN_CLEANUP
