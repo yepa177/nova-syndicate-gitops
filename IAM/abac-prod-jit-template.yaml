@@ -1,0 +1,67 @@
+apiVersion: templates.gatekeeper.sh/v1
+kind: ConstraintTemplate
+metadata:
+  name: abacprodjit
+  labels:
+    matrice.assurance.local/rule: P-03
+spec:
+  crd:
+    spec:
+      names:
+        kind: AbacProdJit
+      validation:
+        openAPIV3Schema:
+          type: object
+          properties:
+            requireChangeId:
+              type: boolean
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package abacprodjit
+
+        # Conditions de violation
+        is_prod_ns {
+          input.review.object.metadata.namespace == "prod"
+        }
+
+        is_write {
+          input.review.operation == "CREATE"
+        }
+        is_write {
+          input.review.operation == "UPDATE"
+        }
+
+        is_devops {
+          input.review.userInfo.groups[_] == "oidc:devops"
+        }
+
+        is_admin {
+          input.review.userInfo.groups[_] == "oidc:admins"
+        }
+
+        # Exemption ServiceAccount
+        exempt_sa {
+          input.review.userInfo.username == "kubernetes-admin"
+        }
+
+        # Exemption Admin Cluster
+        exempt_admin {
+          input.review.userInfo.groups[_] == "system:masters"
+        }
+
+        has_change_id {
+          cid := input.review.object.metadata.annotations["iam.assurance.local/change-id"]
+          startswith(cid, "CHG-")
+        }
+
+        violation[{"msg": msg}] {
+          is_prod_ns
+          is_write
+          is_devops
+          not is_admin
+          not exempt_sa      # ← Exemption SA
+          not exempt_admin   # ← Exemption Admin
+          not has_change_id
+          msg := sprintf("[P-03] standing privilege prod interdit (matrice R09xA10 E*) user=%v groups=%v : annotez iam.assurance.local/change-id=CHG-x", [input.review.userInfo.username, input.review.userInfo.groups])
+        }

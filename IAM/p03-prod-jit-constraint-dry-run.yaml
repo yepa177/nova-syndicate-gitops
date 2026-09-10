@@ -1,0 +1,18 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: AbacProdJit
+metadata:
+  name: p03-prod-jit
+  labels:
+    matrice.assurance.local/rule: P-03
+    matrice.assurance.local/cellule: R09xA10
+spec:
+  enforcementAction: dryrun
+  match:
+    namespaces: ["prod"]
+    kinds:
+      - apiGroups: ["apps"]
+        kinds: ["Deployment", "ReplicaSet"]
+      - apiGroups: [""]
+        kinds: ["Pod", "ConfigMap", "Secret"]
+  parameters:
+    requireChangeId: true

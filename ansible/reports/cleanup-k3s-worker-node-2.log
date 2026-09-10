@@ -128,3 +128,72 @@ No help topic for 'prune'
 NIVEAU 3 ne touche PAS à Longhorn, etcd, PVC, /var/lib/containerd en rm.
 APRES / used=15G avail=12G pct=56%
 LOG=/var/log/disk-hygiene/cleanup-k3s-worker-node-2.log FIN_CLEANUP
+HOST=Zabbix-Monitoring STAMP=20260910T102721Z DRY_RUN=0 NIVEAU=3
+AVANT / used=19G avail=7.7G pct=71%
+== NIVEAU 1 : journal, caches, tmp ==
+[RUN] journalctl --vacuum-size=200M
+Vacuuming done, freed 0B of archived journals from /var/log/journal.
+Vacuuming done, freed 0B of archived journals from /run/log/journal.
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@fb0a812cbdf342ca8a43b5be7d0d2d9a-0000000000936e3a-00065a3bcbbec630.journal (86.9M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/user-1000@fb0a812cbdf342ca8a43b5be7d0d2d9a-000000000093905f-00065a3cc11c1aa0.journal (3.5M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@fb0a812cbdf342ca8a43b5be7d0d2d9a-000000000095c7db-00065a4ca6404054.journal (87.0M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/user-1000@fb0a812cbdf342ca8a43b5be7d0d2d9a-0000000000965f88-00065a50defa6d76.journal (3.6M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@fb0a812cbdf342ca8a43b5be7d0d2d9a-0000000000982217-00065a5d75ecb5ca.journal (93.7M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/user-1000@fb0a812cbdf342ca8a43b5be7d0d2d9a-0000000000992c19-00065a64fcf334fb.journal (3.5M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@fb0a812cbdf342ca8a43b5be7d0d2d9a-00000000009a87e9-00065a6adb35161e.journal (102.8M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@fb0a812cbdf342ca8a43b5be7d0d2d9a-00000000009cf732-00065a70aafe8317.journal (93.5M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/user-1000@fb0a812cbdf342ca8a43b5be7d0d2d9a-00000000009f31ea-00065a791dd02ced.journal (3.5M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@fb0a812cbdf342ca8a43b5be7d0d2d9a-00000000009f7a8e-00065a7af4001704.journal (91.3M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@fb0a812cbdf342ca8a43b5be7d0d2d9a-0000000000a24280-00065a8cf5db699c.journal (94.1M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/user-1000@fb0a812cbdf342ca8a43b5be7d0d2d9a-0000000000a24a6b-00065a8d3f3aecde.journal (3.5M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@fb0a812cbdf342ca8a43b5be7d0d2d9a-0000000000a4cfa8-00065aa46db5949e.journal (93.5M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/user-1000@fb0a812cbdf342ca8a43b5be7d0d2d9a-0000000000a6ab51-00065ab582112333.journal (3.5M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@fb0a812cbdf342ca8a43b5be7d0d2d9a-0000000000a768af-00065aba82d8f83d.journal (91.1M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/user-1000@fb0a812cbdf342ca8a43b5be7d0d2d9a-0000000000a9be73-00065ac9a37be7ee.journal (3.5M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@fb0a812cbdf342ca8a43b5be7d0d2d9a-0000000000aa3202-00065acc9062478a.journal (91.1M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/user-1000@fb0a812cbdf342ca8a43b5be7d0d2d9a-0000000000acd9c4-00065addc4e6aa7f.journal (3.5M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@fb0a812cbdf342ca8a43b5be7d0d2d9a-0000000000acfb95-00065ade9f144745.journal (91.1M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@fb0a812cbdf342ca8a43b5be7d0d2d9a-0000000000afc4d8-00065af0aef7f125.journal (91.1M).
+Vacuuming done, freed 1.1G of archived journals from /var/log/journal/b66f199105d0429183d4a0ab49edd449.
+[RUN] journalctl --vacuum-time=7d
+Vacuuming done, freed 0B of archived journals from /var/log/journal.
+Vacuuming done, freed 0B of archived journals from /run/log/journal.
+Vacuuming done, freed 0B of archived journals from /var/log/journal/b66f199105d0429183d4a0ab49edd449.
+[RUN] apt-get -y clean
+[RUN] apt-get -y autoclean
+Reading package lists...
+Building dependency tree...
+Reading state information...
+[RUN] find /tmp /var/tmp -xdev -type f -mtime +10 -print -delete
+/tmp/node-compile-cache/v24.18.1-x64-cf738c9d-1000/ef5cc079
+/var/tmp/audit-disque-k3s-worker-node-2.txt
+[RUN] find /var/crash /var/spool/abrt -xdev -type f -mtime +14 -print -delete 2>/dev/null || true
+[RUN] find /var/log -xdev -type f \( -name '*.gz' -o -name '*.1' -o -name '*.old' \) -mtime +7 -delete
+== NIVEAU 1b : cache VS Code Remote (workspace + VSIX, pas le serveur) ==
+[RUN] find /home/user/.vscode-server/data/User/workspaceStorage -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+find: ‘/home/user/.vscode-server/data/User/workspaceStorage’: No such file or directory
+[WARN] échec find /home/user/.vscode-server/data/User/workspaceStorage -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+[RUN] rm -rf /home/user/.vscode-server/data/CachedExtensionVSIXs
+== NIVEAU 2 : logs runtime + pods morts ==
+[RUN] logrotate -f /etc/logrotate.conf
+== NIVEAU 3 : prune images non utilisées (fenêtre de maintenance) ==
+[RUN] crictl --runtime-endpoint unix:///run/containerd/containerd.sock rmi --prune
+Deleted: registry.k8s.io/metrics-server/metrics-server:v0.7.1
+E0910 10:28:18.839246  604565 log.go:32] "RemoveImage from image service failed" err="rpc error: code = DeadlineExceeded desc = stream terminated by RST_STREAM with error code: CANCEL" image="sha256:2298d942ce5f8e8083c036b6d62e129379998712ef78343f88d41d782d507141"
+Deleted: docker.io/longhornio/csi-resizer:v1.9.2
+Deleted: docker.io/hashicorp/vault-k8s:1.7.5
+Deleted: docker.io/longhornio/csi-attacher:v4.4.2
+Deleted: docker.io/bitnami/sealed-secrets-controller:0.39.1
+Deleted: registry.k8s.io/coredns/coredns:v1.11.3
+Deleted: docker.io/openpolicyagent/gatekeeper:v3.18.2
+Deleted: quay.io/prometheus-operator/prometheus-config-reloader:v0.92.0
+Deleted: docker.io/zabbix/zabbix-web-nginx-pgsql:ubuntu-7.0.16
+Deleted: quay.io/prometheus/alertmanager:v0.34.0
+Deleted: docker.io/longhornio/csi-provisioner:v3.6.2
+[RUN] ctr -n k8s.io snapshots prune
+No help topic for 'prune'
+[WARN] échec ctr -n k8s.io snapshots prune
+[RUN] ctr -n k8s.io content prune references || true
+NIVEAU 3 ne touche PAS à Longhorn, etcd, PVC, /var/lib/containerd en rm.
+APRES / used=16G avail=11G pct=59%
+LOG=/var/log/disk-hygiene/cleanup-k3s-worker-node-2.log FIN_CLEANUP

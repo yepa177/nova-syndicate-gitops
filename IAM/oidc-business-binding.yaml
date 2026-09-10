@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: oidc-business
+subjects:
+- kind: Group
+  name: oidc:business  # Nom du groupe OIDC
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: oidc-business
+  apiGroup: rbac.authorization.k8s.io

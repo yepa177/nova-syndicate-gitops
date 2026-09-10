@@ -5,10 +5,10 @@ echo ""
 
 echo "1. ANNOTATIONS dans le chart Helm:"
 if grep -q "argocd.argoproj.io/instance" helm-manifest.yaml; then
-    echo "   ✅ Présentes"
+    echo "    Présentes"
     grep -c "argocd.argoproj.io/instance" helm-manifest.yaml
 else
-    echo "   ❌ ABSENTES"
+    echo "    ABSENTES"
 fi
 echo ""
 

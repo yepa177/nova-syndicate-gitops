@@ -99,3 +99,54 @@ Total reclaimed space: 0B
 NIVEAU 3 ne touche PAS à Longhorn, etcd, PVC, /var/lib/containerd en rm.
 APRES / used=15G avail=8.0G pct=65%
 LOG=/var/log/disk-hygiene/cleanup-k3s-worker-mrs.log FIN_CLEANUP
+HOST=k3s-worker-mrs STAMP=20260910T103008Z DRY_RUN=0 NIVEAU=3
+AVANT / used=19G avail=3.9G pct=84%
+== NIVEAU 1 : journal, caches, tmp ==
+[RUN] journalctl --vacuum-size=200M
+Vacuuming done, freed 0B of archived journals from /run/log/journal.
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@e70161e8d3a74e90a5e7116c6ec0a638-0000000000273337-00065a15d8f97877.journal (83.6M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/user-1000@e70161e8d3a74e90a5e7116c6ec0a638-00000000002736db-00065a169c8b8325.journal (3.7M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@e70161e8d3a74e90a5e7116c6ec0a638-0000000000294c80-00065a7600b6dd33.journal (93.9M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/user-1000@e70161e8d3a74e90a5e7116c6ec0a638-00000000002afb93-00065a84e9485ad2.journal (3.5M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@00065a8ce0d4b66b-adec6a13a5d9d95d.journal~ (40.0M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@e70161e8d3a74e90a5e7116c6ec0a638-00000000002c45c5-00065a8ce0d5a83e.journal (74.3M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/user-1000@e70161e8d3a74e90a5e7116c6ec0a638-00000000002da350-00065a9909c1a568.journal (3.5M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@e70161e8d3a74e90a5e7116c6ec0a638-00000000002e38c0-00065a9ebab9598b.journal (65.8M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/user-1000@e70161e8d3a74e90a5e7116c6ec0a638-00000000002ed14e-00065aad2840db5d.journal (3.5M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@e70161e8d3a74e90a5e7116c6ec0a638-00000000002ff1aa-00065abe427a3e97.journal (63.2M).
+Vacuuming done, freed 435.4M of archived journals from /var/log/journal/b66f199105d0429183d4a0ab49edd449.
+Vacuuming done, freed 0B of archived journals from /var/log/journal.
+[RUN] journalctl --vacuum-time=7d
+Vacuuming done, freed 0B of archived journals from /run/log/journal.
+Vacuuming done, freed 0B of archived journals from /var/log/journal/b66f199105d0429183d4a0ab49edd449.
+Vacuuming done, freed 0B of archived journals from /var/log/journal.
+[RUN] apt-get -y clean
+[RUN] apt-get -y autoclean
+Reading package lists...
+Building dependency tree...
+Reading state information...
+[RUN] find /tmp /var/tmp -xdev -type f -mtime +10 -print -delete
+/tmp/node-compile-cache/v24.18.1-x64-cf738c9d-1000/8f637314
+/var/tmp/audit-disque-k3s-worker-mrs.txt
+[RUN] find /var/crash /var/spool/abrt -xdev -type f -mtime +14 -print -delete 2>/dev/null || true
+[RUN] find /var/log -xdev -type f \( -name '*.gz' -o -name '*.1' -o -name '*.old' \) -mtime +7 -delete
+== NIVEAU 1b : cache VS Code Remote (workspace + VSIX, pas le serveur) ==
+[RUN] find /home/user/.vscode-server/data/User/workspaceStorage -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+find: ‘/home/user/.vscode-server/data/User/workspaceStorage’: No such file or directory
+[WARN] échec find /home/user/.vscode-server/data/User/workspaceStorage -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+[RUN] rm -rf /home/user/.vscode-server/data/CachedExtensionVSIXs
+== NIVEAU 2 : logs runtime + pods morts ==
+[RUN] logrotate -f /etc/logrotate.conf
+== NIVEAU 3 : prune images non utilisées (fenêtre de maintenance) ==
+[RUN] crictl --runtime-endpoint unix:///run/containerd/containerd.sock rmi --prune
+[RUN] ctr -n k8s.io snapshots prune
+No help topic for 'prune'
+[WARN] échec ctr -n k8s.io snapshots prune
+[RUN] ctr -n k8s.io content prune references || true
+[RUN] docker image prune -f
+Total reclaimed space: 0B
+[RUN] docker container prune -f
+Total reclaimed space: 0B
+NIVEAU 3 ne touche PAS à Longhorn, etcd, PVC, /var/lib/containerd en rm.
+APRES / used=17G avail=5.9G pct=75%
+LOG=/var/log/disk-hygiene/cleanup-k3s-worker-mrs.log FIN_CLEANUP

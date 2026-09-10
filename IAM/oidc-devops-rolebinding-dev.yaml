@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: oidc-devops-dev
+  namespace: dev  # Appliqué uniquement au namespace 'dev'
+subjects:
+- kind: Group
+  name: oidc:devops
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole  # On peut référencer un ClusterRole
+  name: oidc-devops
+  apiGroup: rbac.authorization.k8s.io

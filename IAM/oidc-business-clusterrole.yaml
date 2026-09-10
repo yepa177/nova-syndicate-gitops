@@ -1,0 +1,11 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: oidc-business
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services"]
+  verbs: ["get", "list"]  # Lecture seule sur prod et sinistres
+- apiGroups: ["apps"]
+  resources: ["deployments"]
+  verbs: ["get", "list"]
