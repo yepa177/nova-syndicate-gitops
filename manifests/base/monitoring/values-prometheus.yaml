@@ -12,12 +12,15 @@ grafana:
     requests:
       cpu: 100m
       memory: 256Mi
-  nodeSelector:  # Ajouté
+  nodeSelector: # Ajouté
     kubernetes.io/hostname: k3s-worker-mrs
 
 prometheus:
   prometheusSpec:
-    nodeSelector:  # Ajouté
+    replicas: 1
+    retention: 2d
+    retentionSize: 1Gi
+    nodeSelector: # Ajouté
       kubernetes.io/hostname: k3s-worker-mrs # j'ai changé ici pour spécifier le nœud où Prometheus doit être déployé sans taint
     storageSpec:
       volumeClaimTemplate:
@@ -25,7 +28,7 @@ prometheus:
           storageClassName: longhorn
           resources:
             requests:
-              storage: 1Gi
+              storage: 2Gi
     resources:
       requests:
         cpu: 400m
@@ -34,5 +37,5 @@ prometheus:
 alertmanager:
   enabled: true
   alertmanagerSpec:
-    nodeSelector:  # Ajouté si alertmanager est activé
+    nodeSelector: # Ajouté si alertmanager est activé
       kubernetes.io/hostname: k3s-worker-mrs
