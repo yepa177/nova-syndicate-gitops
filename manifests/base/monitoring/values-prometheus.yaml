@@ -26,6 +26,7 @@ prometheus:
       volumeClaimTemplate:
         spec:
           storageClassName: longhorn
+          accessModes: ["ReadWriteOnce"]
           resources:
             requests:
               storage: 2Gi
