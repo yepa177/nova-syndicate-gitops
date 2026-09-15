@@ -6,26 +6,6 @@
     - disk_hygiene_niveau | int >= 3
     - not (disk_hygiene_confirm_niveau3 | bool)
 
-- name: Repertoires cleanup
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: directory
-    owner: root
-    group: root
-    mode: "0750"
-  loop:
-    - "{{ disk_hygiene_sbin }}"
-    - "{{ disk_hygiene_log_dir }}"
-
-- name: Pousser cleanup-safe.sh et dependances
-  ansible.builtin.copy:
-    src: "{{ item }}"
-    dest: "{{ disk_hygiene_sbin }}/{{ item }}"
-    owner: root
-    group: root
-    mode: "0750"
-  loop: "{{ disk_hygiene_scripts }}"
-
 - name: Mesurer / si audit non joue
   ansible.builtin.shell: df -P / | awk 'NR==2 {gsub("%","",$5); print $5}'
   register: disk_hygiene_root_pct

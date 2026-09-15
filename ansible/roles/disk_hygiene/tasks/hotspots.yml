@@ -1,0 +1,31 @@
+---
+- name: Bootstrap hotspots.sh
+  ansible.builtin.file:
+    path: "{{ disk_hygiene_sbin }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0750"
+
+- name: Copier hotspots.sh
+  ansible.builtin.copy:
+    src: hotspots.sh
+    dest: "{{ disk_hygiene_sbin }}/hotspots.sh"
+    owner: root
+    group: root
+    mode: "0750"
+
+- name: Cartographier les points chauds
+  ansible.builtin.command: "{{ disk_hygiene_sbin }}/hotspots.sh"
+  register: disk_hygiene_hotspots
+  changed_when: false
+  check_mode: false
+
+- name: Synthese STATUT
+  ansible.builtin.debug:
+    msg: "{{ disk_hygiene_hotspots.stdout_lines | select('match', '^(HOST=|STATUT=|SIZE |ACTION=)') | list }}"
+
+- name: Alerte si / >= 80 %
+  ansible.builtin.debug:
+    msg: "{{ inventory_hostname }} ALERTE disque — lancer cleanup NIVEAU 3 + revue Longhorn/VS Code."
+  when: disk_hygiene_hotspots.stdout is search('STATUT=ALERTE') or disk_hygiene_hotspots.stdout is search('STATUT=CRITIQUE')

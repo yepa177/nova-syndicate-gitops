@@ -1,0 +1,13 @@
+---
+# Tour rapide : où l'espace est mal utilisé, quelles ACTIONS.
+#   cd ~/nova-syndicate-gitops/ansible
+#   ansible-playbook lancer-hotspots.yml -K
+#   ansible-playbook lancer-hotspots.yml -K --limit k3s-worker-mrs
+- name: Points chauds disque
+  hosts: k8s_nodes
+  gather_facts: false
+  tasks:
+    - name: Hotspots
+      ansible.builtin.import_role:
+        name: disk_hygiene
+        tasks_from: hotspots.yml

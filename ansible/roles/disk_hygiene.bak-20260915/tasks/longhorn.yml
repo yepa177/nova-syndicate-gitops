@@ -1,0 +1,15 @@
+---
+- name: longhorn-snaps.sh depuis le nœud qui a admin.conf
+  ansible.builtin.command: "{{ disk_hygiene_sbin }}/longhorn-snaps.sh"
+  environment:
+    KUBECONFIG: "{{ disk_hygiene_kubeconfig }}"
+    LONGHORN_NS: "{{ disk_hygiene_longhorn_ns }}"
+    DELETE_ALL: "{{ '1' if disk_hygiene_longhorn_delete | bool else '0' }}"
+    CONFIRM: "{{ 'yes' if disk_hygiene_longhorn_delete | bool else 'no' }}"
+  register: disk_hygiene_lh
+  changed_when: disk_hygiene_longhorn_delete | bool
+  when: inventory_hostname in groups['control_plane'] | default([])
+
+- name: Snapshots Longhorn
+  ansible.builtin.debug:
+    msg: "{{ disk_hygiene_lh.stdout_lines | default(['skip: pas control-plane']) }}"

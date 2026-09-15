@@ -1,0 +1,10 @@
+[Unit]
+Description=Timer mesure disque {{ disk_hygiene_watch_oncalendar }}
+
+[Timer]
+OnCalendar={{ disk_hygiene_watch_oncalendar }}
+Persistent=true
+RandomizedDelaySec=180
+
+[Install]
+WantedBy=timers.target

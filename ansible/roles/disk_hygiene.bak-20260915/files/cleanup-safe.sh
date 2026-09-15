@@ -76,13 +76,11 @@ fi
 run "find /tmp /var/tmp -xdev -type f -mtime +${TMP_DAYS} -print -delete"
 run "find /var/crash /var/spool/abrt -xdev -type f -mtime +14 -print -delete 2>/dev/null || true"
 run "find /var/log -xdev -type f \\( -name '*.gz' -o -name '*.1' -o -name '*.old' \\) -mtime +7 -delete"
-echo "== NIVEAU 1b : cache VS Code Remote (workspace + VSIX + vieilles versions) =="
+echo "== NIVEAU 1b : cache VS Code Remote (workspace + VSIX, pas le serveur) =="
 for d in /root /home/*; do
   [[ -d "$d/.vscode-server" ]] || continue
   run "find $d/.vscode-server/data/User/workspaceStorage -mindepth 1 -maxdepth 1 -exec rm -rf {} +"
   run "rm -rf $d/.vscode-server/data/CachedExtensionVSIXs"
-  # anciennes installations Remote-SSH (garder bin/ et le commit courant si présent)
-  run "find $d/.vscode-server -maxdepth 1 -type d -name '????????????????????????????????????????' -mtime +21 -exec rm -rf {} +"
 done
 
 if (( NIVEAU >= 2 )); then

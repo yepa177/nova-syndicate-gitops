@@ -7,10 +7,6 @@
   ansible.builtin.import_tasks: audit.yml
   tags: [audit]
 
-- name: Points chauds (espace mal utilise)
-  ansible.builtin.import_tasks: hotspots.yml
-  tags: [hotspots, audit]
-
 - name: Cleanup (DRY_RUN par défaut)
   ansible.builtin.import_tasks: cleanup.yml
   tags: [cleanup]

@@ -1,17 +1,12 @@
 ---
-# become true ici : le dossier reports/ a pu etre cree en root au premier run.
-# On le rend a ansible_user pour que fetch puisse ecrire.
 - name: Repertoire rapports sur le controleur
   ansible.builtin.file:
     path: "{{ disk_hygiene_fetch_dest }}"
     state: directory
-    mode: "0775"
-    owner: "{{ ansible_user | default('user') }}"
-    group: "{{ ansible_user | default('user') }}"
+    mode: "0750"
   delegate_to: localhost
-  connection: local
   run_once: true
-  become: true
+  become: false
   when: disk_hygiene_fetch_reports | bool
 
 - name: Rapatrier audit
@@ -20,7 +15,6 @@
     dest: "{{ disk_hygiene_fetch_dest }}/"
     flat: true
     fail_on_missing: false
-  become: true
   when: disk_hygiene_fetch_reports | bool
 
 - name: Rapatrier log cleanup si present
@@ -29,5 +23,4 @@
     dest: "{{ disk_hygiene_fetch_dest }}/"
     flat: true
     fail_on_missing: false
-  become: true
   when: disk_hygiene_fetch_reports | bool

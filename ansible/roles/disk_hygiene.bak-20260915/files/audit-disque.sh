@@ -134,19 +134,9 @@ for d in /var/lib/zabbix /usr/share/zabbix /var/log/zabbix \
   [[ -d "$d" ]] && du -xh -d1 "$d" 2>/dev/null | sort -hr | head -n 15
 done
 
-hr "HOME / VSCODE"
-cmd "du -xh -d2 /home /root 2>/dev/null | sort -hr | head -n 20"
-cmd "du -sh /root/.vscode-server /home/*/.vscode-server 2>/dev/null || true"
-
-hr "CONTAINERD DETAIL"
-cmd "du -xh -d1 /var/lib/containerd 2>/dev/null | sort -h | tail -n 12"
-
 hr "RESUME ACTIONNABLE"
 echo "1. Relire STATUT ci-dessus."
 echo "2. Croiser TOP REPERTOIRES + GROS FICHIERS."
-echo "3. overlay containerd > 4G → NIVEAU 3 (crictl rmi --prune)."
-echo "4. Longhorn > 1G → --tags longhorn (pas de delete auto)."
-echo "5. /home ou .vscode-server gros → NIVEAU 1 nettoie le cache Remote-SSH."
 echo "3. Si containerd/snapshots dominent : NIVEAU 1 puis NIVEAU 3 (crictl rmi --prune + ctr snapshots prune)."
 echo "4. Ne jamais rm -rf /var/lib/{containerd,docker,kubelet,etcd}."
 echo "5. Rapport : $OUT"

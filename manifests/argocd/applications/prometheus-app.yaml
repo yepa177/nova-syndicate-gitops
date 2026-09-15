@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://prometheus-community.github.io/helm-charts
-    targetRevision: 87.2.1
+    targetRevision: 88.5.2
     chart: kube-prometheus-stack
     helm:
       releaseName: prometheus
@@ -15,6 +15,9 @@ spec:
         # Configuration pour Prometheus
         prometheus:
           prometheusSpec:
+            replicas: 1
+            retention: 2d
+            retentionSize: 1Gi
             storageSpec:
               volumeClaimTemplate:
                 spec:
@@ -23,7 +26,6 @@ spec:
                   resources:
                     requests:
                       storage: 2Gi
-            retention: 7d
             nodeSelector:
               kubernetes.io/hostname: k3s-worker-mrs  # Changé ici
 
@@ -52,7 +54,7 @@ spec:
 
         # Désactive AlertManager (optionnel)
         alertmanager:
-          enabled: false 
+          enabled: false
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring

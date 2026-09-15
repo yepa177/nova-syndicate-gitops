@@ -46,5 +46,3 @@ disk_hygiene_scripts:
   - cleanup-safe.sh
   - disk-watch.sh
   - longhorn-snaps.sh
-  - hygiene-master-kubeadm.sh
-  - hotspots.sh
