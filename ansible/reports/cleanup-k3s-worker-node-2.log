@@ -197,3 +197,57 @@ No help topic for 'prune'
 NIVEAU 3 ne touche PAS à Longhorn, etcd, PVC, /var/lib/containerd en rm.
 APRES / used=16G avail=11G pct=59%
 LOG=/var/log/disk-hygiene/cleanup-k3s-worker-node-2.log FIN_CLEANUP
+HOST=Zabbix-Monitoring STAMP=20260916T093532Z DRY_RUN=0 NIVEAU=3
+AVANT / used=16G avail=11G pct=59%
+== NIVEAU 1 : journal, caches, tmp ==
+[RUN] journalctl --vacuum-size=200M
+Vacuuming done, freed 0B of archived journals from /var/log/journal.
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/user-1000@fb0a812cbdf342ca8a43b5be7d0d2d9a-0000000000aff4dc-00065af1e6519a23.journal (3.5M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@fb0a812cbdf342ca8a43b5be7d0d2d9a-0000000000b28e07-00065b02be1f9afe.journal (91.2M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/user-1000@fb0a812cbdf342ca8a43b5be7d0d2d9a-0000000000b30fbf-00065b0607bc6349.journal (3.5M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@fb0a812cbdf342ca8a43b5be7d0d2d9a-0000000000b5575d-00065b14d5d2be5b.journal (91.1M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/user-1000@fb0a812cbdf342ca8a43b5be7d0d2d9a-0000000000b629a4-00065b1a2931bee2.journal (3.5M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@fb0a812cbdf342ca8a43b5be7d0d2d9a-0000000000b8201d-00065b26e29d1ecd.journal (88.0M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/user-1000@fb0a812cbdf342ca8a43b5be7d0d2d9a-0000000000b9447d-00065b2e4a9d3699.journal (3.5M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@fb0a812cbdf342ca8a43b5be7d0d2d9a-0000000000baeba1-00065b3b04ac5003.journal (88.0M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/user-1000@fb0a812cbdf342ca8a43b5be7d0d2d9a-0000000000bbd983-00065b426c07cfef.journal (3.5M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@fb0a812cbdf342ca8a43b5be7d0d2d9a-0000000000bdbd9c-00065b5170ea8e41.journal (88.0M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/user-1000@fb0a812cbdf342ca8a43b5be7d0d2d9a-0000000000be6270-00065b568d72bdb0.journal (3.5M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@fb0a812cbdf342ca8a43b5be7d0d2d9a-0000000000c08fb3-00065b67e18da7f1.journal (87.4M).
+Vacuuming done, freed 555.3M of archived journals from /var/log/journal/b66f199105d0429183d4a0ab49edd449.
+Vacuuming done, freed 0B of archived journals from /run/log/journal.
+[RUN] journalctl --vacuum-time=7d
+Vacuuming done, freed 0B of archived journals from /var/log/journal/b66f199105d0429183d4a0ab49edd449.
+Vacuuming done, freed 0B of archived journals from /run/log/journal.
+Vacuuming done, freed 0B of archived journals from /var/log/journal.
+[RUN] apt-get -y clean
+[RUN] apt-get -y autoclean
+Reading package lists...
+Building dependency tree...
+Reading state information...
+[RUN] find /tmp /var/tmp -xdev -type f -mtime +10 -print -delete
+/tmp/node-compile-cache/v24.18.1-x64-cf738c9d-1000/8f637314
+[RUN] find /var/crash /var/spool/abrt -xdev -type f -mtime +14 -print -delete 2>/dev/null || true
+[RUN] find /var/log -xdev -type f \( -name '*.gz' -o -name '*.1' -o -name '*.old' \) -mtime +7 -delete
+== NIVEAU 1b : cache VS Code Remote (workspace + VSIX + vieilles versions) ==
+[RUN] find /home/user/.vscode-server/data/User/workspaceStorage -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+find: ‘/home/user/.vscode-server/data/User/workspaceStorage’: No such file or directory
+[WARN] échec find /home/user/.vscode-server/data/User/workspaceStorage -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+[RUN] rm -rf /home/user/.vscode-server/data/CachedExtensionVSIXs
+[RUN] find /home/user/.vscode-server -maxdepth 1 -type d -name '????????????????????????????????????????' -mtime +21 -exec rm -rf {} +
+== NIVEAU 2 : logs runtime + pods morts ==
+[RUN] truncate -s 100M -- '/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/31389/fs/var/log/tgtd.log'
+[RUN] logrotate -f /etc/logrotate.conf
+== NIVEAU 3 : prune images non utilisées (fenêtre de maintenance) ==
+[RUN] crictl --runtime-endpoint unix:///run/containerd/containerd.sock rmi --prune
+Deleted: quay.io/prometheus/node-exporter:v1.11.1-distroless
+Deleted: quay.io/prometheus-operator/prometheus-operator:v0.92.0
+Deleted: ghcr.io/jkroepke/kube-webhook-certgen:1.8.5
+Deleted: registry.k8s.io/kube-state-metrics/kube-state-metrics:v2.19.1
+[RUN] ctr -n k8s.io snapshots prune
+No help topic for 'prune'
+[WARN] échec ctr -n k8s.io snapshots prune
+[RUN] ctr -n k8s.io content prune references || true
+NIVEAU 3 ne touche PAS à Longhorn, etcd, PVC, /var/lib/containerd en rm.
+APRES / used=15G avail=12G pct=55%
+LOG=/var/log/disk-hygiene/cleanup-k3s-worker-node-2.log FIN_CLEANUP
