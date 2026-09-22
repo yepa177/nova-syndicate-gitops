@@ -1,2 +1,5 @@
 sealing-key*.yaml
 *OFFLINE*
+IAM/keycloak-tls/*.key
+IAM/keycloak-tls/*.key
+*.key
