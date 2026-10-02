@@ -1,0 +1,86 @@
+# Vague 1 — 4 IT extraits de nova_syndicate.collaborateurs
+# N'ajoute PAS les OU ni les groupes : ils existent déjà
+
+dn: uid=louise.brunet,ou=users,dc=assurance,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: louise.brunet
+sn: Brunet
+givenName: Louise
+cn: Louise Brunet
+mail: alexandre54@example.net
+employeeNumber: 1
+ou: IT
+l: Marseille
+title: IT
+uidNumber: 11001
+gidNumber: 11001
+homeDirectory: /home/louise.brunet
+loginShell: /bin/bash
+userPassword: {SSHA}piWnEfIKRlsBsMCBsOeIj9W2+a75+7Td
+
+dn: uid=henriette.thomas,ou=users,dc=assurance,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: henriette.thomas
+sn: Thomas
+givenName: Henriette
+cn: Henriette Thomas
+mail: susanneregnier@example.org
+employeeNumber: 3
+ou: IT
+l: Marseille
+title: IT
+uidNumber: 11002
+gidNumber: 11002
+homeDirectory: /home/henriette.thomas
+loginShell: /bin/bash
+userPassword: {SSHA}piWnEfIKRlsBsMCBsOeIj9W2+a75+7Td
+
+dn: uid=celina.pierre,ou=users,dc=assurance,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: celina.pierre
+sn: Pierre
+givenName: Celina
+cn: Celina Pierre
+mail: jcouturier@example.net
+employeeNumber: 8
+ou: IT
+l: Marseille
+title: IT
+uidNumber: 11003
+gidNumber: 11003
+homeDirectory: /home/celina.pierre
+loginShell: /bin/bash
+userPassword: {SSHA}piWnEfIKRlsBsMCBsOeIj9W2+a75+7Td
+
+dn: uid=edouard.chretien,ou=users,dc=assurance,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: edouard.chretien
+sn: Chretien
+givenName: Edouard
+cn: Edouard Chretien
+mail: augustelemaitre@example.com
+employeeNumber: 10
+ou: IT
+l: Lyon
+title: IT
+uidNumber: 11004
+gidNumber: 11004
+homeDirectory: /home/edouard.chretien
+loginShell: /bin/bash
+userPassword: {SSHA}piWnEfIKRlsBsMCBsOeIj9W2+a75+7Td
+
+dn: cn=devops,ou=groups,dc=assurance,dc=local
+changetype: modify
+add: member
+member: uid=louise.brunet,ou=users,dc=assurance,dc=local
+member: uid=henriette.thomas,ou=users,dc=assurance,dc=local
+member: uid=celina.pierre,ou=users,dc=assurance,dc=local
+member: uid=edouard.chretien,ou=users,dc=assurance,dc=local

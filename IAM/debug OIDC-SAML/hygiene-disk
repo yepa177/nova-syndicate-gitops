@@ -1,0 +1,1730 @@
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get pod -n monitiring
+No resources found in monitiring namespace.
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get pod -n monitoring
+NAME                                                     READY   STATUS    RESTARTS         AGE
+alertmanager-prometheus-kube-prometheus-alertmanager-0   2/2     Running   0                6d22h
+prometheus-grafana-54878fb66d-j5kl4                      3/3     Running   0                5d23h
+prometheus-kube-prometheus-operator-6fb97495c9-7s8sl     1/1     Running   17 (5d23h ago)   6d22h
+prometheus-kube-state-metrics-857945f95f-fdt8q           1/1     Running   1 (5d23h ago)    6d22h
+prometheus-prometheus-kube-prometheus-prometheus-0       1/2     Running   18 (5d14h ago)   6d18h
+prometheus-prometheus-node-exporter-95gk9                1/1     Running   0                6d22h
+prometheus-prometheus-node-exporter-fjmv5                1/1     Running   0                6d22h
+prometheus-prometheus-node-exporter-scp46                0/1     Running   3 (5d23h ago)    6d22h
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get pod -n monitoring
+NAME                                                     READY   STATUS    RESTARTS         AGE
+alertmanager-prometheus-kube-prometheus-alertmanager-0   2/2     Running   0                6d22h
+prometheus-grafana-54878fb66d-j5kl4                      3/3     Running   0                5d23h
+prometheus-kube-prometheus-operator-6fb97495c9-7s8sl     1/1     Running   17 (5d23h ago)   6d22h
+prometheus-kube-state-metrics-857945f95f-fdt8q           1/1     Running   1 (5d23h ago)    6d22h
+prometheus-prometheus-kube-prometheus-prometheus-0       1/2     Running   18 (5d14h ago)   6d18h
+prometheus-prometheus-node-exporter-95gk9                1/1     Running   0                6d22h
+prometheus-prometheus-node-exporter-fjmv5                1/1     Running   0                6d22h
+prometheus-prometheus-node-exporter-scp46                0/1     Running   3 (5d23h ago)    6d22h
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl patch prometheus prometheus-kube-prometheus-prometheus -n monitoring \
+  --type merge -p '{"spec":{"replicas":0}}'
+prometheus.monitoring.coreos.com/prometheus-kube-prometheus-prometheus patched
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get pod -n monitoring -w
+NAME                                                     READY   STATUS              RESTARTS         AGE
+alertmanager-prometheus-kube-prometheus-alertmanager-0   2/2     Terminating         0                6d22h
+prometheus-grafana-54878fb66d-fbf84                      0/3     Pending             0                90s
+prometheus-grafana-54878fb66d-j5kl4                      3/3     Terminating         0                6d
+prometheus-kube-prometheus-operator-6fb97495c9-7s8sl     1/1     Terminating         17 (6d ago)      6d22h
+prometheus-kube-prometheus-operator-6fb97495c9-xbqvn     0/1     ContainerCreating   0                90s
+prometheus-kube-state-metrics-857945f95f-fdt8q           1/1     Terminating         1 (6d ago)       6d22h
+prometheus-kube-state-metrics-857945f95f-gq8mc           0/1     ContainerCreating   0                91s
+prometheus-prometheus-kube-prometheus-prometheus-0       1/2     Terminating         18 (5d14h ago)   6d18h
+prometheus-prometheus-node-exporter-95gk9                1/1     Running             0                6d22h
+prometheus-prometheus-node-exporter-fjmv5                1/1     Running             0                6d22h
+prometheus-prometheus-node-exporter-scp46                0/1     Running             3 (6d ago)       6d22h
+prometheus-kube-state-metrics-857945f95f-gq8mc           0/1     Running             0                2m7s
+prometheus-kube-state-metrics-857945f95f-gq8mc           1/1     Running             0                2m11s
+prometheus-kube-prometheus-operator-6fb97495c9-xbqvn     0/1     Running             0                2m12s
+prometheus-kube-prometheus-operator-6fb97495c9-xbqvn     1/1     Running             0                2m14s
+prometheus-grafana-54878fb66d-fbf84                      0/3     Pending             0                5m
+
+prometheus-kube-prometheus-operator-6fb97495c9-7s8sl     0/1     Terminating         17 (6d ago)      6d22h
+prometheus-prometheus-node-exporter-scp46                0/1     RunContainerError   4 (3m26s ago)    6d22h
+prometheus-grafana-54878fb66d-j5kl4                      2/3     Terminating         0                6d
+prometheus-kube-state-metrics-857945f95f-fdt8q           0/1     Terminating         1 (6d ago)       6d22h
+alertmanager-prometheus-kube-prometheus-alertmanager-0   1/2     Terminating         0                6d22h
+prometheus-grafana-54878fb66d-fbf84                      0/3     Pending             0                8m24s
+prometheus-grafana-54878fb66d-fbf84                      0/3     Init:0/1            0                8m24s
+prometheus-grafana-54878fb66d-j5kl4                      2/3     Terminating         0                6d
+alertmanager-prometheus-kube-prometheus-alertmanager-0   1/2     Terminating         1 (28s ago)      6d22h
+alertmanager-prometheus-kube-prometheus-alertmanager-0   1/2     Terminating         1 (31s ago)      6d22h
+prometheus-prometheus-node-exporter-scp46                0/1     Running             5 (3m57s ago)    6d22h
+prometheus-prometheus-node-exporter-scp46                1/1     Running             5 (3m57s ago)    6d22h
+prometheus-kube-state-metrics-857945f95f-fdt8q           0/1     Terminating         2 (31s ago)      6d22h
+prometheus-prometheus-kube-prometheus-prometheus-0       1/2     Terminating         19 (21s ago)     6d18h
+prometheus-grafana-54878fb66d-j5kl4                      0/3     Completed           0                6d
+alertmanager-prometheus-kube-prometheus-alertmanager-0   0/2     Error               1 (35s ago)      6d22h
+prometheus-kube-state-metrics-857945f95f-fdt8q           0/1     Terminating         2 (35s ago)      6d22h
+prometheus-kube-prometheus-operator-6fb97495c9-7s8sl     0/1     Terminating         18 (30s ago)     6d22h
+alertmanager-prometheus-kube-prometheus-alertmanager-0   0/2     Error               1                6d22h
+alertmanager-prometheus-kube-prometheus-alertmanager-0   0/2     Error               1                6d22h
+alertmanager-prometheus-kube-prometheus-alertmanager-0   0/2     Error               1                6d22h
+alertmanager-prometheus-kube-prometheus-alertmanager-0   0/2     Pending             0                0s
+alertmanager-prometheus-kube-prometheus-alertmanager-0   0/2     Pending             0                0s
+alertmanager-prometheus-kube-prometheus-alertmanager-0   0/2     Init:0/1            0                0s
+prometheus-prometheus-kube-prometheus-prometheus-0       1/2     Terminating         19 (26s ago)     6d18h
+prometheus-kube-state-metrics-857945f95f-fdt8q           0/1     Error               2 (38s ago)      6d22h
+prometheus-kube-prometheus-operator-6fb97495c9-7s8sl     0/1     Terminating         18 (34s ago)     6d22h
+prometheus-kube-state-metrics-857945f95f-fdt8q           0/1     Error               2                6d22h
+prometheus-grafana-54878fb66d-j5kl4                      0/3     Completed           0                6d
+prometheus-grafana-54878fb66d-j5kl4                      0/3     Completed           0                6d
+prometheus-kube-state-metrics-857945f95f-fdt8q           0/1     Error               2                6d22h
+prometheus-kube-state-metrics-857945f95f-fdt8q           0/1     Error               2                6d22h
+prometheus-prometheus-kube-prometheus-prometheus-0       0/2     Completed           19 (28s ago)     6d18h
+prometheus-prometheus-kube-prometheus-prometheus-0       0/2     Completed           19 (29s ago)     6d18h
+prometheus-prometheus-kube-prometheus-prometheus-0       0/2     Completed           19 (29s ago)     6d18h
+alertmanager-prometheus-kube-prometheus-alertmanager-0   0/2     Init:0/1            0                5s
+prometheus-kube-prometheus-operator-6fb97495c9-7s8sl     0/1     Error               18               6d22h
+prometheus-kube-prometheus-operator-6fb97495c9-7s8sl     0/1     Error               18               6d22h
+prometheus-kube-prometheus-operator-6fb97495c9-7s8sl     0/1     Error               18               6d22h
+alertmanager-prometheus-kube-prometheus-alertmanager-0   0/2     Init:0/1            0                8s
+alertmanager-prometheus-kube-prometheus-alertmanager-0   0/2     PodInitializing     0                9s
+alertmanager-prometheus-kube-prometheus-alertmanager-0   1/2     Running             0                12s
+alertmanager-prometheus-kube-prometheus-alertmanager-0   2/2     Running             0                13s
+prometheus-grafana-54878fb66d-fbf84                      0/3     Init:0/1            0                9m38s
+prometheus-grafana-54878fb66d-fbf84                      0/3     Init:0/1            0                9m41s
+prometheus-grafana-54878fb66d-fbf84                      0/3     PodInitializing     0                9m42s
+prometheus-grafana-54878fb66d-fbf84                      2/3     Running             0                9m46s
+prometheus-grafana-54878fb66d-fbf84                      3/3     Running             0                11m
+prometheus-prometheus-kube-prometheus-prometheus-0       0/2     Pending             0                0s
+prometheus-prometheus-kube-prometheus-prometheus-0       0/2     Pending             0                0s
+prometheus-prometheus-kube-prometheus-prometheus-0       0/2     Pending             0                9s
+prometheus-prometheus-kube-prometheus-prometheus-0       0/2     Init:0/1            0                10s
+prometheus-prometheus-kube-prometheus-prometheus-0       0/2     Init:0/1            0                27s
+prometheus-prometheus-kube-prometheus-prometheus-0       0/2     Init:0/1            0                29s
+prometheus-prometheus-kube-prometheus-prometheus-0       0/2     PodInitializing     0                30s
+prometheus-prometheus-kube-prometheus-prometheus-0       1/2     Running             0                32s
+prometheus-prometheus-kube-prometheus-prometheus-0       1/2     Running             0                41s
+prometheus-prometheus-kube-prometheus-prometheus-0       2/2     Running             0                41s
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get pod -n monitoring
+NAME                                                     READY   STATUS    RESTARTS        AGE
+alertmanager-prometheus-kube-prometheus-alertmanager-0   2/2     Running   0               5h26m
+prometheus-grafana-54878fb66d-fbf84                      3/3     Running   0               5h34m
+prometheus-kube-prometheus-operator-6fb97495c9-xbqvn     1/1     Running   0               5h34m
+prometheus-kube-state-metrics-857945f95f-gq8mc           1/1     Running   0               5h35m
+prometheus-prometheus-kube-prometheus-prometheus-0       2/2     Running   0               5h20m
+prometheus-prometheus-node-exporter-95gk9                1/1     Running   0               7d4h
+prometheus-prometheus-node-exporter-fjmv5                1/1     Running   0               7d4h
+prometheus-prometheus-node-exporter-scp46                1/1     Running   5 (5h30m ago)   7d4h
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get pod -n monitoring
+NAME                                                     READY   STATUS     RESTARTS        AGE
+alertmanager-prometheus-kube-prometheus-alertmanager-0   2/2     Running    0               5h41m
+prometheus-grafana-54878fb66d-kh4sw                      0/3     Init:0/1   0               3m3s
+prometheus-kube-prometheus-operator-6fb97495c9-xbqvn     1/1     Running    0               5h50m
+prometheus-kube-state-metrics-857945f95f-gq8mc           1/1     Running    0               5h50m
+prometheus-prometheus-kube-prometheus-prometheus-0       2/2     Running    0               5h35m
+prometheus-prometheus-node-exporter-95gk9                1/1     Running    0               7d4h
+prometheus-prometheus-node-exporter-fjmv5                1/1     Running    0               7d4h
+prometheus-prometheus-node-exporter-scp46                1/1     Running    5 (5h45m ago)   7d4h
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl logs -n monitoring -l app.kubernetes.io/name=grafana --tail=50
+Error from server (BadRequest): container "grafana" in pod "prometheus-grafana-54878fb66d-kh4sw" is waiting to start: PodInitializing
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl describe -n monitoring prometheus-grafana-54878fb66d-kh4sw
+error: the server doesn't have a resource type "prometheus-grafana-54878fb66d-kh4sw"
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl describe -n monitoring pod prometheus-grafana-54878fb66d-kh4sw
+Name:             prometheus-grafana-54878fb66d-kh4sw
+Namespace:        monitoring
+Priority:         0
+Service Account:  prometheus-grafana
+Node:             k3s-worker-mrs/10.1.1.2
+Start Time:       Tue, 22 Sep 2026 15:09:45 +0000
+Labels:           app.kubernetes.io/instance=prometheus
+                  app.kubernetes.io/name=grafana
+                  app.kubernetes.io/version=13.2.0
+                  helm.sh/chart=grafana-12.11.1
+                  pod-template-hash=54878fb66d
+Annotations:      checksum/config: 8ada0c5878963cd4aaec96d0ab27958526dc1e4a65cf7e75f1f01a26f2953c38
+                  checksum/sc-dashboard-provider-config: e70bf6a851099d385178a76de9757bb0bef8299da6d8443602590e44f05fdf24
+                  checksum/secret: b56f4528889abdc01a8508eee8095978b3eb05d7c8f3b1542ec22d5ab450dc01
+                  kubectl.kubernetes.io/default-container: grafana
+                  kubectl.kubernetes.io/restartedAt: 2026-08-27T16:23:29Z
+Status:           Pending
+IP:               
+IPs:              <none>
+Controlled By:    ReplicaSet/prometheus-grafana-54878fb66d
+Init Containers:
+  init-chown-data:
+    Container ID:    
+    Image:           docker.io/library/busybox:1.38.0
+    Image ID:        
+    Port:            <none>
+    Host Port:       <none>
+    SeccompProfile:  RuntimeDefault
+    Command:
+      chown
+      -R
+      472:472
+      /var/lib/grafana
+    State:          Waiting
+      Reason:       PodInitializing
+    Ready:          False
+    Restart Count:  0
+    Environment:
+      GF_SERVER_ROOT_URL:  https://grafana.local:31128
+      GF_SERVER_DOMAIN:    grafana.local
+    Mounts:
+      /var/lib/grafana from storage (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-hv9fp (ro)
+Containers:
+  grafana-sc-dashboard:
+    Container ID:    
+    Image:           quay.io/kiwigrid/k8s-sidecar:2.10.1
+    Image ID:        
+    Port:            <none>
+    Host Port:       <none>
+    SeccompProfile:  RuntimeDefault
+    State:           Waiting
+      Reason:        PodInitializing
+    Ready:           False
+    Restart Count:   0
+    Environment:
+      METHOD:              WATCH
+      LABEL:               grafana_dashboard
+      LABEL_VALUE:         1
+      FOLDER:              /tmp/dashboards
+      RESOURCE:            both
+      NAMESPACE:           ALL
+      REQ_USERNAME:        <set to the key 'admin-user' in secret 'prometheus-grafana'>      Optional: false
+      REQ_PASSWORD:        <set to the key 'admin-password' in secret 'prometheus-grafana'>  Optional: false
+      REQ_URL:             http://localhost:3000/api/admin/provisioning/dashboards/reload
+      REQ_METHOD:          POST
+      GF_SERVER_ROOT_URL:  https://grafana.local:31128
+      GF_SERVER_DOMAIN:    grafana.local
+    Mounts:
+      /tmp/dashboards from sc-dashboard-volume (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-hv9fp (ro)
+  grafana-sc-datasources:
+    Container ID:    
+    Image:           quay.io/kiwigrid/k8s-sidecar:2.10.1
+    Image ID:        
+    Port:            <none>
+    Host Port:       <none>
+    SeccompProfile:  RuntimeDefault
+    State:           Waiting
+      Reason:        PodInitializing
+    Ready:           False
+    Restart Count:   0
+    Environment:
+      METHOD:              WATCH
+      LABEL:               grafana_datasource
+      LABEL_VALUE:         1
+      FOLDER:              /etc/grafana/provisioning/datasources
+      RESOURCE:            both
+      REQ_USERNAME:        <set to the key 'admin-user' in secret 'prometheus-grafana'>      Optional: false
+      REQ_PASSWORD:        <set to the key 'admin-password' in secret 'prometheus-grafana'>  Optional: false
+      REQ_URL:             http://localhost:3000/api/admin/provisioning/datasources/reload
+      REQ_METHOD:          POST
+      GF_SERVER_ROOT_URL:  https://grafana.local:31128
+      GF_SERVER_DOMAIN:    grafana.local
+    Mounts:
+      /etc/grafana/provisioning/datasources from sc-datasources-volume (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-hv9fp (ro)
+  grafana:
+    Container ID:    
+    Image:           docker.io/grafana/grafana:13.2.0
+    Image ID:        
+    Ports:           3000/TCP, 9094/TCP, 9094/UDP, 6060/TCP
+    Host Ports:      0/TCP, 0/TCP, 0/UDP, 0/TCP
+    SeccompProfile:  RuntimeDefault
+    State:           Waiting
+      Reason:        PodInitializing
+    Ready:           False
+    Restart Count:   0
+    Liveness:        http-get http://:grafana/api/health delay=60s timeout=30s period=10s #success=1 #failure=10
+    Readiness:       http-get http://:grafana/api/health delay=0s timeout=1s period=10s #success=1 #failure=3
+    Environment:
+      POD_IP:                          (v1:status.podIP)
+      GF_SECURITY_ADMIN_USER:         <set to the key 'admin-user' in secret 'prometheus-grafana'>      Optional: false
+      GF_SECURITY_ADMIN_PASSWORD:     <set to the key 'admin-password' in secret 'prometheus-grafana'>  Optional: false
+      GF_PATHS_DATA:                  /var/lib/grafana/
+      GF_PATHS_LOGS:                  /var/log/grafana
+      GF_PATHS_PLUGINS:               /var/lib/grafana/plugins
+      GF_PATHS_PROVISIONING:          /etc/grafana/provisioning
+      GF_UNIFIED_STORAGE_INDEX_PATH:  /var/lib/grafana-search/bleve
+      GF_SERVER_ROOT_URL:             https://grafana.local:31128
+      GF_SERVER_DOMAIN:               grafana.local
+    Mounts:
+      /etc/grafana/grafana.ini from config (rw,path="grafana.ini")
+      /etc/grafana/provisioning/dashboards/sc-dashboardproviders.yaml from sc-dashboard-provider (rw,path="provider.yaml")
+      /etc/grafana/provisioning/datasources from sc-datasources-volume (rw)
+      /tmp/dashboards from sc-dashboard-volume (rw)
+      /var/lib/grafana from storage (rw)
+      /var/lib/grafana-search from search (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-hv9fp (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   False 
+  Initialized                 False 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  config:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      prometheus-grafana
+    Optional:  false
+  storage:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  prometheus-grafana
+    ReadOnly:   false
+  search:
+    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)
+    Medium:     
+    SizeLimit:  <unset>
+  sc-dashboard-volume:
+    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)
+    Medium:     
+    SizeLimit:  <unset>
+  sc-dashboard-provider:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      prometheus-grafana-config-dashboards
+    Optional:  false
+  sc-datasources-volume:
+    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)
+    Medium:     
+    SizeLimit:  <unset>
+  kube-api-access-hv9fp:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              kubernetes.io/hostname=k3s-worker-mrs
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason                  Age                   From                     Message
+  ----     ------                  ----                  ----                     -------
+  Normal   Scheduled               5m8s                  default-scheduler        Successfully assigned monitoring/prometheus-grafana-54878fb66d-kh4sw to k3s-worker-mrs
+  Normal   SuccessfulAttachVolume  4m54s                 attachdetach-controller  AttachVolume.Attach succeeded for volume "pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966"
+  Warning  FailedMount             40s (x10 over 4m53s)  kubelet                  MountVolume.MountDevice failed for volume "pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966" : rpc error: code = Internal desc = mount failed: exit status 32
+Mounting command: mount
+Mounting arguments: -t ext4 -o defaults /dev/longhorn/pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966 /var/lib/kubelet/plugins/kubernetes.io/csi/driver.longhorn.io/2f3179bbe7bf43110bf226dccf658fadbce61fad6a10a49c8f7735ac18d88fe8/globalmount
+Output: mount: /var/lib/kubelet/plugins/kubernetes.io/csi/driver.longhorn.io/2f3179bbe7bf43110bf226dccf658fadbce61fad6a10a49c8f7735ac18d88fe8/globalmount: /dev/longhorn/pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966 already mounted or mount point busy.
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ mount | grep pvc-db27f4b5
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ multipath -ll | grep pvc-db27f4b5
+2864056.621233 | couldn't open configuration dir '/etc/multipath/conf.d': Permission denied
+need to be root
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo multipath -ll | grep pvc-db27f4b5
+[sudo] password for user: 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl -n longhorn-system get volumes.longhorn.io pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966 -o yaml
+apiVersion: longhorn.io/v1beta2
+kind: Volume
+metadata:
+  creationTimestamp: "2026-08-24T15:10:10Z"
+  finalizers:
+  - longhorn.io
+  generation: 453
+  labels:
+    longhornvolume: pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966
+    recurring-job-group.longhorn.io/default: enabled
+    setting.longhorn.io/remove-snapshots-during-filesystem-trim: ignored
+    setting.longhorn.io/replica-auto-balance: ignored
+    setting.longhorn.io/snapshot-data-integrity: ignored
+  name: pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966
+  namespace: longhorn-system
+  resourceVersion: "75885040"
+  uid: 2b2f0ebd-e189-4ca3-a921-d262758137ae
+spec:
+  Standby: false
+  accessMode: rwo
+  backendStoreDriver: ""
+  backingImage: ""
+  backupCompressionMethod: lz4
+  dataEngine: v1
+  dataLocality: disabled
+  dataSource: ""
+  disableFrontend: false
+  diskSelector: []
+  encrypted: false
+  engineImage: ""
+  fromBackup: ""
+  frontend: blockdev
+  image: longhornio/longhorn-engine:v1.6.0
+  lastAttachedBy: ""
+  migratable: false
+  migrationNodeID: ""
+  nodeID: k3s-worker-mrs
+  nodeSelector: []
+  numberOfReplicas: 2
+  offlineReplicaRebuilding: disabled
+  replicaAutoBalance: ignored
+  replicaDiskSoftAntiAffinity: ignored
+  replicaSoftAntiAffinity: ignored
+  replicaZoneSoftAntiAffinity: ignored
+  restoreVolumeRecurringJob: ignored
+  revisionCounterDisabled: false
+  size: "2147483648"
+  snapshotDataIntegrity: ignored
+  snapshotMaxCount: 250
+  snapshotMaxSize: "0"
+  staleReplicaTimeout: 30
+  unmapMarkSnapChainRemoved: ignored
+status:
+  actualSize: 807636992
+  cloneStatus:
+    snapshot: ""
+    sourceVolume: ""
+    state: ""
+  conditions:
+  - lastProbeTime: ""
+    lastTransitionTime: "2026-08-24T15:10:11Z"
+    message: ""
+    reason: ""
+    status: "False"
+    type: WaitForBackingImage
+  - lastProbeTime: ""
+    lastTransitionTime: "2026-08-24T15:10:11Z"
+    message: ""
+    reason: ""
+    status: "False"
+    type: TooManySnapshots
+  - lastProbeTime: ""
+    lastTransitionTime: "2026-09-05T06:42:23Z"
+    message: ""
+    reason: ""
+    status: "True"
+    type: Scheduled
+  - lastProbeTime: ""
+    lastTransitionTime: "2026-08-24T15:10:11Z"
+    message: ""
+    reason: ""
+    status: "False"
+    type: Restore
+  currentImage: longhornio/longhorn-engine:v1.6.0
+  currentMigrationNodeID: ""
+  currentNodeID: k3s-worker-mrs
+  expansionRequired: false
+  frontendDisabled: false
+  isStandby: false
+  kubernetesStatus:
+    lastPVCRefAt: ""
+    lastPodRefAt: ""
+    namespace: monitoring
+    pvName: pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966
+    pvStatus: Bound
+    pvcName: prometheus-grafana
+    workloadsStatus:
+    - podName: prometheus-grafana-54878fb66d-kh4sw
+      podStatus: Pending
+      workloadName: prometheus-grafana-54878fb66d
+      workloadType: ReplicaSet
+  lastBackup: ""
+  lastBackupAt: ""
+  lastDegradedAt: ""
+  offlineReplicaRebuildingRequired: false
+  ownerID: k3s-worker-mrs
+  pendingNodeID: ""
+  remountRequestedAt: "2026-09-22T09:22:51Z"
+  restoreInitiated: false
+  restoreRequired: false
+  robustness: healthy
+  shareEndpoint: ""
+  shareState: ""
+  state: attached
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl -n longhorn-system get engines.longhorn.io | grep db27f4b5
+kubectl -n longhorn-system get replicas.longhorn.io | grep db27f4b5
+pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966-e-0   v1            running   k3s-worker-mrs      instance-manager-07ef8faf233201f7d10eb9247ddaa7f1   longhornio/longhorn-engine:v1.6.0   29d
+pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966-r-2a97d45e   v1            running   k3s-worker-mrs      3acaebb6-631c-421c-9664-fea8c3839cf0   instance-manager-07ef8faf233201f7d10eb9247ddaa7f1   longhornio/longhorn-engine:v1.6.0   17d
+pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966-r-ea02d060   v1            running   zabbix-monitoring   f6e90cbe-4fcd-4e38-b45d-7a5e45bfc930   instance-manager-15d3b323b0fc1a87e556b8d5d2ec8568   longhornio/longhorn-engine:v1.6.0   20d
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl -n longhorn-system get engines.longhorn.io | grep db27f4b5
+pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966-e-0   v1            running   k3s-worker-mrs      instance-manager-07ef8faf233201f7d10eb9247ddaa7f1   longhornio/longhorn-engine:v1.6.0   29d
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl -n longhorn-system get replicas.longhorn.io | grep db27f4b5
+pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966-r-2a97d45e   v1            running   k3s-worker-mrs      3acaebb6-631c-421c-9664-fea8c3839cf0   instance-manager-07ef8faf233201f7d10eb9247ddaa7f1   longhornio/longhorn-engine:v1.6.0   17d
+pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966-r-ea02d060   v1            running   zabbix-monitoring   f6e90cbe-4fcd-4e38-b45d-7a5e45bfc930   instance-manager-15d3b323b0fc1a87e556b8d5d2ec8568   longhornio/longhorn-engine:v1.6.0   20d
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get volumeattachment | grep db27f4b5
+csi-f06a580c04bc949fafd6b9dbd03b44e5be1f064d9f30127737bce8a0c77d60dd   driver.longhorn.io   pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966   k3s-worker-mrs      true       21m
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo journalctl -u k3s --since "10 min ago" | grep -i "db27f4b5\|longhorn\|csi" | tail -50
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl -n longhorn-system get pods | grep csi
+csi-attacher-66b7b4b4d4-ck7nf                       1/1     Running   0                 6h9m
+csi-attacher-66b7b4b4d4-pb2wv                       1/1     Running   0                 6h9m
+csi-attacher-66b7b4b4d4-psdd4                       1/1     Running   1 (29m ago)       6h9m
+csi-provisioner-bc67cbb54-6xkgg                     1/1     Running   0                 6h9m
+csi-provisioner-bc67cbb54-stthz                     1/1     Running   0                 6h9m
+csi-provisioner-bc67cbb54-w7448                     1/1     Running   0                 6h9m
+csi-resizer-66cc556f5-77jtx                         1/1     Running   0                 6h9m
+csi-resizer-66cc556f5-grzmf                         1/1     Running   1 (26m ago)       6h9m
+csi-resizer-66cc556f5-jzhk9                         1/1     Running   0                 6h9m
+csi-snapshotter-7565995789-4fcjn                    1/1     Running   0                 6h9m
+csi-snapshotter-7565995789-9xt5h                    1/1     Running   4 (8d ago)        19d
+csi-snapshotter-7565995789-xnbm4                    1/1     Running   0                 6h9m
+longhorn-csi-plugin-wjdv8                           3/3     Running   302 (6h11m ago)   32d
+longhorn-csi-plugin-znr9t                           3/3     Running   186 (12d ago)     54d
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl -n longhorn-system logs csi-f06a580c04bc949fafd6b9dbd03b44e5be1f064d9f30127737bce8a0c77d60dd --tail=100 | grep -i db27f4b5
+error: error from server (NotFound): pods "csi-f06a580c04bc949fafd6b9dbd03b44e5be1f064d9f30127737bce8a0c77d60dd" not found in namespace "longhorn-system"
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl -n longhorn-system get nodes.longhorn.io k3s-worker-mrs -o yaml | grep -A20 "status:"
+status:
+  autoEvicting: false
+  conditions:
+  - lastProbeTime: ""
+    lastTransitionTime: "2026-09-22T09:31:09Z"
+    message: Node k3s-worker-mrs is ready
+    reason: ""
+    status: "True"
+    type: Ready
+  - lastProbeTime: ""
+    lastTransitionTime: "2026-07-02T18:31:32Z"
+    message: ""
+    reason: ""
+    status: "True"
+    type: Schedulable
+  - lastProbeTime: ""
+    lastTransitionTime: "2025-11-29T10:37:01Z"
+    message: ""
+    reason: ""
+    status: "True"
+    type: MountPropagation
+  diskStatus:
+    disk-2:
+      conditions:
+      - lastProbeTime: ""
+        lastTransitionTime: "2025-12-01T16:07:41Z"
+        message: Disk disk-2(/var/lib/longhorn/) on node k3s-worker-mrs is ready
+        reason: ""
+        status: "True"
+        type: Ready
+      - lastProbeTime: ""
+        lastTransitionTime: "2026-09-18T06:55:00Z"
+        message: Disk disk-2(/var/lib/longhorn/) on node k3s-worker-mrs is schedulable
+        reason: ""
+        status: "True"
+        type: Schedulable
+      diskType: filesystem
+      diskUUID: 3acaebb6-631c-421c-9664-fea8c3839cf0
+      filesystemType: ext2/ext3
+      scheduledReplica:
+        pvc-2c83ed01-0cbb-406a-a79e-6c05a5e3dbcd-r-6f4367d2: 104857600
+        pvc-08d6fe9c-e054-4679-ba18-6e26556e780b-r-644ae91b: 2147483648
+        pvc-7112abd4-0cd1-442b-9e4f-1340ab0e6813-r-ab2efcc9: 1073741824
+        pvc-a72ef063-30eb-40ec-94bb-e4b9df360837-r-398cba86: 1073741824
+        pvc-bd5176c8-e87d-4cb5-ab3d-d1f5d208aa45-r-30fd5b07: 1073741824
+        pvc-d81783b0-0921-4edd-aa5e-5887bcc090a5-r-94174d25: 2147483648
+        pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966-r-2a97d45e: 2147483648
+      storageAvailable: 9017753600
+      storageMaximum: 25248002048
+      storageScheduled: 9768534016
+  region: ""
+  snapshotCheckStatus:
+    lastPeriodicCheckedAt: "2026-09-22T00:00:00Z"
+  zone: ""
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get volumeattachment
+NAME                                                                   ATTACHER             PV                                         NODE                ATTACHED   AGE
+csi-311f2af214fd2b424865c10659de7c8e09ab2004771565cb70fa31fe828470f1   driver.longhorn.io   pvc-a72ef063-30eb-40ec-94bb-e4b9df360837   zabbix-monitoring   true       20d
+csi-44ec7547da5e40d9455c5ba92c0f3381d3613d10546ef0ae83137748bcc74e35   driver.longhorn.io   pvc-2c83ed01-0cbb-406a-a79e-6c05a5e3dbcd   zabbix-monitoring   true       13d
+csi-4de046a567ea64cd1c2c8bd5629d8d3e164212717618cd227f24233281a9d36e   driver.longhorn.io   pvc-d81783b0-0921-4edd-aa5e-5887bcc090a5   zabbix-monitoring   true       32d
+csi-5ea53cb064ab7df2d0f79dd52ccf5a9ba0dc5f0048adb23f6199cf8ffc54df65   driver.longhorn.io   pvc-3eba89bc-9a8a-4f16-8438-45d1d3b35765   k3s-worker-mrs      true       32d
+csi-67fa0528859fcdd1bd9d631c5fd563e2a1fa2ceaf4f8cd5a5781cee2e013702b   driver.longhorn.io   pvc-7112abd4-0cd1-442b-9e4f-1340ab0e6813   zabbix-monitoring   true       13d
+csi-76fdca5a1400549f9df347e6fa283e166441fd53ae56529f0577bc4dcb837276   driver.longhorn.io   pvc-6e10db75-84d1-4851-888e-48d229dd3244   k3s-worker-mrs      true       92d
+csi-8a352022e2f2fb33c83d5170e2450c9fe73ce76f30439ba5675037eb210627f4   driver.longhorn.io   pvc-bd5176c8-e87d-4cb5-ab3d-d1f5d208aa45   zabbix-monitoring   true       18d
+csi-cb9048b51226a1cce626a10e49e08a34b67048e8012cf29e3d8c6f6ed0389da3   driver.longhorn.io   pvc-08d6fe9c-e054-4679-ba18-6e26556e780b   k3s-worker-mrs      true       6h8m
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl -n longhorn-system get volumes.longhorn.io pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966 \
+  -o jsonpath='state={.status.state} size={.spec.size}{"\n"}'
+state=detached size=2147483648
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get pods -n monitoring -l app.kubernetes.io/name=grafana
+NAME                                  READY   STATUS     RESTARTS   AGE
+prometheus-grafana-54878fb66d-hdz8m   0/3     Init:0/1   0          96s
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get pods -n monitoring -l app.kubernetes.io/name=grafana
+NAME                                  READY   STATUS     RESTARTS   AGE
+prometheus-grafana-54878fb66d-hdz8m   0/3     Init:0/1   0          2m30s
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl describe -n monitoring pod prometheus-grafana-54878fb66d-hdz8m | grep -A 10 'Events:'
+Events:
+  Type     Reason                  Age                   From                     Message
+  ----     ------                  ----                  ----                     -------
+  Normal   Scheduled               5m49s                 default-scheduler        Successfully assigned monitoring/prometheus-grafana-54878fb66d-hdz8m to k3s-worker-mrs
+  Normal   SuccessfulAttachVolume  5m35s                 attachdetach-controller  AttachVolume.Attach succeeded for volume "pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966"
+  Warning  FailedMount             79s (x10 over 5m33s)  kubelet                  MountVolume.MountDevice failed for volume "pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966" : rpc error: code = Internal desc = mount failed: exit status 32
+Mounting command: mount
+Mounting arguments: -t ext4 -o defaults /dev/longhorn/pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966 /var/lib/kubelet/plugins/kubernetes.io/csi/driver.longhorn.io/2f3179bbe7bf43110bf226dccf658fadbce61fad6a10a49c8f7735ac18d88fe8/globalmount
+Output: mount: /var/lib/kubelet/plugins/kubernetes.io/csi/driver.longhorn.io/2f3179bbe7bf43110bf226dccf658fadbce61fad6a10a49c8f7735ac18d88fe8/globalmount: /dev/longhorn/pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966 already mounted or mount point busy.
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get pod -n monitoring
+NAME                                                     READY   STATUS     RESTARTS        AGE
+alertmanager-prometheus-kube-prometheus-alertmanager-0   2/2     Running    0               6h50m
+prometheus-grafana-54878fb66d-mj9wx                      0/3     Init:0/1   0               93s
+prometheus-kube-prometheus-operator-6fb97495c9-xbqvn     1/1     Running    0               6h59m
+prometheus-kube-state-metrics-857945f95f-gq8mc           1/1     Running    0               6h59m
+prometheus-prometheus-kube-prometheus-prometheus-0       2/2     Running    0               6h45m
+prometheus-prometheus-node-exporter-95gk9                1/1     Running    0               7d5h
+prometheus-prometheus-node-exporter-fjmv5                1/1     Running    0               7d5h
+prometheus-prometheus-node-exporter-scp46                1/1     Running    5 (6h54m ago)   7d5h
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get pod -n monitoring
+NAME                                                     READY   STATUS    RESTARTS     AGE
+alertmanager-prometheus-kube-prometheus-alertmanager-0   2/2     Running   0            6h56m
+prometheus-grafana-54878fb66d-b97qk                      0/3     Pending   0            44s
+prometheus-kube-prometheus-operator-6fb97495c9-xbqvn     1/1     Running   0            7h5m
+prometheus-kube-state-metrics-857945f95f-gq8mc           1/1     Running   0            7h5m
+prometheus-prometheus-kube-prometheus-prometheus-0       2/2     Running   0            6h51m
+prometheus-prometheus-node-exporter-95gk9                1/1     Running   0            7d5h
+prometheus-prometheus-node-exporter-fjmv5                1/1     Running   0            7d5h
+prometheus-prometheus-node-exporter-scp46                1/1     Running   5 (7h ago)   7d5h
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl describe -n monitoring pod prometheus-grafana-54878fb66d-b97qk | grep -A 10 'Events:'
+Events:
+  Type     Reason            Age                From               Message
+  ----     ------            ----               ----               -------
+  Warning  FailedScheduling  41s (x2 over 68s)  default-scheduler  0/3 nodes are available: persistentvolumeclaim "prometheus-grafana" not found. preemption: 0/3 nodes are available: 3 Preemption is not helpful for scheduling.
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl describe -n monitoring pod prometheus-grafana-54878fb66d-b97qk | grep -A 10 'Events:'
+Events:
+  Type     Reason            Age                 From               Message
+  ----     ------            ----                ----               -------
+  Warning  FailedScheduling  79s (x2 over 106s)  default-scheduler  0/3 nodes are available: persistentvolumeclaim "prometheus-grafana" not found. preemption: 0/3 nodes are available: 3 Preemption is not helpful for scheduling.
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get pvc -n monitoring
+NAME                                                                                                     STATUS   VOLUME       CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+prometheus-prometheus-kube-prometheus-prometheus-db-prometheus-prometheus-kube-prometheus-prometheus-0   Bound    pvc-08d6fe9c-e054-4679-ba18-6e26556e780b   2Gi        RWO            longhorn       <unset>                 6h56m
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get pvc -n monitoring
+NAME                                                                                                     STATUS   VOLUME       CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+prometheus-prometheus-kube-prometheus-prometheus-db-prometheus-prometheus-kube-prometheus-prometheus-0   Bound    pvc-08d6fe9c-e054-4679-ba18-6e26556e780b   2Gi        RWO            longhorn       <unset>                 6h57m
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl apply -f - <<'EOF'
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: prometheus-grafana
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/instance: prometheus
+    app.kubernetes.io/name: grafana
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 2Gi
+EOF
+persistentvolumeclaim/prometheus-grafana configured
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get pvc prometheus-grafana -n monitoring
+NAME                 STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+prometheus-grafana   Bound    pvc-f5a87711-f796-449f-b403-9dd2add85e4e   1Gi        RWO            longhorn       <unset>                 21s
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get pods -n monitoring -l app.kubernetes.io/name=grafana
+NAME                                  READY   STATUS    RESTARTS   AGE
+prometheus-grafana-54878fb66d-b97qk   2/3     Running   0          8m51s
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get pods -n monitoring -l app.kubernetes.io/name=grafana
+NAME                                  READY   STATUS    RESTARTS   AGE
+prometheus-grafana-54878fb66d-b97qk   2/3     Running   0          9m34s
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get pods -n monitoring -l app.kubernetes.io/name=grafana
+NAME                                  READY   STATUS    RESTARTS      AGE
+prometheus-grafana-54878fb66d-b97qk   2/3     Running   1 (53s ago)   11m
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl describe -n monitoring pod prometheus-grafana-54878fb66d-b97qk | grep -A 10 'Events:'
+Events:
+  Type     Reason                      Age                     From                     Message
+  ----     ------                      ----                    ----                     -------
+  Warning  FailedScheduling            4m32s (x6 over 12m)     default-scheduler        0/3 nodes are available: persistentvolumeclaim "prometheus-grafana" not found. preemption: 0/3 nodes are available: 3 Preemption is not helpful for scheduling.
+  Warning  FailedScheduling            4m21s                   default-scheduler        0/3 nodes are available: pod has unbound immediate PersistentVolumeClaims. preemption: 0/3 nodes are available: 3 Preemption is not helpful for scheduling.
+  Normal   Scheduled                   4m11s                   default-scheduler        Successfully assigned monitoring/prometheus-grafana-54878fb66d-b97qk to k3s-worker-mrs
+  Normal   SuccessfulAttachVolume      3m58s                   attachdetach-controller  AttachVolume.Attach succeeded for volume "pvc-f5a87711-f796-449f-b403-9dd2add85e4e"
+  Normal   Pulled                      3m51s                   kubelet                  Container image "docker.io/library/busybox:1.38.0" already present on machine
+  Normal   Created                     3m50s                   kubelet                  Created container: init-chown-data
+  Normal   Started                     3m50s                   kubelet                  Started container init-chown-data
+  Normal   Pulled                      3m49s                   kubelet                  Container image "quay.io/kiwigrid/k8s-sidecar:2.10.1" alreadypresent on machine
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl describe -n monitoring pod prometheus-grafana-54878fb66d-b97qk | grep -A 10 'Events:'
+Events:
+  Type     Reason                      Age                     From                     Message
+  ----     ------                      ----                    ----                     -------
+  Warning  FailedScheduling            8m36s (x6 over 16m)     default-scheduler        0/3 nodes are available: persistentvolumeclaim "prometheus-grafana" not found. preemption: 0/3 nodes are available: 3 Preemption is not helpful for scheduling.
+  Warning  FailedScheduling            8m25s                   default-scheduler        0/3 nodes are available: pod has unbound immediate PersistentVolumeClaims. preemption: 0/3 nodes are available: 3 Preemption is not helpful for scheduling.
+  Normal   Scheduled                   8m15s                   default-scheduler        Successfully assigned monitoring/prometheus-grafana-54878fb66d-b97qk to k3s-worker-mrs
+  Normal   SuccessfulAttachVolume      8m2s                    attachdetach-controller  AttachVolume.Attach succeeded for volume "pvc-f5a87711-f796-449f-b403-9dd2add85e4e"
+  Normal   Pulled                      7m55s                   kubelet                  Container image "docker.io/library/busybox:1.38.0" already present on machine
+  Normal   Created                     7m54s                   kubelet                  Created container: init-chown-data
+  Normal   Started                     7m54s                   kubelet                  Started container init-chown-data
+  Normal   Pulled                      7m53s                   kubelet                  Container image "quay.io/kiwigrid/k8s-sidecar:2.10.1" alreadypresent on machine
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get pods -n monitoring -l app.kubernetes.io/name=grafana
+NAME                                  READY   STATUS    RESTARTS        AGE
+prometheus-grafana-54878fb66d-b97qk   3/3     Running   1 (5m22s ago)   16m
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get pvc prometheus-grafana -n monitoring -o jsonpath='spec={.spec.resources.requests.storage} cap={.status.capacity.storage}{"\n"}'
+spec=2Gi cap=2Gi
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl -n argocd get application prometheus \
+  -o jsonpath='{.spec.source.helm.valuesObject.grafana.persistence}' ; echo
+{"enabled":true,"size":"1Gi","storageClassName":"longhorn"}
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl -n argocd get application prometheus -o json \
+| jq '
+  del(.status)
+  | del(.metadata.managedFields)
+  | del(.operation)
+  | .spec.source.helm.valuesObject.grafana.persistence.size = "2Gi"
+' \
+| kubectl replace -f -
+application.argoproj.io/prometheus replaced
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl -n argocd get application prometheus \
+  -o jsonpath='{.spec.source.helm.valuesObject.grafana.persistence.size}' ; echo
+2Gi
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl -n argocd get application prometheus -o json \
+| jq '
+  del(.status)
+  | del(.metadata.managedFields)
+  | del(.operation)
+  | .spec.ignoreDifferences = [
+      {
+        "group": "apiextensions.k8s.io",
+        "kind": "CustomResourceDefinition",
+        "jsonPointers": ["/spec", "/metadata/annotations"]
+      }
+    ]
+' \
+| kubectl replace -f -
+application.argoproj.io/prometheus replaced
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl label pvc prometheus-grafana -n monitoring \
+  app.kubernetes.io/version=13.2.0 \
+  argocd.argoproj.io/instance=prometheus \
+  helm.sh/chart=grafana-12.11.1 \
+  --overwrite
+persistentvolumeclaim/prometheus-grafana labeled
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ df -h
+Filesystem                         Size  Used Avail Use% Mounted on
+tmpfs                              795M  5.1M  790M   1% /run
+/dev/mapper/ubuntu--vg-ubuntu--lv   28G   18G  8.7G  67% /
+tmpfs                              3.9G     0  3.9G   0% /dev/shm
+tmpfs                              5.0M     0  5.0M   0% /run/lock
+/dev/vda2                          2.0G  200M  1.6G  11% /boot
+tmpfs                              795M   12K  795M   1% /run/user/1000
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+
+
+
+
+
+
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ cd ansible/
+user@k3s-lyon-01:~/nova-syndicate-gitops/ansible$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops/ansible$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops/ansible$ ansible-playbook site.yml --tags cleanup --limit k3s-worker-mrs -K \
+  -e disk_hygiene_dry_run=0 \
+  -e disk_hygiene_niveau=3 \
+  -e disk_hygiene_confirm_niveau3=true
+BECOME password: 
+
+PLAY [Hygiene disque kubeadm] ************************************************************************************************************************
+
+TASK [Gathering Facts] *******************************************************************************************************************************
+ok: [k3s-worker-mrs]
+
+TASK [disk_hygiene : Refuser NIVEAU 3 sans confirmation] *********************************************************************************************
+skipping: [k3s-worker-mrs]
+
+TASK [disk_hygiene : Repertoires cleanup] ************************************************************************************************************
+ok: [k3s-worker-mrs] => (item=/usr/local/sbin)
+ok: [k3s-worker-mrs] => (item=/var/log/disk-hygiene)
+
+TASK [disk_hygiene : Pousser cleanup-safe.sh et dependances] *****************************************************************************************
+ok: [k3s-worker-mrs] => (item=audit-disque.sh)
+ok: [k3s-worker-mrs] => (item=cleanup-safe.sh)
+ok: [k3s-worker-mrs] => (item=disk-watch.sh)
+ok: [k3s-worker-mrs] => (item=longhorn-snaps.sh)
+ok: [k3s-worker-mrs] => (item=hygiene-master-kubeadm.sh)
+ok: [k3s-worker-mrs] => (item=hotspots.sh)
+
+TASK [disk_hygiene : Mesurer / si audit non joue] ****************************************************************************************************
+ok: [k3s-worker-mrs]
+
+TASK [disk_hygiene : Decider si on nettoie] **********************************************************************************************************
+ok: [k3s-worker-mrs]
+
+TASK [disk_hygiene : Skip sous seuil] ****************************************************************************************************************
+skipping: [k3s-worker-mrs]
+
+TASK [disk_hygiene : Chemin log cleanup] *************************************************************************************************************
+ok: [k3s-worker-mrs]
+
+TASK [disk_hygiene : Lancer cleanup-safe.sh] *********************************************************************************************************
+changed: [k3s-worker-mrs]
+
+TASK [disk_hygiene : Extraire avant/apres] ***********************************************************************************************************
+ok: [k3s-worker-mrs] => {
+    "msg": [
+        "HOST=k3s-worker-mrs STAMP=20260924T143846Z DRY_RUN=0 NIVEAU=3",
+        "AVANT / used=18G avail=4.8G pct=79%",
+        "== NIVEAU 1 : journal, caches, tmp ==",
+        "== NIVEAU 1b : cache VS Code Remote (workspace + VSIX + vieilles versions) ==",
+        "== NIVEAU 2 : logs runtime + pods morts ==",
+        "== NIVEAU 3 : prune images non utilisées (fenêtre de maintenance) ==",
+        "APRES / used=17G avail=6.0G pct=74%"
+    ]
+}
+
+TASK [disk_hygiene : Repertoire rapports sur le controleur] ******************************************************************************************
+ok: [k3s-worker-mrs -> localhost]
+
+TASK [disk_hygiene : Rapatrier audit] ****************************************************************************************************************
+ok: [k3s-worker-mrs]
+
+TASK [disk_hygiene : Rapatrier log cleanup si present] ***********************************************************************************************
+changed: [k3s-worker-mrs]
+
+PLAY RECAP *******************************************************************************************************************************************
+k3s-worker-mrs             : ok=11   changed=2    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
+
+user@k3s-lyon-01:~/nova-syndicate-gitops/ansible$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops/ansible$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops/ansible$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops/ansible$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops/ansible$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops/ansible$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops/ansible$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops/ansible$ 
+
+
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl delete pvc -n monitoring \
+  prometheus-prometheus-kube-prometheus-prometheus-db-prometheus-prometheus-kube-prometheus-prometheus-0
+persistentvolumeclaim "prometheus-prometheus-kube-prometheus-prometheus-db-prometheus-prometheus-kube-prometheus-prometheus-0" deleted
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get pv
+NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                                    STORAGECLASS   VOLUMEATTRIBUTESCLASS   REASON   AGE
+pvc-2c83ed01-0cbb-406a-a79e-6c05a5e3dbcd   100Mi      RWO            Delete           Bound    identity/openldap-config-pvc             longhorn       <unset>                          41d
+pvc-7112abd4-0cd1-442b-9e4f-1340ab0e6813   1Gi        RWO            Delete           Bound    identity/openldap-pvc                    longhorn       <unset>                          41d
+pvc-a72ef063-30eb-40ec-94bb-e4b9df360837   1Gi        RWO            Delete           Bound    keycloak/keycloak-data                   longhorn       <unset>                          31d
+pvc-bd5176c8-e87d-4cb5-ab3d-d1f5d208aa45   1Gi        RWO            Delete           Bound    vault/data-vault-0                       longhorn       <unset>                          42d
+pvc-d81783b0-0921-4edd-aa5e-5887bcc090a5   2Gi        RWO            Delete           Bound    nova-syndicate/data-postgresql-clean-0   longhorn       <unset>                          91d
+pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966   1Gi        RWO            Delete           Bound    monitoring/prometheus-grafana            longhorn       <unset>                          28d
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl patch prometheus prometheus-kube-prometheus-prometheus -n monitoring \
+  --type merge -p '{"spec":{"replicas":1}}'
+prometheus.monitoring.coreos.com/prometheus-kube-prometheus-prometheus patched
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get -n monitoring pod
+NAME                                                     READY   STATUS    RESTARTS      AGE
+alertmanager-prometheus-kube-prometheus-alertmanager-0   2/2     Running   0             7m43s
+prometheus-grafana-54878fb66d-fbf84                      3/3     Running   0             16m
+prometheus-kube-prometheus-operator-6fb97495c9-xbqvn     1/1     Running   0             16m
+prometheus-kube-state-metrics-857945f95f-gq8mc           1/1     Running   0             16m
+prometheus-prometheus-kube-prometheus-prometheus-0       2/2     Running   0             2m27s
+prometheus-prometheus-node-exporter-95gk9                1/1     Running   0             6d22h
+prometheus-prometheus-node-exporter-fjmv5                1/1     Running   0             6d22h
+prometheus-prometheus-node-exporter-scp46                1/1     Running   5 (11m ago)   6d22h
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get pv
+NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                                                                                                               STORAGECLASS   VOLUMEATTRIBUTESCLASS   REASON   AGE
+pvc-08d6fe9c-e054-4679-ba18-6e26556e780b   2Gi        RWO            Delete           Bound    monitoring/prometheus-prometheus-kube-prometheus-prometheus-db-prometheus-prometheus-kube-prometheus-prometheus-0   longhorn       <unset>                          4m21s
+pvc-2c83ed01-0cbb-406a-a79e-6c05a5e3dbcd   100Mi      RWO            Delete           Bound    identity/openldap-config-pvc                                                                                        longhorn       <unset>                          41d
+pvc-7112abd4-0cd1-442b-9e4f-1340ab0e6813   1Gi        RWO            Delete           Bound    identity/openldap-pvc                                                                                               longhorn       <unset>                          41d
+pvc-a72ef063-30eb-40ec-94bb-e4b9df360837   1Gi        RWO            Delete           Bound    keycloak/keycloak-data                                                                                              longhorn       <unset>                          31d
+pvc-bd5176c8-e87d-4cb5-ab3d-d1f5d208aa45   1Gi        RWO            Delete           Bound    vault/data-vault-0                                                                                                  longhorn       <unset>                          42d
+pvc-d81783b0-0921-4edd-aa5e-5887bcc090a5   2Gi        RWO            Delete           Bound    nova-syndicate/data-postgresql-clean-0                                                                              longhorn       <unset>                          91d
+pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966   1Gi        RWO            Delete           Bound    monitoring/prometheus-grafana                                                                                       longhorn       <unset>                          28d
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl -n longhorn-system get volumes.longhorn.io \
+  -o custom-columns='NOM:.metadata.name,TAILLE_CONFIGURÉE:.spec.size,TAILLE_RÉELLE:.status.actualSize'
+NOM                                        TAILLE_CONFIGURÉE   TAILLE_RÉELLE
+pvc-08d6fe9c-e054-4679-ba18-6e26556e780b   2147483648          112558080
+pvc-2c83ed01-0cbb-406a-a79e-6c05a5e3dbcd   104857600           11329536
+pvc-7112abd4-0cd1-442b-9e4f-1340ab0e6813   1073741824          51298304
+pvc-a72ef063-30eb-40ec-94bb-e4b9df360837   1073741824          57556992
+pvc-bd5176c8-e87d-4cb5-ab3d-d1f5d208aa45   1073741824          127102976
+pvc-d81783b0-0921-4edd-aa5e-5887bcc090a5   2147483648          168812544
+pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966   1073741824          771194880
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl krew install df-pv
+Updated the local copy of plugin index.
+  New plugins available:
+    * ack-conditions
+    * kuberecord
+    * mole
+    * zombie
+Installing plugin: df-pv
+Installed plugin: df-pv
+\
+ | Use this plugin:
+ |      kubectl df-pv
+ | Documentation:
+ |      https://github.com/yashbhutwala/kubectl-df-pv
+/
+WARNING: You installed plugin "df-pv" from the krew-index plugin repository.
+   These plugins are not audited for security by the Krew maintainers.
+   Run them at your own risk.
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl df-pv -n monitoring
+
+ PV NAME                                   PVC NAME                                                                                                NAMESPACE   NODE NAME       POD NAME                                            VOLUME MOUNT NAME                                    SIZE      USED      AVAILABLE  %USED 
+ pvc-08d6fe9c-e054-4679-ba18-6e26556e780b  prometheus-prometheus-kube-prometheus-prometheus-db-prometheus-prometheus-kube-prometheus-prometheus-0  monitoring  k3s-worker-mrs  prometheus-prometheus-kube-prometheus-prometheus-0  prometheus-prometheus-kube-prometheus-prometheus-db  1.9Gi     12.27Mi   1.87Gi     0.63  
+ pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966  prometheus-grafana                                                                                      monitoring  k3s-worker-mrs  prometheus-grafana-54878fb66d-fbf84                 storage                                              973.42Mi  516.61Mi  440.81Mi   53.07 
+
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl df-pv 
+
+ PV NAME                                   PVC NAME                                                                                                NAMESPACE   NODE NAME          POD NAME                                            VOLUME MOUNT NAME                                    SIZE      USED      AVAILABLE  %USED 
+ pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966  prometheus-grafana                                                                                      monitoring  k3s-worker-mrs     prometheus-grafana-54878fb66d-fbf84                 storage                                              973.42Mi  516.61Mi  440.81Mi   53.07 
+ pvc-08d6fe9c-e054-4679-ba18-6e26556e780b  prometheus-prometheus-kube-prometheus-prometheus-db-prometheus-prometheus-kube-prometheus-prometheus-0  monitoring  k3s-worker-mrs     prometheus-prometheus-kube-prometheus-prometheus-0  prometheus-prometheus-kube-prometheus-prometheus-db  1.9Gi     13.99Mi   1.87Gi     0.72  
+ pvc-bd5176c8-e87d-4cb5-ab3d-d1f5d208aa45  data-vault-0                                                                                            vault       zabbix-monitoring  vault-0                                             data                                                 973.42Mi  31.1Mi    926.32Mi   3.20  
+ pvc-7112abd4-0cd1-442b-9e4f-1340ab0e6813  openldap-pvc                                                                                            identity    zabbix-monitoring  openldap-8686fc7d6f-fv6s2                           data                                                 973.42Mi  152Ki     957.27Mi   0.02  
+ pvc-2c83ed01-0cbb-406a-a79e-6c05a5e3dbcd  openldap-config-pvc                                                                                     identity    zabbix-monitoring  openldap-8686fc7d6f-fv6s2                           config                                               89.69Mi   148Ki     87.54Mi    0.16  
+
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl exec -n monitoring prometheus-prometheus-kube-prometheus-prometheus-0 -c prometheus -- df -h /prometheus
+error: Internal error occurred: Internal error occurred: error executing command in container: failed to exec in container: failed to start exec "47fd25625de26ccf3a4d5b17319420b0b3586113405d88dc2f1211881854f563": OCI runtime exec failed: exec failed: unable to start container process: exec: "df": executable file not found in $PATH
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl exec -n monitoring prometheus-grafana-5464dc8d78-ghv25 -c grafana -- df -h /var/lib/grafana
+Error from server (NotFound): pods "prometheus-grafana-5464dc8d78-ghv25" not found
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get deployment,statefulset -n monitoring | grep grafana
+deployment.apps/prometheus-grafana                    1/1     1            1           82d
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get pvc -n monitoring | grep grafana
+prometheus-grafana                                                                                       Bound    pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966   1Gi        RWO            longhorn       <unset>                 28d
+user@k3s-lyon-01:~/nova-syndicate-gitops$ grep -A20 "grafana:" values.yaml | grep -A15 "persistence"
+grep: values.yaml: No such file or directory
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ g
+
+^Cuser@k3s-lyon-01:~/nova-syndicate-gitops$ cd manifests/argocd/
+user@k3s-lyon-01:~/nova-syndicate-gitops/manifests/argocd$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops/manifests/argocd$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops/manifests/argocd$ grep -A20 "grafana:" values.yaml | grep -A15 "persistence"
+grep: values.yaml: No such file or directory
+user@k3s-lyon-01:~/nova-syndicate-gitops/manifests/argocd$ ls
+applications  app-of-apps.yaml
+user@k3s-lyon-01:~/nova-syndicate-gitops/manifests/argocd$ cd applications/
+user@k3s-lyon-01:~/nova-syndicate-gitops/manifests/argocd/applications$ ls
+argocd-self-managed.yaml  namespace-app.yaml  postgresql-clean.yaml  postgresql-ha.yaml  postgresql-ha.yaml.backup  prometheus-app.yaml  sealed-secrets.yaml  zabbix-app.yaml
+user@k3s-lyon-01:~/nova-syndicate-gitops/manifests/argocd/applications$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops/manifests/argocd/applications$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops/manifests/argocd/applications$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops/manifests/argocd/applications$ grep -A20 "grafana:" values.yaml | grep -A15 "persistence"
+grep: values.yaml: No such file or directory
+user@k3s-lyon-01:~/nova-syndicate-gitops/manifests/argocd/applications$ grep -rl "grafana:" --include="*.yaml" --include="*.yml" .
+./prometheus-app.yaml
+user@k3s-lyon-01:~/nova-syndicate-gitops/manifests/argocd/applications$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops/manifests/argocd/applications$ grep -rl "persistence" --include="*.yaml" . | xargs grep -l "grafana" 2>/dev/null
+./prometheus-app.yaml
+user@k3s-lyon-01:~/nova-syndicate-gitops/manifests/argocd/applications$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops/manifests/argocd/applications$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops/manifests/argocd/applications$ cd ..
+user@k3s-lyon-01:~/nova-syndicate-gitops/manifests/argocd$ cd ..
+user@k3s-lyon-01:~/nova-syndicate-gitops/manifests$ cd ..
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl scale deployment prometheus-grafana -n monitoring --replicas=0
+deployment.apps/prometheus-grafana scaled
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get pod -n monitoring -w
+NAME                                                     READY   STATUS    RESTARTS        AGE
+alertmanager-prometheus-kube-prometheus-alertmanager-0   2/2     Running   0               5h31m
+prometheus-kube-prometheus-operator-6fb97495c9-xbqvn     1/1     Running   0               5h40m
+prometheus-kube-state-metrics-857945f95f-gq8mc           1/1     Running   0               5h40m
+prometheus-prometheus-kube-prometheus-prometheus-0       2/2     Running   0               5h26m
+prometheus-prometheus-node-exporter-95gk9                1/1     Running   0               7d4h
+prometheus-prometheus-node-exporter-fjmv5                1/1     Running   0               7d4h
+prometheus-prometheus-node-exporter-scp46                1/1     Running   5 (5h35m ago)   7d4h
+^Cuser@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get pod -n monitoring | grep grafana
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl -n longhorn-system get volumes.longhorn.io
+NAME                                       DATA ENGINE   STATE      ROBUSTNESS   SCHEDULED   SIZE         NODE                AGE
+pvc-08d6fe9c-e054-4679-ba18-6e26556e780b   v1            attached   healthy                  2147483648   k3s-worker-mrs      5h27m
+pvc-2c83ed01-0cbb-406a-a79e-6c05a5e3dbcd   v1            attached   healthy                  104857600    zabbix-monitoring   42d
+pvc-7112abd4-0cd1-442b-9e4f-1340ab0e6813   v1            attached   healthy                  1073741824   zabbix-monitoring   42d
+pvc-a72ef063-30eb-40ec-94bb-e4b9df360837   v1            attached   healthy                  1073741824   zabbix-monitoring   31d
+pvc-bd5176c8-e87d-4cb5-ab3d-d1f5d208aa45   v1            attached   healthy                  1073741824   zabbix-monitoring   43d
+pvc-d81783b0-0921-4edd-aa5e-5887bcc090a5   v1            attached   healthy                  2147483648   zabbix-monitoring   91d
+pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966   v1            detached   unknown                  1073741824                       28d
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl -n longhorn-system get volumes.longhorn.io pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966 \
+  -o jsonpath='state={.status.state}{"\n"}'
+state=detached
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl patch pvc prometheus-grafana -n monitoring \
+  -p '{"spec":{"resources":{"requests":{"storage":"2Gi"}}}}'
+persistentvolumeclaim/prometheus-grafana patched
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get pvc prometheus-grafana -n monitoring
+NAME                 STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+prometheus-grafana   Bound    pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966   2Gi        RWO            longhorn       <unset>                 28d
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl -n longhorn-system get volumes.longhorn.io pvc-db27f4b5-... -o jsonpath='size={.spec.size} expansionRequired={.status.expansionRequired}{"\n"}'
+Error from server (NotFound): volumes.longhorn.io "pvc-db27f4b5-..." not found
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl -n longhorn-system get volumes.longhorn.io pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966 -o jsonpath='size={.spec.size} expansionRequired={.status.expansionRequired}{"\n"}'
+size=2147483648 expansionRequired=false
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl scale deployment prometheus-grafana -n monitoring --replicas=1
+deployment.apps/prometheus-grafana scaled
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get pod -n monitoring -w | grep grafana
+prometheus-grafana-54878fb66d-kh4sw                      0/3     Init:0/1   0               11s
+^C
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl scale deployment prometheus-grafana -n monitoring --replicas=0
+deployment.apps/prometheus-grafana scaled
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get pods -n monitoring -l app.kubernetes.io/name=grafana
+No resources found in monitoring namespace.
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl delete volumeattachment csi-f06a580c04bc949fafd6b9dbd03b44e5be1f064d9f30127737bce8a0c77d60dd
+Error from server (NotFound): volumeattachments.storage.k8s.io "csi-f06a580c04bc949fafd6b9dbd03b44e5be1f064d9f30127737bce8a0c77d60dd" not found
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl delete volumeattachment csi-f06a580c04bc949fafd6b9dbd03b44e5be1f064d9f30127737bce8a0c77d60dd
+Error from server (NotFound): volumeattachments.storage.k8s.io "csi-f06a580c04bc949fafd6b9dbd03b44e5be1f064d9f30127737bce8a0c77d60dd" not found
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl scale deployment prometheus-grafana -n monitoring --replicas=1
+deployment.apps/prometheus-grafana scaled
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get pods -n monitoring -l app.kubernetes.io/name=grafana -w
+NAME                                  READY   STATUS     RESTARTS   AGE
+prometheus-grafana-54878fb66d-hdz8m   0/3     Init:0/1   0          10s
+^Cuser@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl scale deployment prometheus-grafana -n monitoring --replicas=0
+deployment.apps/prometheus-grafana scaled
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo umount /var/lib/kubelet/plugins/kubernetes.io/csi/driver.longhorn.io/2f3179bbe7bf43110bf226dccf658fadbce61fad6a10a49c8f7735ac18d88fe8/globalmount
+[sudo] password for user: 
+umount: /var/lib/kubelet/plugins/kubernetes.io/csi/driver.longhorn.io/2f3179bbe7bf43110bf226dccf658fadbce61fad6a10a49c8f7735ac18d88fe8/globalmount: no mount point specified.
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ sudo umount /var/lib/kubelet/plugins/kubernetes.io/csi/driver.longhorn.io/2f3179bbe7bf43110bf226dccf658fadbce61fad6a10a49c8f7735ac18d88fe8/globalmount 
+sudo umount -l /var/lib/kubelet/plugins/kubernetes.io/csi/driver.longhorn.io/2f3179bbe7bf43110bf226dccf658fadbce61fad6a10a49c8f7735ac18d88fe8/globalmount
+umount: /var/lib/kubelet/plugins/kubernetes.io/csi/driver.longhorn.io/2f3179bbe7bf43110bf226dccf658fadbce61fad6a10a49c8f7735ac18d88fe8/globalmount: no mount point specified.
+umount: /var/lib/kubelet/plugins/kubernetes.io/csi/driver.longhorn.io/2f3179bbe7bf43110bf226dccf658fadbce61fad6a10a49c8f7735ac18d88fe8/globalmount: no mount point specified.
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ findmnt /dev/longhorn/pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966 || echo "device libre"
+device libre
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl -n longhorn-system get volumes.longhorn.io pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966 \
+  -o jsonpath='state={.status.state}{"\n"}'
+state=detached
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl -n longhorn-system delete pod -l app=longhorn-csi-plugin --field-selector spec.nodeName=k3s-worker-mrs
+pod "longhorn-csi-plugin-wjdv8" deleted
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get pods -n monitoring -l app.kubernetes.io/name=grafana -w
+^Cuser@k3s-lyon-01:~/nova-syndicate-gitopskubectl scale deployment prometheus-grafana -n monitoring --replicas=1=1
+deployment.apps/prometheus-grafana scaled
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$  kubectl get pods -n monitoring -l app.kubernetes.io/name=grafana -w
+NAME                                  READY   STATUS     RESTARTS   AGE
+prometheus-grafana-54878fb66d-mj9wx   0/3     Init:0/1   0          6s
+^Cuser@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl scale deployment prometheus-grafana -n monitoring --replicas=0
+deployment.apps/prometheus-grafana scaled
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl delete pvc prometheus-grafana -n monitoring
+persistentvolumeclaim "prometheus-grafana" deleted
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl scale deployment prometheus-grafana -n monitoring --replicas=0
+deployment.apps/prometheus-grafana scaled
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl delete pvc prometheus-grafana -n monitoring
+Error from server (NotFound): persistentvolumeclaims "prometheus-grafana" not found
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get pv
+NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                                                                                                               STORAGECLASS   VOLUMEATTRIBUTESCLASS   REASON   AGE
+pvc-08d6fe9c-e054-4679-ba18-6e26556e780b   2Gi        RWO            Delete           Bound    monitoring/prometheus-prometheus-kube-prometheus-prometheus-db-prometheus-prometheus-kube-prometheus-prometheus-0   longhorn       <unset>                          6h47m
+pvc-2c83ed01-0cbb-406a-a79e-6c05a5e3dbcd   100Mi      RWO            Delete           Bound    identity/openldap-config-pvc                                                                                        longhorn       <unset>                          42d
+pvc-7112abd4-0cd1-442b-9e4f-1340ab0e6813   1Gi        RWO            Delete           Bound    identity/openldap-pvc                                                                                               longhorn       <unset>                          42d
+pvc-a72ef063-30eb-40ec-94bb-e4b9df360837   1Gi        RWO            Delete           Bound    keycloak/keycloak-data                                                                                              longhorn       <unset>                          31d
+pvc-bd5176c8-e87d-4cb5-ab3d-d1f5d208aa45   1Gi        RWO            Delete           Bound    vault/data-vault-0                                                                                                  longhorn       <unset>                          43d
+pvc-d81783b0-0921-4edd-aa5e-5887bcc090a5   2Gi        RWO            Delete           Bound    nova-syndicate/data-postgresql-clean-0                                                                              longhorn       <unset>                          91d
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl -n longhorn-system get volumes.longhorn.io
+NAME                                       DATA ENGINE   STATE      ROBUSTNESS   SCHEDULED   SIZE         NODE                AGE
+pvc-08d6fe9c-e054-4679-ba18-6e26556e780b   v1            attached   healthy                  2147483648   k3s-worker-mrs      6h48m
+pvc-2c83ed01-0cbb-406a-a79e-6c05a5e3dbcd   v1            attached   healthy                  104857600    zabbix-monitoring   42d
+pvc-7112abd4-0cd1-442b-9e4f-1340ab0e6813   v1            attached   healthy                  1073741824   zabbix-monitoring   42d
+pvc-a72ef063-30eb-40ec-94bb-e4b9df360837   v1            attached   healthy                  1073741824   zabbix-monitoring   31d
+pvc-bd5176c8-e87d-4cb5-ab3d-d1f5d208aa45   v1            attached   healthy                  1073741824   zabbix-monitoring   43d
+pvc-d81783b0-0921-4edd-aa5e-5887bcc090a5   v1            attached   healthy                  2147483648   zabbix-monitoring   91d
+user@k3s-lyon-01:~/nova-syndicate-gitops$  kubectl patch pvc prometheus-grafana -n monitoring \
+  -p '{"spec":{"resources":{"requests":{"storage":"2Gi"}}}}'
+Error from server (NotFound): persistentvolumeclaims "prometheus-grafana" not found
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl scale deployment prometheus-grafana -n monitoring --replicas=1
+deployment.apps/prometheus-grafana scaled
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ kubectl get pod -n monitoring -w
+NAME                                                     READY   STATUS    RESTARTS     AGE
+alertmanager-prometheus-kube-prometheus-alertmanager-0   2/2     Running   0            6h56m
+prometheus-grafana-54878fb66d-b97qk                      0/3     Pending   0            17s
+prometheus-kube-prometheus-operator-6fb97495c9-xbqvn     1/1     Running   0            7h5m
+prometheus-kube-state-metrics-857945f95f-gq8mc           1/1     Running   0            7h5m
+prometheus-prometheus-kube-prometheus-prometheus-0       2/2     Running   0            6h51m
+prometheus-prometheus-node-exporter-95gk9                1/1     Running   0            7d5h
+prometheus-prometheus-node-exporter-fjmv5                1/1     Running   0            7d5h
+prometheus-prometheus-node-exporter-scp46                1/1     Running   5 (7h ago)   7d5h
+prometheus-kube-prometheus-admission-create-c8sdx        0/1     Pending   0            0s
+prometheus-kube-prometheus-admission-create-c8sdx        0/1     Pending   0            0s
+prometheus-kube-prometheus-admission-create-c8sdx        0/1     ContainerCreating   0            0s
+prometheus-kube-prometheus-admission-create-c8sdx        0/1     ContainerCreating   0            2s
+prometheus-kube-prometheus-admission-create-c8sdx        1/1     Running             0            6s
+prometheus-kube-prometheus-admission-create-c8sdx        0/1     Completed           0            7s
+prometheus-kube-prometheus-admission-create-c8sdx        0/1     Completed           0            9s
+prometheus-kube-prometheus-admission-create-c8sdx        0/1     Completed           0            9s
+prometheus-kube-prometheus-admission-create-c8sdx        0/1     Completed           0            9s
+prometheus-grafana-54878fb66d-b97qk                      0/3     Pending             0            7m48s
+prometheus-grafana-54878fb66d-b97qk                      0/3     Pending             0            7m58s
+prometheus-grafana-54878fb66d-b97qk                      0/3     Init:0/1            0            7m58s
+prometheus-grafana-54878fb66d-b97qk                      0/3     Init:0/1            0            8m18s
+prometheus-grafana-54878fb66d-b97qk                      0/3     PodInitializing     0            8m20s
+prometheus-grafana-54878fb66d-b97qk                      2/3     Running             0            8m22s
+prometheus-kube-prometheus-admission-create-c8sdx        0/1     Completed           0            69s
+prometheus-kube-prometheus-admission-create-c8sdx        0/1     Completed           0            69s
+prometheus-grafana-54878fb66d-b97qk                      2/3     Running             1 (2s ago)   10m
+prometheus-grafana-54878fb66d-b97qk                      3/3     Running             1 (80s ago)   12m
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ ansible-playbook site.yml --tags cleanup --limit k3s-worker-node-2 -K \
+  -e disk_hygiene_dry_run=0 \
+  -e disk_hygiene_niveau=3 \
+  -e disk_hygiene_confirm_niveau3=true
+[ERROR]: the playbook: site.yml could not be found
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops$ cd ansible/
+user@k3s-lyon-01:~/nova-syndicate-gitops/ansible$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops/ansible$ 
+user@k3s-lyon-01:~/nova-syndicate-gitops/ansible$ ansible-playbook site.yml --tags cleanup --limit k3s-worker-node-2 -K \
+  -e disk_hygiene_dry_run=0 \
+  -e disk_hygiene_niveau=3 \
+  -e disk_hygiene_confirm_niveau3=true
+BECOME password: 
+
+PLAY [Hygiene disque kubeadm] ************************************************************************************************************************
+
+TASK [Gathering Facts] *******************************************************************************************************************************
+ok: [k3s-worker-node-2]
+
+TASK [disk_hygiene : Refuser NIVEAU 3 sans confirmation] *********************************************************************************************
+skipping: [k3s-worker-node-2]
+
+TASK [disk_hygiene : Repertoires cleanup] ************************************************************************************************************
+ok: [k3s-worker-node-2] => (item=/usr/local/sbin)
+ok: [k3s-worker-node-2] => (item=/var/log/disk-hygiene)
+
+TASK [disk_hygiene : Pousser cleanup-safe.sh et dependances] *****************************************************************************************
+ok: [k3s-worker-node-2] => (item=audit-disque.sh)
+ok: [k3s-worker-node-2] => (item=cleanup-safe.sh)
+ok: [k3s-worker-node-2] => (item=disk-watch.sh)
+ok: [k3s-worker-node-2] => (item=longhorn-snaps.sh)
+ok: [k3s-worker-node-2] => (item=hygiene-master-kubeadm.sh)
+ok: [k3s-worker-node-2] => (item=hotspots.sh)
+
+TASK [disk_hygiene : Mesurer / si audit non joue] ****************************************************************************************************
+ok: [k3s-worker-node-2]
+
+TASK [disk_hygiene : Decider si on nettoie] **********************************************************************************************************
+ok: [k3s-worker-node-2]
+
+TASK [disk_hygiene : Skip sous seuil] ****************************************************************************************************************
+skipping: [k3s-worker-node-2]
+
+TASK [disk_hygiene : Chemin log cleanup] *************************************************************************************************************
+ok: [k3s-worker-node-2]
+
+TASK [disk_hygiene : Lancer cleanup-safe.sh] *********************************************************************************************************
+changed: [k3s-worker-node-2]
+
+TASK [disk_hygiene : Extraire avant/apres] ***********************************************************************************************************
+ok: [k3s-worker-node-2] => {
+    "msg": [
+        "HOST=Zabbix-Monitoring STAMP=20260924T143911Z DRY_RUN=0 NIVEAU=3",
+        "AVANT / used=18G avail=8.3G pct=69%",
+        "== NIVEAU 1 : journal, caches, tmp ==",
+        "== NIVEAU 1b : cache VS Code Remote (workspace + VSIX + vieilles versions) ==",
+        "== NIVEAU 2 : logs runtime + pods morts ==",
+        "== NIVEAU 3 : prune images non utilisées (fenêtre de maintenance) ==",
+        "APRES / used=13G avail=14G pct=50%"
+    ]
+}
+
+TASK [disk_hygiene : Repertoire rapports sur le controleur] ******************************************************************************************
+ok: [k3s-worker-node-2 -> localhost]
+
+TASK [disk_hygiene : Rapatrier audit] ****************************************************************************************************************
+ok: [k3s-worker-node-2]
+
+TASK [disk_hygiene : Rapatrier log cleanup si present] ***********************************************************************************************
+changed: [k3s-worker-node-2]
+
+PLAY RECAP *******************************************************************************************************************************************
+k3s-worker-node-2          : ok=11   changed=2    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
+
+user@k3s-lyon-01:~/nova-syndicate-gitops/ansible$ 
+
+------------worker disk ------------
+
+user@Zabbix-Monitoring:~$ df -h
+Filesystem                         Size  Used Avail Use% Mounted on
+tmpfs                              392M  6.6M  386M   2% /run
+/dev/mapper/ubuntu--vg-ubuntu--lv   28G   21G  6.2G  77% /
+tmpfs                              2.0G     0  2.0G   0% /dev/shm
+tmpfs                              5.0M     0  5.0M   0% /run/lock
+/dev/vda2                          2.0G  200M  1.6G  11% /boot
+tmpfs                              392M   12K  392M   1% /run/user/1000
+user@Zabbix-Monitoring:~$ 
+user@Zabbix-Monitoring:~$ 
+user@Zabbix-Monitoring:~$ 
+user@Zabbix-Monitoring:~$ 
+user@Zabbix-Monitoring:~$ 
+user@Zabbix-Monitoring:~$ 
+user@Zabbix-Monitoring:~$ 
+user@Zabbix-Monitoring:~$ cd ~/.vscode-server/cli/servers
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ 
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ 
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ ls -1dt Stable-*
+Stable-7debcd0e2acdea1c52de81bf9ee1620444407dda
+Stable-2242ebbb54efeeb0129e08e919e7e8d43033cd83
+Stable-645f29cc3176500b4b5762ba887cf2a7f0ffdf2c
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ ls -1dt Stable-* | tail -n +2
+Stable-2242ebbb54efeeb0129e08e919e7e8d43033cd83
+Stable-645f29cc3176500b4b5762ba887cf2a7f0ffdf2c
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ ls -1dt Stable-* | tail -n +2 | xargs -r -d '\n' rm -rf
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ 
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ rm -rf ~/.vscode-server/data/User/workspaceStorage/*
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ 
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ rm -rf ~/.vscode-server/data/CachedExtensionVSIXs
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ 
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ rm -rf ~/.vscode-server/data/logs
+
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ 
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ df -h
+Filesystem                         Size  Used Avail Use% Mounted on
+tmpfs                              392M  6.6M  386M   2% /run
+/dev/mapper/ubuntu--vg-ubuntu--lv   28G   19G  7.3G  73% /
+tmpfs                              2.0G     0  2.0G   0% /dev/shm
+tmpfs                              5.0M     0  5.0M   0% /run/lock
+/dev/vda2                          2.0G  200M  1.6G  11% /boot
+tmpfs                              392M   12K  392M   1% /run/user/1000
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ 
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ 
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ 
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ df -h
+Filesystem                         Size  Used Avail Use% Mounted on
+tmpfs                              392M  2.7M  389M   1% /run
+/dev/mapper/ubuntu--vg-ubuntu--lv   28G   15G   12G  55% /
+tmpfs                              2.0G     0  2.0G   0% /dev/shm
+tmpfs                              5.0M     0  5.0M   0% /run/lock
+/dev/vda2                          2.0G  200M  1.6G  11% /boot
+tmpfs                              392M   12K  392M   1% /run/user/1000
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ 
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ 
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ sudo du -xh -d2 /home/*/.vscode-server /root/.vscode-server 2>/dev/null | sort -h | tail -25
+[sudo] password for user: 
+4.0K    /home/user/.vscode-server/data/Machine
+8.0K    /home/user/.vscode-server/extensions
+72K     /home/user/.vscode-server/data/logs
+284K    /home/user/.vscode-server/data/User
+1.2M    /home/user/.vscode-server/data/CachedProfilesData
+306M    /home/user/.vscode-server/data/agent-host
+307M    /home/user/.vscode-server/data
+658M    /home/user/.vscode-server/cli
+658M    /home/user/.vscode-server/cli/servers
+1.1G    /home/user/.vscode-server
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ 
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ 
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ sudo du -xh -d2 /var/lib/kubelet | sort -h | tail -20
+echo "---- crictl ----"
+4.0K    /var/lib/kubelet/plugins_registry
+4.0K    /var/lib/kubelet/pod-resources
+16K     /var/lib/kubelet/pki
+24K     /var/lib/kubelet/pods/ad42dc30-dcaf-4ec6-a2e5-4fb529530e39
+28K     /var/lib/kubelet/plugins/kubernetes.io
+32K     /var/lib/kubelet/pods/59de3a05-6d58-4af7-a98d-ddb955020f19
+36K     /var/lib/kubelet/pods/429de8a7-5945-4402-9bd3-3aad6dc8b669
+36K     /var/lib/kubelet/pods/e0b7c78d-2e4d-4b11-bbc1-1e08ba026c88
+40K     /var/lib/kubelet/plugins
+40K     /var/lib/kubelet/pods/bff6d3bc-bac4-458b-852b-4bb3277a4e77
+44K     /var/lib/kubelet/pods/49b4687e-d97d-4afc-9543-7d9b373c30be
+44K     /var/lib/kubelet/pods/4c680ded-308a-4080-91cd-fcd5da252834
+44K     /var/lib/kubelet/pods/b9930313-e027-4443-bd24-a780d942be40
+56K     /var/lib/kubelet/pods/0cbb8efc-76d3-48e2-9e04-4933172a60c0
+60K     /var/lib/kubelet/pods/fa36a37c-afee-4f51-bd90-084f58e39dae
+88K     /var/lib/kubelet/pods/98952b89-626d-4b98-a932-34842e773e19
+528K    /var/lib/kubelet/pods/edbee06e-2eaf-478e-9f9f-2f85c557bfb4
+540K    /var/lib/kubelet/pods/8e561a22-3f74-441c-aca7-606abb231b5a
+1.6M    /var/lib/kubelet/pods
+1.7M    /var/lib/kubelet
+---- crictl ----
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ sudo crictl images
+WARN[0000] image connect using default endpoints: [unix:///run/containerd/containerd.sock unix:///run/crio/crio.sock unix:///var/run/cri-dockerd.sock]. As the default settings are now deprecated, you should set the endpoint instead. 
+IMAGE                                            TAG                  IMAGE ID            SIZE
+docker.io/bitnami/postgresql                     latest               f58875cab2a3e       127MB
+docker.io/hashicorp/vault                        2.0.3                1747a4ab1e1be       192MB
+docker.io/library/postgres                       16                   19d88319bea99       160MB
+docker.io/longhornio/longhorn-engine             v1.6.0               f772ce9ba10a4       136MB
+docker.io/longhornio/longhorn-instance-manager   v1.6.0               2e4eb3ba8dca0       269MB
+docker.io/longhornio/longhorn-manager            v1.6.0               9f4c1b666bd8c       111MB
+docker.io/zabbix/zabbix-agent2                   ubuntu-7.0.16        8f84252b7dd47       55.7MB
+docker.io/zabbix/zabbix-server-pgsql             ubuntu-7.0.16        2e81ee4ecc8bc       90.8MB
+quay.io/calico/node                              v3.31.1              93d188c5c1d22       160MB
+quay.io/calico/typha                             v3.31.1              db06e1cc04c52       36.1MB
+quay.io/keycloak/keycloak                        26.7.2               93ea80b4686a1       268MB
+quay.io/prometheus/node-exporter                 v1.12.1-distroless   6ce127b25a483       13.1MB
+registry.k8s.io/pause                            3.10.1               cd073f4c5f6a8       320kB
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ 
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ 
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ 
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ df -h
+Filesystem                         Size  Used Avail Use% Mounted on
+tmpfs                              392M  2.9M  389M   1% /run
+/dev/mapper/ubuntu--vg-ubuntu--lv   28G   16G   11G  61% /
+tmpfs                              2.0G     0  2.0G   0% /dev/shm
+tmpfs                              5.0M     0  5.0M   0% /run/lock
+/dev/vda2                          2.0G  200M  1.6G  11% /boot
+tmpfs                              392M   12K  392M   1% /run/user/1000
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ 
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ 
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ 
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ 
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ 
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ df -h
+Filesystem                         Size  Used Avail Use% Mounted on
+tmpfs                              392M  3.1M  389M   1% /run
+/dev/mapper/ubuntu--vg-ubuntu--lv   28G   15G   13G  54% /
+tmpfs                              2.0G     0  2.0G   0% /dev/shm
+tmpfs                              5.0M     0  5.0M   0% /run/lock
+/dev/vda2                          2.0G  200M  1.6G  11% /boot
+tmpfs                              392M   12K  392M   1% /run/user/1000
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ 
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ 
+user@Zabbix-Monitoring:~/.vscode-server/cli/servers$ 
+
+-----------------worker 2 disk ----------
+
+user@k3s-worker-mrs:~$ lsblk | grep pvc-db27f4b5
+user@k3s-worker-mrs:~$ mount | grep pvc-db27f4b5
+user@k3s-worker-mrs:~$ 
+user@k3s-worker-mrs:~$ 
+user@k3s-worker-mrs:~$ multipath -ll | grep pvc-db27f4b5
+2924586.486446 | couldn't open configuration dir '/etc/multipath/conf.d': Permission denied
+need to be root
+user@k3s-worker-mrs:~$ sudo multipath -ll | grep pvc-db27f4b5
+[sudo] password for user: 
+user@k3s-worker-mrs:~$ 
+user@k3s-worker-mrs:~$ 
+user@k3s-worker-mrs:~$ sudo multipath -ll | grep pvc-db27f4b5
+user@k3s-worker-mrs:~$ 
+user@k3s-worker-mrs:~$ mount | grep db27f4b5
+user@k3s-worker-mrs:~$ 
+user@k3s-worker-mrs:~$ 
+user@k3s-worker-mrs:~$ sudo umount /var/lib/kubelet/plugins/kubernetes.io/csi/driver.longhorn.io/2f3179bbe7bf43110bf226dccf658fadbce61fad6a10a49c8f7735ac18d88fe8/globalmount
+[sudo] password for user: 
+umount: /var/lib/kubelet/plugins/kubernetes.io/csi/driver.longhorn.io/2f3179bbe7bf43110bf226dccf658fadbce61fad6a10a49c8f7735ac18d88fe8/globalmount: no mount point specified.
+user@k3s-worker-mrs:~$ 
+user@k3s-worker-mrs:~$ 
+user@k3s-worker-mrs:~$ findmnt /dev/longhorn/pvc-db27f4b5-1ec7-4712-afa0-2eae90a1a966
+user@k3s-worker-mrs:~$ mount | grep -E 'db27f4b5|longhorn/pvc-db27'
+user@k3s-worker-mrs:~$ ls -ld /var/lib/kubelet/plugins/kubernetes.io/csi/driver.longhorn.io/2f3179bbe7bf43110bf226dccf658fadbce61fad6a10a49c8f7735ac18d88fe8/globalmount
+ls: cannot access '/var/lib/kubelet/plugins/kubernetes.io/csi/driver.longhorn.io/2f3179bbe7bf43110bf226dccf658fadbce61fad6a10a49c8f7735ac18d88fe8/globalmount': Permission denied
+user@k3s-worker-mrs:~$ sudo ls -ld /var/lib/kubelet/plugins/kubernetes.io/csi/driver.longhorn.io/2f3179bbe7bf43110bf226dccf658fadbce61fad6a10a49c8f7735ac18d88fe8/globalmount
+ls: cannot access '/var/lib/kubelet/plugins/kubernetes.io/csi/driver.longhorn.io/2f3179bbe7bf43110bf226dccf658fadbce61fad6a10a49c8f7735ac18d88fe8/globalmount': No such file or directory
+user@k3s-worker-mrs:~$ 
+user@k3s-worker-mrs:~$ sudo umount /var/lib/kubelet/plugins/kubernetes.io/csi/driver.longhorn.io/2f3179bbe7bf43110bf226dccf658fadbce61fad6a10a49c8f7735ac18d88fe8/globalmount
+umount: /var/lib/kubelet/plugins/kubernetes.io/csi/driver.longhorn.io/2f3179bbe7bf43110bf226dccf658fadbce61fad6a10a49c8f7735ac18d88fe8/globalmount: no mount point specified.
+user@k3s-worker-mrs:~$ sudo umount /var/lib/kubelet/plugins/kubernetes.io/csi/driver.longhorn.io/2f3179bbe7bf43110bf226dccf658fadbce61fad6a10a49c8f7735ac18d88fe8/globalmount
+sudo umount -l /var/lib/kubelet/plugins/kubernetes.io/csi/driver.longhorn.io/2f3179bbe7bf43110bf226dccf658fadbce61fad6a10a49c8f7735ac18d88fe8/globalmount
+umount: /var/lib/kubelet/plugins/kubernetes.io/csi/driver.longhorn.io/2f3179bbe7bf43110bf226dccf658fadbce61fad6a10a49c8f7735ac18d88fe8/globalmount: no mount point specified.
+umount: /var/lib/kubelet/plugins/kubernetes.io/csi/driver.longhorn.io/2f3179bbe7bf43110bf226dccf658fadbce61fad6a10a49c8f7735ac18d88fe8/globalmount: no mount point specified.
+user@k3s-worker-mrs:~$ 
+user@k3s-worker-mrs:~$ 
+user@k3s-worker-mrs:~$ 
+user@k3s-worker-mrs:~$ 
+user@k3s-worker-mrs:~$ 
+user@k3s-worker-mrs:~$ 
+user@k3s-worker-mrs:~$ 
+user@k3s-worker-mrs:~$ sudo cat /proc/mounts | grep -E 'longhorn|db27f4b5'
+tmpfs /var/lib/kubelet/pods/c216b1d6-3887-4e27-890a-9925f7c7015b/volumes/kubernetes.io~secret/longhorn-grpc-tls tmpfs rw,relatime,size=3907464k,inode64,noswap 0 0
+tmpfs /var/lib/kubelet/pods/7e2e1816-a67b-4143-8aba-099bf399022c/volumes/kubernetes.io~secret/longhorn-grpc-tls tmpfs rw,relatime,size=3907464k,inode64,noswap 0 0
+/dev/longhorn/pvc-08d6fe9c-e054-4679-ba18-6e26556e780b /var/lib/kubelet/plugins/kubernetes.io/csi/driver.longhorn.io/e269af378e53bb1761e937f9f67f927ef51bd0f66594159735da10195a667cdb/globalmount ext4 rw,relatime 0 0
+/dev/longhorn/pvc-08d6fe9c-e054-4679-ba18-6e26556e780b /var/lib/kubelet/pods/22c980c0-d43c-419f-9cc1-c09fe3ad72fc/volumes/kubernetes.io~csi/pvc-08d6fe9c-e054-4679-ba18-6e26556e780b/mount ext4 rw,relatime 0 0
+/dev/longhorn/pvc-08d6fe9c-e054-4679-ba18-6e26556e780b /var/lib/kubelet/pods/22c980c0-d43c-419f-9cc1-c09fe3ad72fc/volume-subpaths/pvc-08d6fe9c-e054-4679-ba18-6e26556e780b/prometheus/2 ext4 rw,relatime 0 0
+user@k3s-worker-mrs:~$ 
+user@k3s-worker-mrs:~$ sudo ls -l /dev/longhorn/ | grep db27f4b5
+user@k3s-worker-mrs:~$ 
+user@k3s-worker-mrs:~$ sudo find /var/lib/kubelet/plugins/kubernetes.io/csi/driver.longhorn.io -iname '*db27*' -o -iname '*2f3179bb*' 2>/dev/null
+user@k3s-worker-mrs:~$ 
+user@k3s-worker-mrs:~$ sudo rm -rf /var/lib/kubelet/plugins/kubernetes.io/csi/driver.longhorn.io/2f3179bbe7bf43110bf226dccf658fadbce61fad6a10a49c8f7735ac18d88fe8
+user@k3s-worker-mrs:~$ 
+user@k3s-worker-mrs:~$ 
+user@k3s-worker-mrs:~$ kubectl -n longhorn-system delete pod -l app=longhorn-csi-plugin --field-selector spec.nodeName=k3s-worker-mrs
+E0922 16:18:00.868839 2279061 memcache.go:265] "Unhandled Error" err="couldn't get current server API group list: Get \"http://localhost:8080/api?timeout=32s\": dial tcp 127.0.0.1:8080: connect: connection refused"
+E0922 16:18:00.874389 2279061 memcache.go:265] "Unhandled Error" err="couldn't get current server API group list: Get \"http://localhost:8080/api?timeout=32s\": dial tcp 127.0.0.1:8080: connect: connection refused"
+E0922 16:18:00.879123 2279061 memcache.go:265] "Unhandled Error" err="couldn't get current server API group list: Get \"http://localhost:8080/api?timeout=32s\": dial tcp 127.0.0.1:8080: connect: connection refused"
+E0922 16:18:00.881915 2279061 memcache.go:265] "Unhandled Error" err="couldn't get current server API group list: Get \"http://localhost:8080/api?timeout=32s\": dial tcp 127.0.0.1:8080: connect: connection refused"
+E0922 16:18:00.887875 2279061 memcache.go:265] "Unhandled Error" err="couldn't get current server API group list: Get \"http://localhost:8080/api?timeout=32s\": dial tcp 127.0.0.1:8080: connect: connection refused"
+The connection to the server localhost:8080 was refused - did you specify the right host or port?
+user@k3s-worker-mrs:~$ 
+user@k3s-worker-mrs:~$ 
+user@k3s-worker-mrs:~$ 
+user@k3s-worker-mrs:~$ 
+user@k3s-worker-mrs:~$ 
+user@k3s-worker-mrs:~$ df -h
+Filesystem                         Size  Used Avail Use% Mounted on
+tmpfs                              392M  3.1M  389M   1% /run
+/dev/mapper/ubuntu--vg-ubuntu--lv   24G   17G  6.1G  73% /
+tmpfs                              2.0G     0  2.0G   0% /dev/shm
+tmpfs                              5.0M     0  5.0M   0% /run/lock
+/dev/vda2                          2.0G  200M  1.6G  11% /boot
+tmpfs                              392M   12K  392M   1% /run/user/1000
+user@k3s-worker-mrs:~$ 
+user@k3s-worker-mrs:~$ 
+user@k3s-worker-mrs:~$ 
+user@k3s-worker-mrs:~$ cd ~/.vscode-server/cli/servers
+ls -1dt Stable-*                    # plus récent en tête
+ls -1dt Stable-* | tail -n +2       # à supprimer
+ls -1dt Stable-* | tail -n +2 | xargs -r -d '\n' rm -rf
+
+# caches régénérables
+rm -rf ~/.vscode-server/data/User/workspaceStorage/*
+rm -rf ~/.vscode-server/data/CachedExtensionVSIXs
+rm -rf ~/.vscode-server/data/logs
+Stable-7debcd0e2acdea1c52de81bf9ee1620444407dda
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$  df -h
+Filesystem                         Size  Used Avail Use% Mounted on
+tmpfs                              392M  3.1M  389M   1% /run
+/dev/mapper/ubuntu--vg-ubuntu--lv   24G   17G  6.2G  73% /
+tmpfs                              2.0G     0  2.0G   0% /dev/shm
+tmpfs                              5.0M     0  5.0M   0% /run/lock
+/dev/vda2                          2.0G  200M  1.6G  11% /boot
+tmpfs                              392M   12K  392M   1% /run/user/1000
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ ls -1dt Stable-* 
+Stable-7debcd0e2acdea1c52de81bf9ee1620444407dda
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ ls -1dt Stable-* | tail -n +2 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+^C
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ ls -1dt Stable-* | tail -n +2 | xargs -r -d '\n' rm -rf
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ df -h
+Filesystem                         Size  Used Avail Use% Mounted on
+tmpfs                              392M  6.7M  385M   2% /run
+/dev/mapper/ubuntu--vg-ubuntu--lv   24G   17G  6.1G  74% /
+tmpfs                              2.0G     0  2.0G   0% /dev/shm
+tmpfs                              5.0M     0  5.0M   0% /run/lock
+/dev/vda2                          2.0G  200M  1.6G  11% /boot
+tmpfs                              392M   12K  392M   1% /run/user/1000
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ sudo cat /proc/mounts 
+[sudo] password for user: 
+sudo: a password is required
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ sudo du -xh -d2 /home/*/.vscode-server /root/.vscode-server 2>/dev/null | sort -h | tail -25
+[sudo] password for user: 
+4.0K    /home/user/.vscode-server/data/Machine
+8.0K    /home/user/.vscode-server/extensions
+72K     /home/user/.vscode-server/data/logs
+244K    /home/user/.vscode-server/data/User
+1.2M    /home/user/.vscode-server/data/CachedProfilesData
+1.5M    /home/user/.vscode-server/data
+658M    /home/user/.vscode-server/cli
+658M    /home/user/.vscode-server/cli/servers
+758M    /home/user/.vscode-server
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ sudo du -xh -d2 /var/lib/kubelet | sort -h | tail -20
+echo "---- crictl ----"
+44K     /var/lib/kubelet/pods/c216b1d6-3887-4e27-890a-9925f7c7015b
+44K     /var/lib/kubelet/pods/c396abca-cb07-4eec-8b86-c881de100b95
+44K     /var/lib/kubelet/pods/db41c90a-f863-44e7-9ecc-28d8e68eb6ee
+44K     /var/lib/kubelet/pods/fa9130b2-e906-4a22-8cdb-52087ab1aa20
+48K     /var/lib/kubelet/pods/35b88140-07ca-436f-aa6f-ba403f58a20f
+56K     /var/lib/kubelet/pods/446f413f-6e0c-4ec4-8a10-37d4d4920498
+56K     /var/lib/kubelet/pods/4c663eb1-7b89-4e07-99d5-9f0255fe1826
+56K     /var/lib/kubelet/pods/569dd7e6-3d02-483d-a7f6-08d7baa4d96f
+56K     /var/lib/kubelet/pods/e38e6f33-732d-45c5-b356-8c6ccdcbac68
+60K     /var/lib/kubelet/pods/48e62f03-7420-4d3e-a04a-7d1d062855ec
+60K     /var/lib/kubelet/pods/7b309d9c-4809-4b12-8977-af7feb45a8a4
+108K    /var/lib/kubelet/pods/f1230727-45ce-4a25-985d-726532bea124
+160K    /var/lib/kubelet/pods/64a561b7-c8aa-4d56-867b-06cfceb2a605
+160K    /var/lib/kubelet/pods/e1ae6438-fe27-454f-81e6-20bc024d33bc
+520K    /var/lib/kubelet/pods/22c980c0-d43c-419f-9cc1-c09fe3ad72fc
+528K    /var/lib/kubelet/pods/4c28cd71-fbfc-4688-b5f3-66b8ecab783f
+540K    /var/lib/kubelet/pods/8dceeece-09a8-44d8-98d5-f46bb1ca058f
+768K    /var/lib/kubelet/pods/bdbe315d-983f-4509-8fb6-85785413a210
+4.4M    /var/lib/kubelet/pods
+4.5M    /var/lib/kubelet
+---- crictl ----
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ sudo crictl images
+WARN[0000] image connect using default endpoints: [unix:///run/containerd/containerd.sock unix:///run/crio/crio.sock unix:///var/run/cri-dockerd.sock]. As the default settings are now deprecated, you should set the endpoint instead. 
+IMAGE                                                    TAG                  IMAGE ID            SIZE
+docker.io/bitnami/sealed-secrets-controller              0.39.1               3002f09d2fbfd       30MB
+docker.io/grafana/grafana                                13.2.0               b5c299d0a2884       474MB
+docker.io/hashicorp/vault-k8s                            1.7.5                8bc04e5451710       37.8MB
+docker.io/hashicorp/vault                                2.0.3                1747a4ab1e1be       192MB
+docker.io/library/busybox                                1.38.0               c6348fa86ba0f       2.24MB
+docker.io/library/nginx                                  1.25                 e784f4560448b       71MB
+docker.io/longhornio/csi-attacher                        v4.4.2               6bc8bdd63e408       26.7MB
+docker.io/longhornio/csi-node-driver-registrar           v2.9.2               438c692b0cb6d       10.8MB
+docker.io/longhornio/csi-provisioner                     v3.6.2               ec9b939801797       28.7MB
+docker.io/longhornio/csi-resizer                         v1.9.2               d11bd1f0b3e57       27MB
+docker.io/longhornio/csi-snapshotter                     v6.3.2               118137d698bbd       26.8MB
+docker.io/longhornio/livenessprobe                       v2.11.0              494ea5379400e       9.7MB
+docker.io/longhornio/longhorn-engine                     v1.6.0               f772ce9ba10a4       136MB
+docker.io/longhornio/longhorn-instance-manager           v1.6.0               2e4eb3ba8dca0       269MB
+docker.io/longhornio/longhorn-manager                    v1.6.0               9f4c1b666bd8c       111MB
+docker.io/longhornio/longhorn-ui                         v1.6.0               efa6d3d087772       73.2MB
+docker.io/openpolicyagent/gatekeeper                     v3.18.2              11796f80e62e2       43.5MB
+docker.io/zabbix/zabbix-agent2                           ubuntu-7.0.16        8f84252b7dd47       55.7MB
+docker.io/zabbix/zabbix-server-pgsql                     ubuntu-7.0.16        2e81ee4ecc8bc       90.8MB
+docker.io/zabbix/zabbix-web-nginx-pgsql                  ubuntu-7.0.16        af7008fa1eaef       150MB
+docker.io/zabbix/zabbix-web-service                      ubuntu-7.0.16        9a6a6f66bbbd3       254MB
+ghcr.io/dexidp/dex                                       v2.41.1              8ff1b28fdd563       38.3MB
+quay.io/calico/apiserver                                 v3.31.1              16de55b902be5       49.9MB
+quay.io/calico/node                                      v3.31.1              93d188c5c1d22       160MB
+quay.io/calico/typha                                     v3.31.1              db06e1cc04c52       36.1MB
+quay.io/kiwigrid/k8s-sidecar                             2.10.1               e9218c318e57c       30.2MB
+quay.io/prometheus-operator/prometheus-config-reloader   v0.93.1              cb2f197322b2a       14.6MB
+quay.io/prometheus-operator/prometheus-operator          v0.93.1              321c536e73beb       20.9MB
+quay.io/prometheus/alertmanager                          v0.34.0              c4e1c067b29ef       40.7MB
+quay.io/prometheus/node-exporter                         v1.12.1-distroless   6ce127b25a483       13.1MB
+quay.io/prometheus/prometheus                            v3.14.0-distroless   b7256d9c7ab77       109MB
+registry.k8s.io/coredns/coredns                          v1.11.3              c69fa2e9cbf5f       18.6MB
+registry.k8s.io/ingress-nginx/controller                 <none>               97fe896f8c07b       113MB
+registry.k8s.io/kube-state-metrics/kube-state-metrics    v2.20.0              a635e3d8e1a4f       19.3MB
+registry.k8s.io/metrics-server/metrics-server            v0.7.1               a24c7c057ec87       19.5MB
+registry.k8s.io/pause                                    3.10.1               cd073f4c5f6a8       320kB
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ sudo crictl ps
+WARN[0000] runtime connect using default endpoints: [unix:///run/containerd/containerd.sock unix:///run/crio/crio.sock unix:///var/run/cri-dockerd.sock]. As the default settings are now deprecated, you should set the endpoint instead. 
+WARN[0000] image connect using default endpoints: [unix:///run/containerd/containerd.sock unix:///run/crio/crio.sock unix:///var/run/cri-dockerd.sock]. As the default settings are now deprecated, you should set the endpoint instead. 
+CONTAINER           IMAGE               CREATED              STATE               NAME                        ATTEMPT             POD ID              POD
+e76fc9f48657f       6bc8bdd63e408       8 seconds ago        Running             csi-attacher                5                   98cc81a846cd4       csi-attacher-66b7b4b4d4-hppnn
+a517a2eabd8ef       f772ce9ba10a4       57 seconds ago       Running             engine-image-ei-acb7590c    18                  243d6dc242f78       engine-image-ei-acb7590c-bh59d
+b9212356a0eae       6ce127b25a483       About a minute ago   Running             node-exporter               12                  ad9f222cd3143       prometheus-prometheus-node-exporter-scp46
+e0800553d792d       b5c299d0a2884       About a minute ago   Running             grafana                     5                   0f03b3e7391ec       prometheus-grafana-54878fb66d-b97qk
+a49bd6f6d72fd       a635e3d8e1a4f       About a minute ago   Running             kube-state-metrics          8                   99c4b77755119       prometheus-kube-state-metrics-857945f95f-tcktq
+582e448b3e5e8       9f4c1b666bd8c       About a minute ago   Running             longhorn-csi-plugin         6                   3558d736005f2       longhorn-csi-plugin-wnbl6
+b5b61d61c9d87       b7256d9c7ab77       5 minutes ago        Running             prometheus                  1                   e2ddfc45fe01c       prometheus-prometheus-kube-prometheus-prometheus-0
+a2650388c2fb9       8bc04e5451710       6 minutes ago        Running             sidecar-injector            6                   c4d2a605e00f5       vault-agent-injector-789bb85969-m95tz
+2d4f8113a98fd       93d188c5c1d22       9 minutes ago        Running             calico-node                 21                  341d6e55fa245       calico-node-sl448
+6732f900ee833       db06e1cc04c52       9 minutes ago        Running             calico-typha                14                  46db5784b0bd3       calico-typha-b68f599c-k4424
+dcdc2c68e72bb       8f84252b7dd47       9 minutes ago        Running             zabbix-agent                2                   5bbee40a90385       zabbix-zabbix-server-6794f9fcd6-w4n99
+2a2f9b075f5d8       ec9b939801797       9 minutes ago        Running             csi-provisioner             2                   8a49b5c683ac6       csi-provisioner-bc67cbb54-pz7zn
+344ffc6a2f21b       af7008fa1eaef       9 minutes ago        Running             zabbix-web                  3                   e0a5c6d1b365a       zabbix-zabbix-web-859bcb6965-z2rf4
+a98cccd1e34a6       118137d698bbd       9 minutes ago        Running             csi-snapshotter             2                   a6c01965b6596       csi-snapshotter-7565995789-b6v7p
+8c3077fdc4bbc       d11bd1f0b3e57       9 minutes ago        Running             csi-resizer                 2                   4d4b3a6c2a968       csi-resizer-66cc556f5-8hm2t
+c16688bb21b9a       ec9b939801797       9 minutes ago        Running             csi-provisioner             2                   978040b686eb2       csi-provisioner-bc67cbb54-fcwwl
+3c5b0354b7b61       118137d698bbd       9 minutes ago        Running             csi-snapshotter             2                   9463104053747       csi-snapshotter-7565995789-78qnn
+3f3456ee2e328       d11bd1f0b3e57       10 minutes ago       Running             csi-resizer                 2                   a8196ea2d1bec       csi-resizer-66cc556f5-sck6h
+bfaf57e3f1c14       d11bd1f0b3e57       10 minutes ago       Running             csi-resizer                 2                   bd8a90379aeba       csi-resizer-66cc556f5-dvwx2
+0b32ff9d986bb       118137d698bbd       10 minutes ago       Running             csi-snapshotter             2                   65824ec93b7d3       csi-snapshotter-7565995789-ps6zd
+32a22b6a900da       97fe896f8c07b       11 minutes ago       Running             controller                  1                   522a0efb4f162       ingress-nginx-controller-748d8795b6-2twkz
+83b8d8798c271       a24c7c057ec87       11 minutes ago       Running             metrics-server              2                   f9c0cea8d3033       metrics-server-6b9d46d856-sjm6j
+81b487a22cfc7       11796f80e62e2       13 minutes ago       Running             manager                     0                   d13f1ae605baf       gatekeeper-controller-manager-86ccf8d7dd-dzzxq
+918a317611533       16de55b902be5       14 minutes ago       Running             calico-apiserver            0                   6c022e845310c       calico-apiserver-d485f9d7d-6svmb
+6577575e4e403       11796f80e62e2       15 minutes ago       Running             manager                     0                   50acb4d664591       gatekeeper-controller-manager-86ccf8d7dd-7tlqs
+898edad54afaa       11796f80e62e2       15 minutes ago       Running             manager                     0                   404b7c9f5a26d       gatekeeper-audit-749b7d998c-hrnfz
+0ef4374d66c48       8ff1b28fdd563       15 minutes ago       Running             dex                         0                   483bdd940dbfe       dex-66bbd65f5-tp4g7
+fd5a3df475dc6       efa6d3d087772       15 minutes ago       Running             longhorn-ui                 1                   fd8e8958378c7       longhorn-ui-87b4df967-f8pg4
+7d409c39cdebe       11796f80e62e2       15 minutes ago       Running             manager                     0                   afdc1c7544bbc       gatekeeper-controller-manager-86ccf8d7dd-k2w6f
+114e51fb16edf       2e81ee4ecc8bc       15 minutes ago       Running             zabbix-server               0                   5bbee40a90385       zabbix-zabbix-server-6794f9fcd6-w4n99
+ea798cd60dedd       9f4c1b666bd8c       15 minutes ago       Running             longhorn-driver-deployer    0                   2d787b7dacf2c       longhorn-driver-deployer-564f49c894-c9zkl
+e5ece51128eb8       e784f4560448b       16 minutes ago       Running             nginx                       0                   34dcabd83fdb9       nginx-test-6c5bd466f8-j2cpr
+3b7f4ccd5843b       c69fa2e9cbf5f       16 minutes ago       Running             coredns                     0                   6194540f4d89f       coredns-7c65d6cfc9-zzpw5
+ec7b53b620eec       9a6a6f66bbbd3       16 minutes ago       Running             zabbix-webservice           0                   1c749bf071d47       zabbix-zabbix-webservice-5758f58d8d-2zp2s
+3feb04384704f       efa6d3d087772       16 minutes ago       Running             longhorn-ui                 0                   5248e6e78a77f       longhorn-ui-87b4df967-2bsfd
+ccbf2bd346661       ec9b939801797       16 minutes ago       Running             csi-provisioner             0                   5c01ccb09d40d       csi-provisioner-bc67cbb54-cdfd8
+067e77f025c07       3002f09d2fbfd       16 minutes ago       Running             controller                  0                   e77b41639ce20       sealed-secrets-controller-c5bf44b4c-tm7x8
+a8805b28e8460       e9218c318e57c       46 hours ago         Running             grafana-sc-datasources      0                   0f03b3e7391ec       prometheus-grafana-54878fb66d-b97qk
+35690abbcd586       e9218c318e57c       46 hours ago         Running             grafana-sc-dashboard        0                   0f03b3e7391ec       prometheus-grafana-54878fb66d-b97qk
+f3ce1ec59f102       494ea5379400e       47 hours ago         Running             longhorn-liveness-probe     0                   3558d736005f2       longhorn-csi-plugin-wnbl6
+06ebc87921608       438c692b0cb6d       47 hours ago         Running             node-driver-registrar       0                   3558d736005f2       longhorn-csi-plugin-wnbl6
+386bbebc8a74e       cb2f197322b2a       2 days ago           Running             config-reloader             0                   e2ddfc45fe01c       prometheus-prometheus-kube-prometheus-prometheus-0
+6e9d59d64aee1       2e4eb3ba8dca0       2 days ago           Running             instance-manager            0                   1a4a7b9c3e58c       instance-manager-07ef8faf233201f7d10eb9247ddaa7f1
+62480f48a37b9       cb2f197322b2a       2 days ago           Running             config-reloader             0                   92e0c738c207a       alertmanager-prometheus-kube-prometheus-alertmanager-0
+b67cc7889ebcc       c4e1c067b29ef       2 days ago           Running             alertmanager                0                   92e0c738c207a       alertmanager-prometheus-kube-prometheus-alertmanager-0
+86fea2da1db7f       9f4c1b666bd8c       4 weeks ago          Running             longhorn-manager            0                   d7fe7a04fb340       longhorn-manager-88frp
+1b8b6a316babd       3ce6fa3216fb1       5 weeks ago          Running             csi-node-driver-registrar   11                  6a36cfeca6277       csi-node-driver-pxc5b
+511a8af19008a       cd3749afc61f5       5 weeks ago          Running             calico-csi                  11                  6a36cfeca6277       csi-node-driver-pxc5b
+bc0615c72cf0a       09bf2a24e0aeb       5 weeks ago          Running             kube-proxy                  11                  7081960ac7224       kube-proxy-psg6z
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ ls -lt /home/user/.vscode-server/cli/servers
+total 8
+-rw-r--r-- 1 user user  251 Sep 23 05:07 lru.json
+drwxrwxr-x 3 user user 4096 Sep 22 09:16 Stable-7debcd0e2acdea1c52de81bf9ee1620444407dda
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ du -sh /home/user/.vscode-server/cli/servers/*
+4.0K    /home/user/.vscode-server/cli/servers/lru.json
+658M    /home/user/.vscode-server/cli/servers/Stable-7debcd0e2acdea1c52de81bf9ee1620444407dda
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ ls -1dt * | tail -n +2
+# vérifier la liste, puis :
+ls -1dt * | tail -n +2 | xargs -r -d '\n' rm -rf
+df -hP /
+du -sh /home/user/.vscode-server
+Stable-7debcd0e2acdea1c52de81bf9ee1620444407dda
+Filesystem                         Size  Used Avail Use% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv   24G   17G  6.4G  72% /
+101M    /home/user/.vscode-server
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ df -h
+Filesystem                         Size  Used Avail Use% Mounted on
+tmpfs                              392M  6.4M  386M   2% /run
+/dev/mapper/ubuntu--vg-ubuntu--lv   24G   17G  6.4G  72% /
+tmpfs                              2.0G     0  2.0G   0% /dev/shm
+tmpfs                              5.0M     0  5.0M   0% /run/lock
+/dev/vda2                          2.0G  200M  1.6G  11% /boot
+tmpfs                              392M   12K  392M   1% /run/user/1000
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ sudo findmnt | grep a72ef063
+sudo umount /var/lib/kubelet/plugins/kubernetes.io/csi/driver.longhorn.io/34e44ea2ab50f680558fbf704b09528225f05181bcff9dd424bf3850c632f17b/globalmount
+sudo umount /dev/longhorn/pvc-a72ef063-30eb-40ec-94bb-e4b9df360837
+[sudo] password for user: 
+umount: /var/lib/kubelet/plugins/kubernetes.io/csi/driver.longhorn.io/34e44ea2ab50f680558fbf704b09528225f05181bcff9dd424bf3850c632f17b/globalmount: not mounted.
+umount: /dev/longhorn/pvc-a72ef063-30eb-40ec-94bb-e4b9df360837: not mounted.
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ kubectl get pod -n keycloak
+E0924 16:14:40.498549  800909 memcache.go:265] "Unhandled Error" err="couldn't get current server API group list: Get \"http://localhost:8080/api?timeout=32s\": dial tcp 127.0.0.1:8080: connect: connection refused"
+E0924 16:14:40.526296  800909 memcache.go:265] "Unhandled Error" err="couldn't get current server API group list: Get \"http://localhost:8080/api?timeout=32s\": dial tcp 127.0.0.1:8080: connect: connection refused"
+E0924 16:14:40.529360  800909 memcache.go:265] "Unhandled Error" err="couldn't get current server API group list: Get \"http://localhost:8080/api?timeout=32s\": dial tcp 127.0.0.1:8080: connect: connection refused"
+E0924 16:14:40.540377  800909 memcache.go:265] "Unhandled Error" err="couldn't get current server API group list: Get \"http://localhost:8080/api?timeout=32s\": dial tcp 127.0.0.1:8080: connect: connection refused"
+E0924 16:14:40.545702  800909 memcache.go:265] "Unhandled Error" err="couldn't get current server API group list: Get \"http://localhost:8080/api?timeout=32s\": dial tcp 127.0.0.1:8080: connect: connection refused"
+The connection to the server localhost:8080 was refused - did you specify the right host or port?
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ df -h
+Filesystem                         Size  Used Avail Use% Mounted on
+tmpfs                              392M  6.6M  386M   2% /run
+/dev/mapper/ubuntu--vg-ubuntu--lv   24G   17G  6.2G  73% /
+tmpfs                              2.0G     0  2.0G   0% /dev/shm
+tmpfs                              5.0M     0  5.0M   0% /run/lock
+/dev/vda2                          2.0G  200M  1.6G  11% /boot
+tmpfs                              392M   12K  392M   1% /run/user/1000
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+user@k3s-worker-mrs:~/.vscode-server/cli/servers$ 
+
