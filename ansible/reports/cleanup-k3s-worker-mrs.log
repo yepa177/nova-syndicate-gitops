@@ -456,3 +456,74 @@ Total reclaimed space: 0B
 NIVEAU 3 ne touche PAS à Longhorn, etcd, PVC, /var/lib/containerd en rm.
 APRES / used=17G avail=6.3G pct=73%
 LOG=/var/log/disk-hygiene/cleanup-k3s-worker-mrs.log FIN_CLEANUP
+HOST=k3s-worker-mrs STAMP=20261104T150516Z DRY_RUN=0 NIVEAU=3
+AVANT / used=15G avail=7.5G pct=67%
+== NIVEAU 1 : journal, caches, tmp ==
+[RUN] journalctl --vacuum-size=200M
+Vacuuming done, freed 0B of archived journals from /run/log/journal.
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@e70161e8d3a74e90a5e7116c6ec0a638-00000000008875e7-00065ec2fb3124f0.journal (65.8M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/user-1000@e70161e8d3a74e90a5e7116c6ec0a638-0000000000888f03-00065ec3cebe60aa.journal (3.5M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@e70161e8d3a74e90a5e7116c6ec0a638-00000000008a6b72-00065ed384c8278a.journal (63.7M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/user-1000@e70161e8d3a74e90a5e7116c6ec0a638-00000000008af0ed-00065ed7ecad057d.journal (3.5M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@e70161e8d3a74e90a5e7116c6ec0a638-00000000008c6073-00065ee41a377170.journal (72.7M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/user-1000@e70161e8d3a74e90a5e7116c6ec0a638-00000000008d1b48-00065ee95d175780.journal (3.5M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@e70161e8d3a74e90a5e7116c6ec0a638-00000000008e62b6-00065ef178fb6e68.journal (73.4M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@e70161e8d3a74e90a5e7116c6ec0a638-0000000000907406-00065efeac0bac2c.journal (73.2M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/user-1000@e70161e8d3a74e90a5e7116c6ec0a638-000000000090b072-00065f002e3d1870.journal (3.5M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@e70161e8d3a74e90a5e7116c6ec0a638-0000000000928232-00065f0bc6d582cc.journal (63.1M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/user-1000@e70161e8d3a74e90a5e7116c6ec0a638-000000000093a61f-00065f144c1bc1f8.journal (3.5M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@e70161e8d3a74e90a5e7116c6ec0a638-000000000094750c-00065f1c34ca0bd8.journal (60.2M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/user-1000@e70161e8d3a74e90a5e7116c6ec0a638-000000000095b297-00065f286d86b82c.journal (3.5M).
+Deleted archived journal /var/log/journal/b66f199105d0429183d4a0ab49edd449/system@e70161e8d3a74e90a5e7116c6ec0a638-0000000000966979-00065f2f75d04337.journal (63.1M).
+Vacuuming done, freed 557.0M of archived journals from /var/log/journal/b66f199105d0429183d4a0ab49edd449.
+Vacuuming done, freed 0B of archived journals from /var/log/journal.
+[RUN] journalctl --vacuum-time=7d
+Vacuuming done, freed 0B of archived journals from /var/log/journal/b66f199105d0429183d4a0ab49edd449.
+Vacuuming done, freed 0B of archived journals from /run/log/journal.
+Vacuuming done, freed 0B of archived journals from /var/log/journal.
+[RUN] apt-get -y clean
+[RUN] apt-get -y autoclean
+Reading package lists...
+Building dependency tree...
+Reading state information...
+[RUN] find /tmp /var/tmp -xdev -type f -mtime +10 -print -delete
+[RUN] find /var/crash /var/spool/abrt -xdev -type f -mtime +14 -print -delete 2>/dev/null || true
+[RUN] find /var/log -xdev -type f \( -name '*.gz' -o -name '*.1' -o -name '*.old' \) -mtime +7 -delete
+== NIVEAU 1b : cache VS Code Remote (workspace + VSIX + vieilles versions) ==
+[RUN] find /home/user/.vscode-server/data/User/workspaceStorage -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+find: ‘/home/user/.vscode-server/data/User/workspaceStorage’: No such file or directory
+[WARN] échec find /home/user/.vscode-server/data/User/workspaceStorage -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+[RUN] rm -rf /home/user/.vscode-server/data/CachedExtensionVSIXs
+[RUN] find /home/user/.vscode-server -maxdepth 1 -type d -name '????????????????????????????????????????' -mtime +21 -exec rm -rf {} +
+== NIVEAU 2 : logs runtime + pods morts ==
+[RUN] logrotate -f /etc/logrotate.conf
+== NIVEAU 3 : prune images non utilisées (fenêtre de maintenance) ==
+[RUN] crictl --runtime-endpoint unix:///run/containerd/containerd.sock rmi --prune
+Deleted: docker.io/hashicorp/vault:2.0.3
+[RUN] ctr -n k8s.io snapshots prune
+No help topic for 'prune'
+[WARN] échec ctr -n k8s.io snapshots prune
+[RUN] ctr -n k8s.io content prune references || true
+[RUN] docker image prune -f
+Total reclaimed space: 0B
+[RUN] docker container prune -f
+Total reclaimed space: 0B
+NIVEAU 3 ne touche PAS à Longhorn, etcd, PVC, /var/lib/containerd en rm.
+APRES / used=13G avail=9.5G pct=58%
+LOG=/var/log/disk-hygiene/cleanup-k3s-worker-mrs.log FIN_CLEANUP
+HOST=k3s-worker-mrs STAMP=20261109T094926Z DRY_RUN=1 NIVEAU=1
+AVANT / used=16G avail=7.0G pct=70%
+== NIVEAU 1 : journal, caches, tmp ==
+[DRY] journalctl --vacuum-size=200M
+[DRY] journalctl --vacuum-time=7d
+[DRY] apt-get -y clean
+[DRY] apt-get -y autoclean
+[DRY] find /tmp /var/tmp -xdev -type f -mtime +10 -print -delete
+[DRY] find /var/crash /var/spool/abrt -xdev -type f -mtime +14 -print -delete 2>/dev/null || true
+[DRY] find /var/log -xdev -type f \( -name '*.gz' -o -name '*.1' -o -name '*.old' \) -mtime +7 -delete
+== NIVEAU 1b : cache VS Code Remote (workspace + VSIX + vieilles versions) ==
+[DRY] find /home/user/.vscode-server/data/User/workspaceStorage -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+[DRY] rm -rf /home/user/.vscode-server/data/CachedExtensionVSIXs
+[DRY] find /home/user/.vscode-server -maxdepth 1 -type d -name '????????????????????????????????????????' -mtime +21 -exec rm -rf {} +
+APRES / used=16G avail=7.0G pct=70%
+LOG=/var/log/disk-hygiene/cleanup-k3s-worker-mrs.log FIN_CLEANUP
