@@ -7,8 +7,8 @@ spec:
   project: default
   source:
     repoURL: https://zabbix-community.github.io/helm-zabbix
-    targetRevision: 7.0.12  # Version stable et récente
-    chart: zabbix  # Nom correct du chart
+    targetRevision: 7.0.12 # Version stable et récente
+    chart: zabbix # Nom correct du chart
     helm:
       values: |
         # Configuration pour Zabbix Server
@@ -29,6 +29,14 @@ spec:
             ingressClassName: nginx
             hosts:
               - zabbix.local
+          extraVolumes:
+            - name: zabbix-idp-cert
+              configMap:
+                name: zabbix-idp-cert
+          extraVolumeMounts:
+            - name: zabbix-idp-cert
+              mountPath: /etc/zabbix/web/certs
+              readOnly: true
 
         # Configuration pour Zabbix Proxy (optionnel)
         zabbix-proxy:
