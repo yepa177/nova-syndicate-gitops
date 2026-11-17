@@ -22,7 +22,7 @@ spec:
               memory: 512Mi
 
         # Configuration pour Zabbix Web (interface)
-        zabbix-web:
+        zabbixWeb:
           enabled: true
           ingress:
             enabled: true
