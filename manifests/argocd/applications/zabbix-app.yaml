@@ -30,11 +30,12 @@ spec:
             hosts:
               - zabbix.local
           extraVolumes:
-            - name: zabbix-idp-cert
-              configMap:
-                name: zabbix-idp-cert
+            - name: zabbix-saml-certs
+              secret:
+                secretName: zabbix-saml-certs
+                defaultMode: 0444
           extraVolumeMounts:
-            - name: zabbix-idp-cert
+            - name: zabbix-saml-certs
               mountPath: /etc/zabbix/web/certs
               readOnly: true
 
